@@ -10,6 +10,8 @@ function App() {
     <div className="App">
       <h1>IT IS DIPLOMA APP</h1>
       <h1>First Commit</h1>
+      <h1>HI</h1>
+
 
     </div>
   );
