@@ -12,12 +12,12 @@ import SubmitButton from './UI/Button/SubmitButton';
 
 function generateMeetingUrl(data,config){
 
-    // console.log(hex_sha1("joinfullName=User+389866&meetingID=random-8554619&password=mp&redirect=trueRpwGE9VlQnQbnBEvKRE8LOA2iejPepAoYxWL8"));
+
     let createHash ='create';
     let createHttp = createHash + '?';
     let roomSettings = '&allowRequestsWithoutSession=true&meetingExpireIfNoUserJoinedInMinutes=2000&meetingExpireWhenLastUserLeftInMinutes=360';
     let urlBase = `allowStartStopRecording=${data.allowStartStopRecording}&attendeePW=${data.attendeePW}&autoStartRecording=${data.autoStartRecording}&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=${data.record}`+roomSettings;
-    // checksum=YY Д
+
     let hashedUrl = createHttp  + urlBase + '&checksum=' + hex_sha1(createHash+urlBase + config.secret);
     console.log(config.url + 'api/' + hashedUrl);
     return config.url + 'api/' + hashedUrl;
@@ -48,8 +48,6 @@ function CreateForm() {
         let result = generateMeetingUrl(urlData,serverConfig)
         console.log('result1',result);
         navigate('./bbb',{ state : {url : result} });
-        // createUrl(generateMeetingUrl(urlData,serverConfig));
-        console.log(generateMeetingUrl(urlData,serverConfig));
     
         setUrlData(
           {

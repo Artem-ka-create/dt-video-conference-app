@@ -28,7 +28,9 @@ function App() {
             <Route path='/join' element={<JoinForm />}/>
             <Route path='/create/bbb' element={<BBB />}/>
             <Route path='/join/bbb' element={<BBB />}/>
-
+            <Route path='/create/jitsi' element={<BBB />}/>
+            <Route path='/join/jitsi' element={<BBB />}/>
+          
           </Route>
         </Routes>
       </div>

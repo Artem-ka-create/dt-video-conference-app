@@ -65,7 +65,7 @@ function BBB() {
             if (getMeetingOperation(url)==='create'){
               const response = await http(url);        
               console.log(response);
-              
+
               if(response.returncode==='SUCCESS'){
                 setJoinUrl( await createJoinUrl(response));
               }else{
