@@ -46,7 +46,6 @@ function CreateForm() {
     const onSubmitHandler =(event)=>{
         event.preventDefault();
         let result = generateMeetingUrl(urlData,serverConfig)
-        console.log('result1',result);
         navigate('./bbb',{ state : {url : result} });
     
         setUrlData(
