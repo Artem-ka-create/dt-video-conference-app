@@ -1,0 +1,89 @@
+
+.panel{
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #E10075;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+.panelContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.open{
+    width: 20%;
+}
+
+.openbtn { 
+    margin-left: 10px;
+    margin-top: 10px;
+
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    background-color: white;
+    
+    border: 2px solid black;
+    border-color: #E10075;
+
+    color: black;
+    border-radius: 0 3px 3px 0;
+
+    transition: 0.5s;
+    padding: 10px 15px;
+    cursor: pointer;
+
+  }
+  
+  .openbtn:hover {
+    transition: 0.5s;
+    color: white;
+    background-color:#E10075;
+  }
+
+  .closebtn {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    color: white;
+    background-color: #E10075;
+    top: 10px;
+    right: 10px;
+    border: none;
+    transition: 0.5s;
+    cursor: pointer;
+
+    font-size: 35px;
+  }
+  .closebtn:hover {
+    transition: 0.5s;
+    color: black;
+  }
+  .panelButton{
+    width: 90%;
+    font-size: 25px;
+    height: 50px;
+    background-color: white;
+    border: 2px solid #E10075;
+    border-radius: 5px;
+    transition: 0.5s;
+
+    margin:  15px 0 15px 0;
+    cursor: pointer;
+  }
+
+  .panelButton:hover {
+    background-color: #E10075;
+    color: white;
+    transition: 0.5s;
+
+    border: 2px solid white;
+
+  }
