@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import {useNavigate} from 'react-router-dom';
+
 import styles from './CreateForm.module.css';
 import serverConfig from '../data/BBBconfig'
 
@@ -16,7 +18,7 @@ function generateMeetingUrl(data,config){
     let roomSettings = '&allowRequestsWithoutSession=true&meetingExpireIfNoUserJoinedInMinutes=2000&meetingExpireWhenLastUserLeftInMinutes=360';
     let urlBase = `allowStartStopRecording=${data.allowStartStopRecording}&attendeePW=${data.attendeePW}&autoStartRecording=${data.autoStartRecording}&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=${data.record}`+roomSettings;
     // checksum=YY Д
-    let hashedUrl = createHttp  + urlBase + '&checksum=' +hex_sha1(createHash+urlBase + config.secret);
+    let hashedUrl = createHttp  + urlBase + '&checksum=' + hex_sha1(createHash+urlBase + config.secret);
     console.log(config.url + 'api/' + hashedUrl);
     return config.url + 'api/' + hashedUrl;
   
@@ -24,6 +26,8 @@ function generateMeetingUrl(data,config){
 
 
 function CreateForm() {
+
+    const navigate = useNavigate();
 
     const [urlData, setUrlData] = useState(
         {
@@ -41,6 +45,9 @@ function CreateForm() {
 
     const onSubmitHandler =(event)=>{
         event.preventDefault();
+        let result = generateMeetingUrl(urlData,serverConfig)
+        console.log('result1',result);
+        navigate('./bbb',{ state : {url : result} });
         // createUrl(generateMeetingUrl(urlData,serverConfig));
         console.log(generateMeetingUrl(urlData,serverConfig));
     

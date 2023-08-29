@@ -8,6 +8,7 @@ import NotFound from './components/NotFound';
 import Main from './components/Main';
 import JoinForm from './components/JoinForm';
 import CreateForm from './components/CreateForm';
+import BBB from './components/BBB';
 
 
 
@@ -20,11 +21,13 @@ function App() {
       <div className="App">
         <Routes>
           <Route path='/' element={<MainLayout/>}>
-            <Route path='/' element={<Main/>}/>
+            <Route index={true}  path='/' element={<Main/>}/>
             <Route path='*' element={<NotFound/>}/>
             <Route path='/about' element={<About/>}/>
             <Route path='/create' element={<CreateForm/>}/>
             <Route path='/join' element={<JoinForm />}/>
+            <Route path='/create/bbb' element={<BBB />}/>
+            <Route path='/join/bbb' element={<BBB />}/>
 
           </Route>
         </Routes>

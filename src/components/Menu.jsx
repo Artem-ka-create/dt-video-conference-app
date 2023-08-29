@@ -12,7 +12,7 @@ function Menu() {
     const navigate = useNavigate();
 
     const handleMoveToMain = () => navigate('/');
-    const handleMoveToJoin = () => navigate('/join',{ state: { id: 7, color: 'green' } });
+    const handleMoveToJoin = () => navigate('/join');
     const handleMoveToCreate = () => navigate('/create');
     const handleMoveToAbout = () => navigate('/about');
 
