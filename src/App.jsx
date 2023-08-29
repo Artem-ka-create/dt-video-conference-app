@@ -6,6 +6,9 @@ import MainLayout from './layouts/MainLayout';
 import About from './components/About';
 import NotFound from './components/NotFound';
 import Main from './components/Main';
+import JoinForm from './components/JoinForm';
+import CreateForm from './components/CreateForm';
+
 
 
 function App() {
@@ -19,9 +22,11 @@ function App() {
           <Route path='/' element={<MainLayout/>}>
             <Route path='/' element={<Main/>}/>
             <Route path='*' element={<NotFound/>}/>
-            <Route path='about' element={<About/>}/>
+            <Route path='/about' element={<About/>}/>
+            <Route path='/create' element={<CreateForm/>}/>
+            <Route path='/join' element={<JoinForm />}/>
+
           </Route>
-        
         </Routes>
       </div>
     </BrowserRouter>

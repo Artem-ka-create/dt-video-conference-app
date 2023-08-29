@@ -26,10 +26,10 @@ function Menu() {
         <button className={styles.closebtn} onClick={()=> panelHandler()} ><FontAwesomeIcon icon={faRectangleXmark} /></button>
         <div className={styles.panelContainer}>
             
-            <button onClick={handleMoveToMain} className={styles.panelButton} >Main</button>
-            <button onClick={handleMoveToCreate} className={styles.panelButton} >Create Meeting</button>
-            <button onClick={handleMoveToJoin} className={styles.panelButton} >Join To Meeting</button>
-            <button onClick={handleMoveToAbout} className={styles.panelButton} >About</button>
+            <button onClick={handleMoveToMain} className={styles.panelButton}>Main</button>
+            <button onClick={handleMoveToCreate} className={styles.panelButton}>Create Meeting</button>
+            <button onClick={handleMoveToJoin} className={styles.panelButton}>Join To Meeting</button>
+            <button onClick={handleMoveToAbout} className={styles.panelButton}>About</button>
 
         </div>
         
