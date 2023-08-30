@@ -6,11 +6,13 @@ import Input from './UI/Input/Input';
 import {generateMeetingUrl} from '../libs/bbbFunctions';
 
 import SubmitButton from './UI/Button/SubmitButton';
+import ToggleBtn from './UI/Toggle/ToggleBtn';
 
 
 function CreateForm() {
 
     const navigate = useNavigate();
+    
 
     const [urlData, setUrlData] = useState(
         {
@@ -59,14 +61,18 @@ function CreateForm() {
       {/* name */}
       <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
 
+      <div className={styles.toggleContainer}>
+        <h3>Jitsi</h3>
+        <h3>BigBlueButton</h3>
+      </div>
+
+      <div className={styles.btnsContainer}>
+        <ToggleBtn/>
+        {/* <button type='submit' title="Submit" >Create</button> */}
+        {/* TODO: Make button optimal component */}
+        <SubmitButton/>
+      </div>
       
-      <label>
-        <input checked={true} onChange={(event)=> console.log(event.target.checked)} type="checkbox"/>
-        I want to learn HTML
-      </label>
-      {/* <button type='submit' title="Submit" >Create</button> */}
-      {/* TODO: Make button optimal component */}
-      <SubmitButton/>
       
     </form>
   )
