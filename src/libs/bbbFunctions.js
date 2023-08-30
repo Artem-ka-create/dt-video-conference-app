@@ -3,7 +3,6 @@ import hex_sha1 from './paj'
 
 export function generateMeetingUrl(data){
 
-
     let createHash ='create';
     let createHttp = createHash + '?';
     let roomSettings = '&allowRequestsWithoutSession=true&meetingExpireIfNoUserJoinedInMinutes=2000&meetingExpireWhenLastUserLeftInMinutes=360';

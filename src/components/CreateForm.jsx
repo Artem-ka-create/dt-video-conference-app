@@ -3,15 +3,17 @@ import {useNavigate} from 'react-router-dom';
 
 import styles from './CreateForm.module.css';
 import Input from './UI/Input/Input';
-import {generateMeetingUrl} from '../libs/bbbFunctions';
-
 import SubmitButton from './UI/Button/SubmitButton';
 import ToggleBtn from './UI/Toggle/ToggleBtn';
+import {generateMeetingUrl} from '../libs/bbbFunctions';
+import {Technologies} from '../data/TechData';
+
 
 
 function CreateForm() {
 
     const navigate = useNavigate();
+
     
 
     const [urlData, setUrlData] = useState(
@@ -24,9 +26,18 @@ function CreateForm() {
           moderatorPW:'',
           // meetingID === name
           meetingID:'',
-          name:'',      
+          name:'',
+          technologyName:Technologies.JITSI              
         }
       );
+
+      function onToggleBtnHandle(event){
+        console.log(event);
+        let result = event ? Technologies.JITSI:Technologies.BBB;
+        // eslint-disable-next-line
+        setUrlData({...urlData, ['technologyName'] : result })
+        console.log(urlData);
+      }
 
     const onSubmitHandler =(event)=>{
         event.preventDefault();
@@ -42,7 +53,8 @@ function CreateForm() {
             attendeePW:'',
             moderatorPW:'',
             meetingID:'',
-            name:'',      
+            name:'',
+            technologyName:Technologies.JITSI         
           }
         );
     };
@@ -67,7 +79,7 @@ function CreateForm() {
       </div>
 
       <div className={styles.btnsContainer}>
-        <ToggleBtn/>
+        <ToggleBtn toggleBtnChange={onToggleBtnHandle}/>
         {/* <button type='submit' title="Submit" >Create</button> */}
         {/* TODO: Make button optimal component */}
         <SubmitButton/>
