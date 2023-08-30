@@ -3,9 +3,8 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
 
-import serverConfig from '../data/BBBconfig'
-import hex_sha1 from '../libs/paj'
 import {http} from 'bigbluebutton-js'
+import {createJoinUrl,getMeetingOperation,generateIsMeetingExistsURL,getMeetingIdFromUrl} from '../libs/bbbFunctions'
 
 
 function BBB() {
@@ -16,42 +15,7 @@ function BBB() {
     const url = location.state.url;
 
 
-    function generateIsMeetingExistsURL(meetingId){
-
-        let operation = 'isMeetingRunning'
-        let urlOperation = operation + '?';
-        let IsMeetingEsxistsBase = `meetingID=${meetingId}`;
-        let hashedUrl = urlOperation + IsMeetingEsxistsBase + '&checksum=' + hex_sha1(operation+IsMeetingEsxistsBase + serverConfig.secret);
-      
-        return serverConfig.url + 'api/' + hashedUrl;
-      }
-      function getMeetingIdFromUrl(url){
-        let paramsArray = url.split('&');
-        let idParam = paramsArray.filter((item)=> item.includes('meetingID'));
-        let value = idParam[0].split('=')[1];
-        return value;
-      }
-      function getMeetingOperation(url){
-        return url.replace(serverConfig.url+'api/','').split('?')[0];
-      }
-      async function createJoinUrl (response){
-      
-        console.log('This is in async function');
-        console.log(response);
-        let joinUrlBaseModerator = `fullName=ADMIN&meetingID=${response.meetingID}&password=${response.moderatorPW}&redirect=true`;
-        let joinUrlBaseAtendee = `fullName=ATTENDEE&meetingID=${response.meetingID}&password=ap&redirect=true`;
-      
-        let operation = 'join';
-        let urlOperation = operation + '?'
-        let hashedUrlModerator = urlOperation + joinUrlBaseModerator + '&checksum=' + hex_sha1(operation+joinUrlBaseModerator + serverConfig.secret);
-        let hashedUrlAttendee = urlOperation + joinUrlBaseAtendee + '&checksum=' + hex_sha1(operation+joinUrlBaseAtendee + serverConfig.secret);
-        console.log('ATTENDEE',serverConfig.url + 'api/' + hashedUrlAttendee);
-      
-        console.log(serverConfig.podUrl + 'api/' + hashedUrlModerator);
-      
-        return serverConfig.url + 'api/' + hashedUrlModerator;
-      }
-
+    
 
     useEffect( ()=> {
 

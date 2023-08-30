@@ -2,27 +2,10 @@ import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 
 import styles from './CreateForm.module.css';
-import serverConfig from '../data/BBBconfig'
-
 import Input from './UI/Input/Input';
-import hex_sha1 from '../libs/paj';
+import {generateMeetingUrl} from '../libs/bbbFunctions';
 
 import SubmitButton from './UI/Button/SubmitButton';
-
-
-function generateMeetingUrl(data,config){
-
-
-    let createHash ='create';
-    let createHttp = createHash + '?';
-    let roomSettings = '&allowRequestsWithoutSession=true&meetingExpireIfNoUserJoinedInMinutes=2000&meetingExpireWhenLastUserLeftInMinutes=360';
-    let urlBase = `allowStartStopRecording=${data.allowStartStopRecording}&attendeePW=${data.attendeePW}&autoStartRecording=${data.autoStartRecording}&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=${data.record}`+roomSettings;
-
-    let hashedUrl = createHttp  + urlBase + '&checksum=' + hex_sha1(createHash+urlBase + config.secret);
-    console.log(config.url + 'api/' + hashedUrl);
-    return config.url + 'api/' + hashedUrl;
-  
-  }
 
 
 function CreateForm() {
@@ -45,7 +28,7 @@ function CreateForm() {
 
     const onSubmitHandler =(event)=>{
         event.preventDefault();
-        let result = generateMeetingUrl(urlData,serverConfig)
+        let result = generateMeetingUrl(urlData)
         navigate('./bbb',{ state : {url : result} });
     
         setUrlData(
@@ -61,9 +44,6 @@ function CreateForm() {
           }
         );
     };
-
-
-
     
   return (
     
@@ -79,6 +59,11 @@ function CreateForm() {
       {/* name */}
       <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
 
+      
+      <label>
+        <input checked={true} onChange={(event)=> console.log(event.target.checked)} type="checkbox"/>
+        I want to learn HTML
+      </label>
       {/* <button type='submit' title="Submit" >Create</button> */}
       {/* TODO: Make button optimal component */}
       <SubmitButton/>

@@ -5,7 +5,6 @@ import {useNavigate} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRectangleXmark , faArrowRight} from '@fortawesome/free-solid-svg-icons'
 
-
 function Menu() {
 
     const [openStatus, setOpenStatus] = useState(false);
