@@ -14,8 +14,6 @@ function CreateForm() {
 
     const navigate = useNavigate();
 
-    
-
     const [urlData, setUrlData] = useState(
         {
           autoStartRecording:false,
@@ -33,7 +31,7 @@ function CreateForm() {
 
       function onToggleBtnHandle(event){
         console.log(event);
-        let result = event ? Technologies.JITSI:Technologies.BBB;
+        let result = event ? Technologies.BBB :Technologies.JITSI
         // eslint-disable-next-line
         setUrlData({...urlData, ['technologyName'] : result })
         console.log(urlData);
@@ -41,9 +39,16 @@ function CreateForm() {
 
     const onSubmitHandler =(event)=>{
         event.preventDefault();
-        let result = generateMeetingUrl(urlData)
-        navigate('./bbb',{ state : {url : result} });
-    
+        let result = '';
+        console.log(urlData.technologyName);
+        if (urlData.technologyName===Technologies.JITSI){
+
+        }
+        else if(urlData.technologyName===Technologies.BBB){
+          result = generateMeetingUrl(urlData)
+        }
+        
+        navigate(`./${urlData.technologyName}`,{ state : {url : result} });
         setUrlData(
           {
             autoStartRecording:false,
