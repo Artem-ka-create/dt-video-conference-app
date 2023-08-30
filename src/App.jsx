@@ -9,6 +9,7 @@ import Main from './components/Main';
 import JoinForm from './components/JoinForm';
 import CreateForm from './components/CreateForm';
 import BBB from './components/BBB';
+import Jitsi from './components/Jitsi'
 
 
 
@@ -28,8 +29,8 @@ function App() {
             <Route path='/join' element={<JoinForm />}/>
             <Route path='/create/bbb' element={<BBB />}/>
             <Route path='/join/bbb' element={<BBB />}/>
-            <Route path='/create/jitsi' element={<BBB />}/>
-            <Route path='/join/jitsi' element={<BBB />}/>
+            <Route path='/create/jitsi' element={< Jitsi/>}/>
+            <Route path='/join/jitsi' element={<Jitsi />}/>
           
           </Route>
         </Routes>

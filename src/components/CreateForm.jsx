@@ -68,23 +68,28 @@ function CreateForm() {
     
     <form  onSubmit={onSubmitHandler} className={styles.form_container}>
       <h2>Create Meeting</h2>
-
-      {/* username */}
-      <Input labelText={"User Name"} entity='username' value={urlData.username} setInput={setUrlData} Data={urlData} />
-      {/* attendeePW */}
-      <Input labelText={"Attendee Password"} entity='attendeePW' value={urlData.attendeePW} setInput={setUrlData} Data={urlData} />
-      {/* moderatorPW */}
-      <Input labelText={"Moderator Password"} entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} Data={urlData} />
-      {/* name */}
-      <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
-
       <div className={styles.toggleContainer}>
         <h3>Jitsi</h3>
         <h3>BigBlueButton</h3>
       </div>
+      <div className={styles.btnsContainer}> <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> </div>
+
+      {/* username */}
+      <Input labelText={"User Name"} entity='username' value={urlData.username} setInput={setUrlData} Data={urlData} />
+      { urlData.technologyName===Technologies.BBB && 
+        <div>
+          {/* attendeePW */}
+          <Input labelText={"Attendee Password"} entity='attendeePW' value={urlData.attendeePW} setInput={setUrlData} Data={urlData} />
+          {/* moderatorPW */}
+          <Input labelText={"Moderator Password"} entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} Data={urlData} />
+        </div>
+      } 
+
+      {/* name */}
+      <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
 
       <div className={styles.btnsContainer}>
-        <ToggleBtn toggleBtnChange={onToggleBtnHandle}/>
+        {/* <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> */}
         {/* <button type='submit' title="Submit" >Create</button> */}
         {/* TODO: Make button optimal component */}
         <SubmitButton/>
