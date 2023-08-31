@@ -42,13 +42,15 @@ function CreateForm() {
         let result = '';
         console.log(urlData.technologyName);
         if (urlData.technologyName===Technologies.JITSI){
-
+          
+          result = 'https://8x8.vc/' + urlData.name;
+          console.log(result);
         }
         else if(urlData.technologyName===Technologies.BBB){
           result = generateMeetingUrl(urlData)
         }
         
-        navigate(`./${urlData.technologyName}`,{ state : {url : result} });
+        navigate(`./${urlData.technologyName}`,{ state : {url : result, username: urlData.username} });
         setUrlData(
           {
             autoStartRecording:false,

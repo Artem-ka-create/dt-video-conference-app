@@ -9,12 +9,23 @@ function JoinForm() {
     const navigate = useNavigate();
 
 
-    const [data,setData] = useState({url:''});
+    const [data,setData] = useState({url:'',username:''});
     const onSubmitHandler =(event)=>{
         event.preventDefault();
-        navigate('./bbb',{state :{url : data.url}});
+        // check by domains technology
+        let result = {state :{url : data.url, username: data.username}};
 
-        setData({url:''});
+        if(data.url.replace('https://','').split('/')[0]==='8x8.vc'){
+          navigate('./jitsi',result);
+        }
+        else if(data.url.replace('https://','').split('/')[0]==='bigbluebutton'){
+          navigate('./bbb',result);
+        }
+        else{
+          alert(' This url not supports')
+        }
+
+        setData({url:'',username:''});
     };
 
   return (
@@ -22,6 +33,8 @@ function JoinForm() {
     <h2>JoinForm</h2>
     
     <form  onSubmit={onSubmitHandler} className={styles.form_container}>
+        <Input labelText={"Input Username"} entity='username' value={data.username} setInput={setData} Data={data} />
+
         <Input labelText={"Input Url"} entity='url' value={data.url} setInput={setData} Data={data} />
         <SubmitButton/>
     </form>
