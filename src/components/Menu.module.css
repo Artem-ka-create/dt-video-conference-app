@@ -88,3 +88,12 @@
     border: 2px solid white;
 
   }
+
+img{
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  width: 45px;
+  top: 10px;
+  /* left: 10px; */
+}

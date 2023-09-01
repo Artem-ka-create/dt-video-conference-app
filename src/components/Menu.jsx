@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Menu.module.css';
 import {useNavigate} from 'react-router-dom';
 
+import dt_logo from './UI/Logos/dt-logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRectangleXmark , faArrowRight} from '@fortawesome/free-solid-svg-icons'
 
@@ -20,7 +21,7 @@ function Menu({panelStatus, onChangePanel}) {
   return (
     <>
     <div className={`${styles.panel} ${panelStatus ? styles.open : ''}`}>
-
+        <img src={dt_logo} alt='dt-logo'/>
         <button className={styles.closebtn} onClick={()=> panelHandler()} ><FontAwesomeIcon icon={faRectangleXmark} /></button>
         <div className={styles.panelContainer}>
             
