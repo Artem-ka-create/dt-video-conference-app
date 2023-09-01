@@ -21,8 +21,12 @@ function Menu({panelStatus, onChangePanel}) {
   return (
     <>
     <div className={`${styles.panel} ${panelStatus ? styles.open : ''}`}>
-        <img src={dt_logo} alt='dt-logo'/>
+       <div style={{display:'flex', alignItems:'center'}}>
+       <img src={dt_logo} alt='dt-logo'/>
         <button className={styles.closebtn} onClick={()=> panelHandler()} ><FontAwesomeIcon icon={faRectangleXmark} /></button>
+       </div>
+      
+
         <div className={styles.panelContainer}>
             
             <button onClick={handleMoveToMain} className={styles.panelButton}>Main</button>
@@ -31,9 +35,6 @@ function Menu({panelStatus, onChangePanel}) {
             <button onClick={handleMoveToAbout} className={styles.panelButton}>About</button>
 
         </div>
-        
-
-
     </div>
 
     <button onClick={()=> panelHandler()} className={styles.openbtn}><div style={{marginRight:'10px'}}>Open panel </div><FontAwesomeIcon icon={faArrowRight} /></button>
