@@ -47,11 +47,7 @@ function Jitsi() {
       const handleVideoConferenceLeft = () => {
         console.log("handleVideoConferenceLeft");
         
-        // console.log(this.props);
-        
-        // return this.props.history.push('/thank-you');
         navigate('/');
-
 
       }
       
@@ -144,7 +140,7 @@ function Jitsi() {
       </button>
 
       <button className={styles.btn} onClick={() => executeCommand('toggleVideo')} title="Start / Stop camera">
-        {state.isVideoMuted ? <FontAwesomeIcon icon={faVideoSlash} /> : <FontAwesomeIcon icon={faVideo} />}
+        {state.isVideoMuted ? < FontAwesomeIcon icon={faVideo} />  : <FontAwesomeIcon icon={faVideoSlash} />}
       </button>
       <button className={styles.btn} onClick={() => executeCommand('toggleRaiseHand')} title="Rise your hand">
         {state.isRaiseHand ? <FontAwesomeIcon icon={faHandreg} /> : <FontAwesomeIcon icon={faHand} />}

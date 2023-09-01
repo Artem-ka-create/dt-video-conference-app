@@ -33,22 +33,24 @@ function BBB() {
               if(response.returncode==='SUCCESS'){
                 setJoinUrl( await createJoinUrl(response));
               }else{
-                console.warn('CANNOT CREATE MEETING');
+                alert('CANNOT CREATE MEETING');
+
               }
             }else if(getMeetingOperation(url)==='join'){
               const response = await http(generateIsMeetingExistsURL(getMeetingIdFromUrl(url)));
               if (response.running===true) {
                 setJoinUrl(url);
               }else{
-                console.warn('Meeting not started');
+                alert('Meeting not started');
               }
            
             }else{
-              console.warn('THIS URL OPERATION NOT SUPPORTS');
+              alert('THIS URL OPERATION NOT SUPPORTS');
             }
             
           }else{
-            console.warn('WRONG URL');
+            alert('WRONG URL');
+
           }
         
           };
