@@ -9,26 +9,23 @@ export function generateMeetingUrl(data){
     let urlBase = `allowStartStopRecording=${data.allowStartStopRecording}&attendeePW=${data.attendeePW}&autoStartRecording=${data.autoStartRecording}&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=${data.record}`+roomSettings;
 
     let hashedUrl = createHttp  + urlBase + '&checksum=' + hex_sha1(createHash+urlBase + serverConfig.secret);
-    // console.log(serverConfig.url + 'api/' + hashedUrl);
     return serverConfig.url + 'api/' + hashedUrl;
-  
   }
 
-  export async function createJoinUrl (data){
+  export async function createJoinUrl (data,username,password){
       
     console.log(data);
-    let joinUrlBaseModerator = `fullName=ADMIN&meetingID=${data.meetingID}&password=${data.moderatorPW}&redirect=true`;
-    let joinUrlBaseAtendee = `fullName=ATTENDEE&meetingID=${data.meetingID}&password=ap&redirect=true`;
+
+    let joinUrlBaseUser = `fullName=${username}&meetingID=${data.meetingID}&password=${password}&redirect=true`;
+    // let joinUrlBaseAtendee = `fullName=${username}&meetingID=${data.meetingID}&password=${password}&redirect=true`;
   
     let operation = 'join';
     let urlOperation = operation + '?'
-    let hashedUrlModerator = urlOperation + joinUrlBaseModerator + '&checksum=' + hex_sha1(operation+joinUrlBaseModerator + serverConfig.secret);
-    let hashedUrlAttendee = urlOperation + joinUrlBaseAtendee + '&checksum=' + hex_sha1(operation+joinUrlBaseAtendee + serverConfig.secret);
-    console.log('ATTENDEE',serverConfig.url + 'api/' + hashedUrlAttendee);
+    let hashedUrlUser = urlOperation + joinUrlBaseUser + '&checksum=' + hex_sha1(operation+joinUrlBaseUser + serverConfig.secret);
+    // let hashedUrlAttendee = urlOperation + joinUrlBaseAtendee + '&checksum=' + hex_sha1(operation+joinUrlBaseAtendee + serverConfig.secret);
+    // console.log('ATTENDEE',serverConfig.url + 'api/' + hashedUrlAttendee);
   
-    console.log(serverConfig.podUrl + 'api/' + hashedUrlModerator);
-  
-    return serverConfig.url + 'api/' + hashedUrlModerator;
+    return serverConfig.url + 'api/' + hashedUrlUser;
   }
   
   export function generateIsMeetingExistsURL(meetingId){

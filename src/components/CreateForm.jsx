@@ -50,7 +50,7 @@ function CreateForm() {
           result = generateMeetingUrl(urlData)
         }
         
-        navigate(`./${urlData.technologyName}`,{ state : {url : result, username: urlData.username} });
+        navigate(`./${urlData.technologyName}`,{ state : {url : result, username: urlData.username,attendeePW: urlData.attendeePW, moderatorPW: urlData.moderatorPW  } });
         setUrlData(
           {
             autoStartRecording:false,

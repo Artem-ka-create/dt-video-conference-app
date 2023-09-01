@@ -18,7 +18,7 @@ function JoinForm() {
         if(data.url.replace('https://','').split('/')[0]==='8x8.vc'){
           navigate('./jitsi',result);
         }
-        else if(data.url.replace('https://','').split('/')[0]==='bigbluebutton'){
+        else if(data.url.replace('https://','').split('/')[1]==='bigbluebutton'){
           navigate('./bbb',result);
         }
         else{
