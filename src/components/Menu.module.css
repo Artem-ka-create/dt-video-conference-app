@@ -34,7 +34,7 @@
     border-color: #E10075;
 
     color: black;
-    border-radius: 0 3px 3px 0;
+    border-radius: 3px;
 
     transition: 0.5s;
     padding: 10px 15px;
@@ -68,6 +68,7 @@
   }
   .panelButton{
     width: 90%;
+    min-width: 200px;
     font-size: 25px;
     height: 50px;
     background-color: white;

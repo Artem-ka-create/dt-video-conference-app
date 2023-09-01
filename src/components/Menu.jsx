@@ -1,13 +1,12 @@
-import React ,{ useState }from 'react'
+import React from 'react'
 import styles from './Menu.module.css';
 import {useNavigate} from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRectangleXmark , faArrowRight} from '@fortawesome/free-solid-svg-icons'
 
-function Menu() {
+function Menu({panelStatus, onChangePanel}) {
 
-    const [openStatus, setOpenStatus] = useState(false);
     const navigate = useNavigate();
 
     const handleMoveToMain = () => navigate('/');
@@ -15,12 +14,12 @@ function Menu() {
     const handleMoveToCreate = () => navigate('/create');
     const handleMoveToAbout = () => navigate('/about');
 
-    const panelHandler = ()=> setOpenStatus(!openStatus);
+    const panelHandler = ()=> onChangePanel(!panelStatus);
 
 
   return (
     <>
-    <div className={`${styles.panel} ${openStatus ? styles.open : ''}`}>
+    <div className={`${styles.panel} ${panelStatus ? styles.open : ''}`}>
 
         <button className={styles.closebtn} onClick={()=> panelHandler()} ><FontAwesomeIcon icon={faRectangleXmark} /></button>
         <div className={styles.panelContainer}>

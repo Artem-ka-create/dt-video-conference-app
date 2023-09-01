@@ -2,15 +2,15 @@ import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 
 import styles from './CreateForm.module.css';
-import Input from './UI/Input/Input';
-import SubmitButton from './UI/Button/SubmitButton';
-import ToggleBtn from './UI/Toggle/ToggleBtn';
-import {generateMeetingUrl} from '../libs/bbbFunctions';
-import {Technologies} from '../data/TechData';
+import Input from '../UI/Input/Input';
+import SubmitButton from '../UI/Button/SubmitButton';
+import ToggleBtn from '../UI/Toggle/ToggleBtn';
+import {generateMeetingUrl} from '../../libs/bbbFunctions';
+import {Technologies} from '../../data/TechData';
 
 
 
-function CreateForm() {
+function CreateForm({onChangePanel}) {
 
     const navigate = useNavigate();
 
@@ -51,6 +51,7 @@ function CreateForm() {
         }
         
         navigate(`./${urlData.technologyName}`,{ state : {url : result, username: urlData.username,attendeePW: urlData.attendeePW, moderatorPW: urlData.moderatorPW  } });
+        onChangePanel(false)
         setUrlData(
           {
             autoStartRecording:false,

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 
-import SubmitButton from './UI/Button/SubmitButton'
-import Input from './UI/Input/Input'
+import SubmitButton from '../UI/Button/SubmitButton'
+import Input from '../UI/Input/Input'
 import styles from './JoinForm.module.css'
 
-function JoinForm() {
+function JoinForm({onChangePanel}) {
     const navigate = useNavigate();
 
 
@@ -24,6 +24,7 @@ function JoinForm() {
         else{
           alert(' This url not supports')
         }
+        onChangePanel(false)
 
         setData({url:'',username:''});
     };
