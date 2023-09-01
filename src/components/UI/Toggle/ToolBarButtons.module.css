@@ -2,7 +2,7 @@
 
     transition: 0.3s;
     background: white;
-    border: 1px solid #db0276;
+    border: 1px solid #E10075;
     border-radius: 10px;
     width: 40px;
     height: 40px;
@@ -21,6 +21,10 @@
     margin: 10px;
     font-size: 1.2em;
 
+}
+.btn:hover{
+    background-color: #E10075;
+    color: white;
 }
 .btn_hangUp:hover {
     background-color: white;

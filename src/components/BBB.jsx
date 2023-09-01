@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
 
 import {http} from 'bigbluebutton-js'
-import {createJoinUrl,getMeetingOperation,generateIsMeetingExistsURL,getMeetingIdFromUrl} from '../libs/bbbFunctions'
+import {createJoinUrl,getMeetingOperation,generateIsMeetingExistsURL,getMeetingIdFromUrl,setNewUsernameToUrl} from '../libs/bbbFunctions'
 import styles from './UI/Button/UrlButton.module.css';
 
 function BBB() {
@@ -12,8 +12,7 @@ function BBB() {
     const location = useLocation();
     const [joinUrl, setJoinUrl] = useState('');
     console.log(location);
-    // const url = location.state.url;
-    // const username = location.state.username;
+
     const[attendeeURL,setAttendeeURL] = useState('');
     const[moderatorURL,setModeratorURL] = useState('');
 
@@ -22,10 +21,8 @@ function BBB() {
 
     useEffect( ()=> {
         const getData = async () => {
-          console.log('URL CHECK',url);
             
           if (url.includes('meetingID=')) {
-            console.log('URL CHECK',url);
             const op = getMeetingOperation(url);
             setOperation(getMeetingOperation(url))
 
@@ -44,7 +41,9 @@ function BBB() {
             }else if(op==='join'){
               const response = await http(generateIsMeetingExistsURL(getMeetingIdFromUrl(url)));
               if (response.running===true) {
-                setJoinUrl(url);
+                if (username.length===0) setJoinUrl(url);
+                else setJoinUrl(setNewUsernameToUrl(url,username));
+            
               }
               else alert('Meeting not started');
            
@@ -62,7 +61,6 @@ function BBB() {
           );
         
 
-
   return (
    
     <>
@@ -75,21 +73,11 @@ function BBB() {
       ></iframe>
     }
     {operation==='create' && 
-    <>
-      {/* <h3>CREATE </h3> */}
-
       <div className={styles.urlContainer}>
       <button className={styles.urlButton} onClick={()=> navigator.clipboard.writeText(attendeeURL)}>Copy Attendee join URL</button>
-      <button className={styles.urlButton} onClick={()=> navigator.clipboard.writeText(moderatorURL)}>Copy Moderator join URL</button>
+      <button className={styles.urlButton} onClick={()=> navigator.clipboard.writeText(moderatorURL)}> Copy Moderator join URL</button>
       </div>
-
-
-
-    </>
     }
-    {operation==='join' && <h2>JOIN</h2>}
-
-
     </>
   )
 }

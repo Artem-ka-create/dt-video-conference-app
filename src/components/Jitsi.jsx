@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './UI/Toggle/ToolBarButtons.module.css'
+import urlStyles from './UI/Button/UrlButton.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMicrophone,faMicrophoneSlash, faVideo, faVideoSlash, faPhoneSlash , faHand, faComment,faCommentSlash, faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
 import {faHand as faHandreg  } from '@fortawesome/free-regular-svg-icons'
@@ -132,15 +133,15 @@ function Jitsi() {
 
   return (
     <div className="App">
-      <h1>ITS JAAS TRY</h1>
-      <div id="jaas-container" />
+      <div style={{marginTop:'30px'}} id="jaas-container" />
+      
       <span>&nbsp;&nbsp;</span>
       <button className={styles.btn} onClick={() => executeCommand('toggleAudio')} title="Mute / Unmute">
         {state.isAudioMuted ? <FontAwesomeIcon icon={faMicrophone} /> : <FontAwesomeIcon icon={faMicrophoneSlash} />}
       </button>
 
       <button className={styles.btn} onClick={() => executeCommand('toggleVideo')} title="Start / Stop camera">
-        {state.isVideoMuted ? < FontAwesomeIcon icon={faVideo} />  : <FontAwesomeIcon icon={faVideoSlash} />}
+        {state.isVideoMuted ? <FontAwesomeIcon icon={faVideoSlash} />   : < FontAwesomeIcon icon={faVideo} />}
       </button>
       <button className={styles.btn} onClick={() => executeCommand('toggleRaiseHand')} title="Rise your hand">
         {state.isRaiseHand ? <FontAwesomeIcon icon={faHandreg} /> : <FontAwesomeIcon icon={faHand} />}
@@ -154,6 +155,11 @@ function Jitsi() {
       <button className={styles.btn_hangUp} onClick={() => executeCommand('hangup')} title="Leave">
         <FontAwesomeIcon icon={faPhoneSlash} />
       </button>
+
+      <div className={urlStyles.urlContainer}>
+      <button className={urlStyles.urlButton} onClick={()=> navigator.clipboard.writeText(formData.url)}>Copy join URL</button>
+      </div>
+
     </div>
   );
 }

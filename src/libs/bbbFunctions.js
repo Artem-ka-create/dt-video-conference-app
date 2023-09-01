@@ -12,6 +12,14 @@ export function generateMeetingUrl(data){
     return serverConfig.url + 'api/' + hashedUrl;
   }
 
+  export function setNewUsernameToUrl(url, username){
+    let param = url.split('bigbluebutton/api/join?')[1].split('&')[0];
+
+    let domain = url.split('bigbluebutton/api/join?')[0]
+    let base = url.split('bigbluebutton/api/join?')[1].split('&checksum=')[0].replace(param,`fullName=${username}`)
+    
+    return domain + 'bigbluebutton/api/join?'+ base + '&checksum='+ hex_sha1('join'+base+serverConfig.secret); 
+  }
   export async function createJoinUrl (data,username,password){
       
     console.log(data);

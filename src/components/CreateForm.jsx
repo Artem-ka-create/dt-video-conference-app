@@ -91,9 +91,6 @@ function CreateForm() {
       <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
 
       <div className={styles.btnsContainer}>
-        {/* <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> */}
-        {/* <button type='submit' title="Submit" >Create</button> */}
-        {/* TODO: Make button optimal component */}
         <SubmitButton/>
       </div>
       
