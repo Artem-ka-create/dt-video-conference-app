@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
-
+// import axios from "axios";
 import {http} from 'bigbluebutton-js'
 import {createJoinUrl,getMeetingOperation,generateIsMeetingExistsURL,getMeetingIdFromUrl,setNewUsernameToUrl} from '../libs/bbbFunctions'
 import styles from './UI/Button/UrlButton.module.css';
@@ -27,7 +27,25 @@ function BBB() {
             setOperation(getMeetingOperation(url))
 
             if (op==='create'){
-              const response = await http(url);      
+              const response = await http(url);   
+
+              // AXIOS RESPONSE
+            //   axios.get(url,{
+            //     headers:{
+            //       'Access-Control-Allow-Origin': '*',
+            //     'Access-Control-Allow-Methods': 'PUT, POST, OPTIONS',
+            //     'Access-Control-Allow-Credentials': true
+            //     }
+            //   }).then((response) => {
+            //     console.log('axios',response.data);
+            //     // var xml = new XMLParser().parseFromString(response.data); 
+            //     // console.log(xml)
+
+            //     const parser = new xml2js.Parser();
+            //     parser.parseString(response.data, function (err, result) {
+            //       console.log(res);
+            //     });
+            // }); 
 
               if(response.returncode==='SUCCESS'){
                 setAttendeeURL(await createJoinUrl(response,'AttendeeUSERNAME',attendeePW))
