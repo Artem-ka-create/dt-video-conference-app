@@ -7,11 +7,13 @@ import SubmitButton from '../UI/Button/SubmitButton';
 import ToggleBtn from '../UI/Toggle/ToggleBtn';
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
+import FormAlert from '../UI/FormAlert/FormAlert';
 
 
 
 function CreateForm({onChangePanel}) {
 
+  const [exception, setException] = useState(false);
     const navigate = useNavigate();
 
     const [urlData, setUrlData] = useState(
@@ -71,11 +73,11 @@ function CreateForm({onChangePanel}) {
     
     <form  onSubmit={onSubmitHandler} className={styles.form_container}>
       <h2>Create Meeting</h2>
-      <div className={styles.toggleContainer}>
+      <div className={styles.toggleContainer} style={{position:'relative'}}>
         <h3>Jitsi</h3>
+      <div className={styles.btnsContainer} style={{position:'absolute'}}> <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> </div>
         <h3>BigBlueButton</h3>
       </div>
-      <div className={styles.btnsContainer}> <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> </div>
 
       {/* username */}
       <Input labelText={"User Name"} entity='username' value={urlData.username} setInput={setUrlData} Data={urlData} />
@@ -87,9 +89,12 @@ function CreateForm({onChangePanel}) {
           <Input labelText={"Moderator Password"} entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} Data={urlData} />
         </div>
       } 
+      <div onClick={()=> setException(!exception)}>Exception test</div>
 
       {/* name */}
       <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
+
+      <FormAlert exceptionStatus={exception}/>
 
       <div className={styles.btnsContainer}>
         <SubmitButton/>

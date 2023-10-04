@@ -22,7 +22,8 @@ function Menu({panelStatus, onChangePanel}) {
     <>
     <div className={`${styles.panel} ${panelStatus ? styles.open : ''}`}>
        <div style={{display:'flex', alignItems:'center'}}>
-       <img src={dt_logo} alt='dt-logo'/>
+        <img src={dt_logo} alt='dt-logo'/>
+        <div className={`${styles.panel_text}`}>DT MEET</div>
         <button className={styles.closebtn} onClick={()=> panelHandler()} ><FontAwesomeIcon icon={faRectangleXmark} /></button>
        </div>
       

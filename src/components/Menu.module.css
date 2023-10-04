@@ -84,7 +84,6 @@
     background-color: #E10075;
     color: white;
     transition: 0.5s;
-
     border: 2px solid white;
 
   }
@@ -96,7 +95,16 @@ img{
 
   width: 45px;
   top: 10px;
-  /* left: 10px; */
   right: 16vw;
-  /* left: 10px; */
+}
+.panel_text{
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+
+  font-size: 20px;
+  color: white;
+  width: 100px;
+  top: 15px;
+  right: 7.5vw;
 }
