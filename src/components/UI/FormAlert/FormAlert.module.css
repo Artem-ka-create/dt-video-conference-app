@@ -16,7 +16,7 @@
     &.close{
 
         color: rgba(255, 0, 0, 0);
-        font-size: 0px;
+        font-size: 0rem;
         transition: 0.5s;
         border:none;
         /* transition: 0.5s; */
@@ -28,7 +28,8 @@
 
 .open{
     transition: 0.5s;
-    font-size: 17px;
+    /* font-size: 17px; */
+    font-size: 0.813rem;
 
     background-color: rgb(255, 219, 219);
     color: rgb(255, 0, 0);
@@ -37,9 +38,9 @@
 }
 
 .exception_block{
-    font-size: 0.813rem;
+    /* font-size: 0.813rem; */
     display: flex;
-    align-items: flex-start;
+    left: 0;
     width: 100%;
     align-items: center;
 }

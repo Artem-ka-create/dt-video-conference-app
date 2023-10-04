@@ -10,7 +10,10 @@ function FormAlert({exceptionStatus}) {
     <div className={`${styles.alert_box} ${exceptionStatus ? styles.open : styles.close}`}>
         
         <div className={styles.exception_block}>
-          password is required
+          password is required requiredrequiredrequiredrequired
+        </div>
+        <div className={styles.exception_block}>
+          password is required requiredrequiredrequiredrequired
         </div>
         <div className={styles.exception_block}>
           conferention id is required
