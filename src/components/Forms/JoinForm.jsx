@@ -34,8 +34,8 @@ function JoinForm({onChangePanel}) {
     <h2>JoinForm</h2>
     
     <form  onSubmit={onSubmitHandler} className={styles.form_container}>
-        <Input labelText={"Input Username"} entity='username' value={data.username} setInput={setData} Data={data} />
-        <Input labelText={"Input Url"} entity='url' value={data.url} setInput={setData} Data={data} />
+        <Input labelText={"Username"} entity='username' value={data.username} setInput={setData} Data={data} />
+        <Input labelText={"Url"} entity='url' value={data.url} setInput={setData} Data={data} />
         <SubmitButton/>
     </form>
     </>

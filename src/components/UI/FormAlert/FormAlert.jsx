@@ -8,16 +8,17 @@ function FormAlert({exceptionStatus}) {
   return (
 
     <div className={`${styles.alert_box} ${exceptionStatus ? styles.open : styles.close}`}>
-        
+          password is required requiredrequiredrequiredrequired
+        {/*
         <div className={styles.exception_block}>
           password is required requiredrequiredrequiredrequired
         </div>
-        <div className={styles.exception_block}>
+         <div className={styles.exception_block}>
           password is required requiredrequiredrequiredrequired
         </div>
         <div className={styles.exception_block}>
           conferention id is required
-        </div>
+        </div> */}
         
     </div>
   )

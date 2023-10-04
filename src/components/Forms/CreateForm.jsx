@@ -7,7 +7,6 @@ import SubmitButton from '../UI/Button/SubmitButton';
 import ToggleBtn from '../UI/Toggle/ToggleBtn';
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
-import FormAlert from '../UI/FormAlert/FormAlert';
 
 
 
@@ -94,7 +93,6 @@ function CreateForm({onChangePanel}) {
       {/* name */}
       <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
 
-      <FormAlert exceptionStatus={exception}/>
 
       <div className={styles.btnsContainer}>
         <SubmitButton/>

@@ -1,12 +1,13 @@
 input[type=text] {
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 8px 0 0;
     font-size: 15px;
     box-sizing: border-box;
     border: 2px solid #E10075;
     outline: none;
     border-radius: 4px;
+
   }
   label{
     display: flex
