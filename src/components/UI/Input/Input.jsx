@@ -5,17 +5,16 @@ import styles from './Input.module.css'
 import FormAlert from '../FormAlert/FormAlert';
 
 
-function Input({labelText,entity,value, setInput, Data}) {
+function Input({labelText,entity,value, setInput, Data, handleFunction}) {
 
 
 
   return (
-    <>
-        <label htmlFor={entity}>{labelText}</label>
+    <div style={{marginTop:'5px'}}>
+        <label htmlFor={entity}>{labelText}</label> 
         <input placeholder={`Input ${labelText} ...` }  id={entity} value={value} onChange={(event)=> setInput({...Data, [entity] : event.target.value})} type='text' />
         <FormAlert exceptionStatus={true}/>
-
-    </>
+    </div>
   )
 }
 

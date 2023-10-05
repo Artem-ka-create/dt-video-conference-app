@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import SubmitButton from '../UI/Button/SubmitButton'
 import Input from '../UI/Input/Input'
 import styles from './JoinForm.module.css'
+import { handleNameField, handleUrl } from '../../libs/handleLib';
 
 function JoinForm({onChangePanel}) {
     const navigate = useNavigate();
@@ -34,8 +35,8 @@ function JoinForm({onChangePanel}) {
     <h2>JoinForm</h2>
     
     <form  onSubmit={onSubmitHandler} className={styles.form_container}>
-        <Input labelText={"Username"} entity='username' value={data.username} setInput={setData} Data={data} />
-        <Input labelText={"Url"} entity='url' value={data.url} setInput={setData} Data={data} />
+        <Input labelText={"Username"} entity='username' value={data.username} setInput={setData} Data={data} handleFunction={handleNameField} />
+        <Input labelText={"Url"} entity='url' value={data.url} setInput={setData} Data={data} handleFunction={handleUrl} />
         <SubmitButton/>
     </form>
     </>

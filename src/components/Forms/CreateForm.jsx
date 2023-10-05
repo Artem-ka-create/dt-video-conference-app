@@ -5,8 +5,10 @@ import styles from './CreateForm.module.css';
 import Input from '../UI/Input/Input';
 import SubmitButton from '../UI/Button/SubmitButton';
 import ToggleBtn from '../UI/Toggle/ToggleBtn';
+// import FormAlert from '../UI/FormAlert/FormAlert'
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
+import { handleNameField, handlePassword } from '../../libs/handleLib';
 
 
 
@@ -74,24 +76,40 @@ function CreateForm({onChangePanel}) {
       <h2>Create Meeting</h2>
       <div className={styles.toggleContainer} style={{position:'relative'}}>
         <h3>Jitsi</h3>
-      <div className={styles.btnsContainer} style={{position:'absolute'}}> <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> </div>
+        <div className={styles.btnsContainer} style={{position:'absolute'}}> <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> </div>
         <h3>BigBlueButton</h3>
       </div>
 
       {/* username */}
-      <Input labelText={"User Name"} entity='username' value={urlData.username} setInput={setUrlData} Data={urlData} />
-      { urlData.technologyName===Technologies.BBB && 
-        <div>
+      <Input 
+        labelText={"User Name"} 
+        entity='username' value={urlData.username} 
+        setInput={setUrlData} Data={urlData} handleFunction={handleNameField} />
+    
+       { urlData.technologyName===Technologies.BBB && 
+        <div> 
           {/* attendeePW */}
-          <Input labelText={"Attendee Password"} entity='attendeePW' value={urlData.attendeePW} setInput={setUrlData} Data={urlData} />
+          <Input 
+            labelText={"Attendee Password"} 
+            entity='attendeePW' value={urlData.attendeePW} 
+            setInput={setUrlData} Data={urlData} handleFunction={handlePassword}/>
+
           {/* moderatorPW */}
-          <Input labelText={"Moderator Password"} entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} Data={urlData} />
+          <Input 
+            labelText={"Moderator Password"} 
+            entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} 
+            Data={urlData} handleFunction={handlePassword} />
+
         </div>
       } 
       <div onClick={()=> setException(!exception)}>Exception test</div>
 
       {/* name */}
-      <Input labelText={"Meeting Name"} entity='name' value={urlData.name} setInput={setUrlData} Data={urlData} />
+      <Input labelText={"Meeting Name"} 
+        entity='name' value={urlData.name} 
+        setInput={setUrlData} Data={urlData}
+        handleFunction={handleNameField} />
+      {/* <FormAlert exceptionStatus={true}/> */}
 
 
       <div className={styles.btnsContainer}>
