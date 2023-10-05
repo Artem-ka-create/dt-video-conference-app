@@ -12,20 +12,19 @@
     border-radius: 6px;
     background-color: white;
     padding: 10px;
-    transition: 0.5s;
-    &.close{
-
-        color: rgba(255, 0, 0, 0);
-        font-size: 0rem;
-        transition: 0.5s;
-        border:none;
-        width: 0;
-        height: 0;
-    }
+    transition: 0.25s;
+}
+.close{
+    
+    transition: 0.25s;
+    font-size: 0rem;
+    border:none;
+    width: 0;
+    height: 0;
 }
 
 .open{
-    transition: 0.5s;
+    transition: 0.25s;
     font-size: 0.813rem;
     color: rgb(255, 0, 0);
     width: 100%;

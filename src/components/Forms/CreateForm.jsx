@@ -8,13 +8,12 @@ import ToggleBtn from '../UI/Toggle/ToggleBtn';
 // import FormAlert from '../UI/FormAlert/FormAlert'
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
-import { handleNameField, handlePassword } from '../../libs/handleLib';
+import { handleNameField, handlePassword, handleBBBPassword } from '../../libs/handleLib';
 
 
 
 function CreateForm({onChangePanel}) {
 
-  const [exception, setException] = useState(false);
     const navigate = useNavigate();
 
     const [urlData, setUrlData] = useState(
@@ -92,24 +91,21 @@ function CreateForm({onChangePanel}) {
           <Input 
             labelText={"Attendee Password"} 
             entity='attendeePW' value={urlData.attendeePW} 
-            setInput={setUrlData} Data={urlData} handleFunction={handlePassword}/>
+            setInput={setUrlData} Data={urlData} handleFunction={handleBBBPassword}/>
 
           {/* moderatorPW */}
           <Input 
             labelText={"Moderator Password"} 
             entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} 
-            Data={urlData} handleFunction={handlePassword} />
-
+            Data={urlData} handleFunction={handleBBBPassword} />
         </div>
       } 
-      <div onClick={()=> setException(!exception)}>Exception test</div>
 
       {/* name */}
       <Input labelText={"Meeting Name"} 
         entity='name' value={urlData.name} 
         setInput={setUrlData} Data={urlData}
         handleFunction={handleNameField} />
-      {/* <FormAlert exceptionStatus={true}/> */}
 
 
       <div className={styles.btnsContainer}>

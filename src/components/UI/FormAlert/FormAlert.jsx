@@ -1,25 +1,14 @@
 import React from 'react'
 import styles from './FormAlert.module.css'
 
-function FormAlert({exceptionStatus}) {
+function FormAlert({exceptionStatus, exceptionText}) {
 
     
 
   return (
 
     <div className={`${styles.alert_box} ${exceptionStatus ? styles.open : styles.close}`}>
-          password is required requiredrequiredrequiredrequired
-        {/*
-        <div className={styles.exception_block}>
-          password is required requiredrequiredrequiredrequired
-        </div>
-         <div className={styles.exception_block}>
-          password is required requiredrequiredrequiredrequired
-        </div>
-        <div className={styles.exception_block}>
-          conferention id is required
-        </div> */}
-        
+      {exceptionText}    
     </div>
   )
 }
