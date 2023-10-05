@@ -21,3 +21,17 @@
     background-color: #E10075;
     color: white;
   }
+
+  .disabled{
+    transition-duration: 0.4s;
+    background-color: rgb(200, 200, 200);
+    border: 2px solid rgb(131, 131, 131);
+    color: black; 
+
+  }
+  .submit_button.disabled:hover {
+    background-color: rgb(200, 200, 200);
+    border: 2px solid rgb(131, 131, 131);
+    color: black; 
+    
+  }

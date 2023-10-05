@@ -6,7 +6,7 @@ import FormAlert from '../FormAlert/FormAlert';
 import { version } from 'react-dom';
 
 
-function Input({labelText,entity,value, setInput, Data, handleFunction}) {
+function Input({labelText,entity,value, setInput, Data, handleFunction }) {
 
   const [exception,SetExceptionText] = useState('');
   const [exceptionStatus,SetExceptionStatus] = useState(false);
@@ -14,11 +14,13 @@ function Input({labelText,entity,value, setInput, Data, handleFunction}) {
   function handleInputText(text){
     
     setInput({...Data, [entity] : text });
-    let handleResult = handleFunction(text, labelText);
 
+    let handleResult = handleFunction(text, labelText);
+ 
     if (handleResult.length>0){
       SetExceptionText(handleResult);
       SetExceptionStatus(true);
+
     }else{
         SetExceptionStatus(false);
     }
@@ -29,7 +31,9 @@ function Input({labelText,entity,value, setInput, Data, handleFunction}) {
   return (
     <div style={{marginTop:'5px'}}>
         <label htmlFor={entity}>{labelText}</label> 
+        {/* <input placeholder={`Input ${labelText} ...` }  id={entity} value={value} onChange={(event)=> handleInputText(event.target.value) } type='text' /> */}
         <input placeholder={`Input ${labelText} ...` }  id={entity} value={value} onChange={(event)=> handleInputText(event.target.value) } type='text' />
+
         <FormAlert exceptionStatus={exceptionStatus} exceptionText={exception}/>
     </div>
   )

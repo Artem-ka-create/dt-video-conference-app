@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 
 import styles from './CreateForm.module.css';
@@ -8,14 +8,16 @@ import ToggleBtn from '../UI/Toggle/ToggleBtn';
 // import FormAlert from '../UI/FormAlert/FormAlert'
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
-import { handleNameField, handlePassword, handleBBBPassword } from '../../libs/handleLib';
+import { handleSimpleField } from '../../libs/handleLib';
 
 
 
 function CreateForm({onChangePanel}) {
 
     const navigate = useNavigate();
+    const [btnStatus,SetButtonStatus] = useState(true);
 
+    
     const [urlData, setUrlData] = useState(
         {
           autoStartRecording:false,
@@ -68,6 +70,27 @@ function CreateForm({onChangePanel}) {
           }
         );
     };
+
+    useEffect(()=>{
+
+    if (urlData.technologyName===Technologies.JITSI &&
+        urlData.name.length>0 && handleSimpleField(urlData.name).length===0 && 
+        urlData.username.length>0 && handleSimpleField(urlData.username).length===0){
+          
+      SetButtonStatus(false);
+    }
+    else if (urlData.technologyName===Technologies.BBB && 
+      urlData.name.length>0 && handleSimpleField(urlData.name).length===0 && 
+      urlData.username.length>0 && handleSimpleField(urlData.username).length===0 && 
+      urlData.attendeePW.length>0 && handleSimpleField(urlData.attendeePW).length===0 && 
+      urlData.moderatorPW.length>0 && handleSimpleField(urlData.moderatorPW).length===0){
+
+        SetButtonStatus(false);
+    }
+    else{
+      SetButtonStatus(true);
+    }
+    },[urlData])
     
   return (
     
@@ -83,7 +106,7 @@ function CreateForm({onChangePanel}) {
       <Input 
         labelText={"User Name"} 
         entity='username' value={urlData.username} 
-        setInput={setUrlData} Data={urlData} handleFunction={handleNameField} />
+        setInput={setUrlData} Data={urlData} handleFunction={handleSimpleField} />
     
        { urlData.technologyName===Technologies.BBB && 
         <div> 
@@ -91,13 +114,13 @@ function CreateForm({onChangePanel}) {
           <Input 
             labelText={"Attendee Password"} 
             entity='attendeePW' value={urlData.attendeePW} 
-            setInput={setUrlData} Data={urlData} handleFunction={handleBBBPassword}/>
+            setInput={setUrlData} Data={urlData} handleFunction={handleSimpleField} />
 
           {/* moderatorPW */}
           <Input 
             labelText={"Moderator Password"} 
             entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} 
-            Data={urlData} handleFunction={handleBBBPassword} />
+            Data={urlData} handleFunction={handleSimpleField} />
         </div>
       } 
 
@@ -105,11 +128,11 @@ function CreateForm({onChangePanel}) {
       <Input labelText={"Meeting Name"} 
         entity='name' value={urlData.name} 
         setInput={setUrlData} Data={urlData}
-        handleFunction={handleNameField} />
+        handleFunction={handleSimpleField} />
 
 
       <div className={styles.btnsContainer}>
-        <SubmitButton/>
+        <SubmitButton btnDisabled={btnStatus}/>
       </div>
       
       

@@ -2,9 +2,11 @@
 import React from 'react'
 import styles from './SubmitButton.module.css';
 
-function SubmitButton() {
+function SubmitButton({btnDisabled}) {
   return (
-    <button type='submit' title="Submit" className={styles.submit_button} >Submit</button>
+    // className={`${styles.panel} ${panelStatus ? styles.open : ''}`}
+    <button type='submit' disabled={btnDisabled} title="Submit"
+    className={`${styles.submit_button} ${btnDisabled ? styles.disabled : ''}`} >Submit</button>
   )
 }
 
