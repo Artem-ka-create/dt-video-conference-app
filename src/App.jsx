@@ -10,7 +10,10 @@ import JoinForm from './components/Forms/JoinForm';
 import CreateForm from './components/Forms/CreateForm';
 import BBB from './components/BBB';
 import Jitsi from './components/Jitsi'
+import RegisterForm from './components/Forms/RegisterForm'
+import Login from './components/Forms/Login'
 import { useState } from 'react';
+
 
 
 
@@ -31,6 +34,8 @@ function App() {
             <Route index={true}  path='/' element={<Main/>}/>
             <Route path='*' element={<NotFound/>}/>
             <Route path='/about' element={<About/>}/>
+            <Route path='/register' element={<RegisterForm/>}/>
+            <Route path='/login' element={<Login/>}/>
             <Route path='/create' element={<CreateForm onChangePanel = {setPanelStatus} />}/>
             <Route path='/join' element={<JoinForm onChangePanel = {setPanelStatus} />}/>
             <Route path='/create/bbb' element={<BBB />}/>
