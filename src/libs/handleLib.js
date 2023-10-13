@@ -38,8 +38,13 @@ export function handleBBBPassword(text){
     console.log(text);
 }
 
-export function handlePassword(text){
-    console.log(text);
+export function handlePassword(text,labelText){
+    let exceptionText=labelText + " has to include more than 8 symbols";
+    
+    if (text.length >= 3){
+        return'';
+    }
+    return exceptionText;
 }
 
 export function handleEmail(text){

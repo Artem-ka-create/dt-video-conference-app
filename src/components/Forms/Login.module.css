@@ -1,0 +1,11 @@
+
+.form_container{
+    width: 50%;
+    margin: auto;
+}
+
+.btnsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

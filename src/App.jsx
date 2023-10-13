@@ -35,7 +35,7 @@ function App() {
             <Route path='*' element={<NotFound/>}/>
             <Route path='/about' element={<About/>}/>
             <Route path='/register' element={<RegisterForm/>}/>
-            <Route path='/login' element={<Login/>}/>
+            <Route path='/signin' element={<Login/>}/>
             <Route path='/create' element={<CreateForm onChangePanel = {setPanelStatus} />}/>
             <Route path='/join' element={<JoinForm onChangePanel = {setPanelStatus} />}/>
             <Route path='/create/bbb' element={<BBB />}/>

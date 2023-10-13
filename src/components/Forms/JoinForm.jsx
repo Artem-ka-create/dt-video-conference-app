@@ -50,7 +50,7 @@ function JoinForm({onChangePanel}) {
         <Input labelText={"Username"} entity='username' value={data.username} setInput={setData} Data={data} handleFunction={handleSimpleField} />
         <Input labelText={"Url"} entity='url' value={data.url} setInput={setData} Data={data} handleFunction={handleUrl} />
         
-        <SubmitButton btnDisabled={btnStatus}/>
+        <SubmitButton btnDisabled={btnStatus} btnText={'Join to meeting'}/>
     </form>
     </>
   )

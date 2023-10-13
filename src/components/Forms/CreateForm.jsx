@@ -132,7 +132,7 @@ function CreateForm({onChangePanel}) {
 
 
       <div className={styles.btnsContainer}>
-        <SubmitButton btnDisabled={btnStatus}/>
+        <SubmitButton btnDisabled={btnStatus} btnText={'Create meeting'}/>
       </div>
       
       
