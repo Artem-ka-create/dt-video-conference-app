@@ -9,6 +9,7 @@ import ToggleBtn from '../UI/Toggle/ToggleBtn';
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
 import { handleSimpleField } from '../../libs/handleLib';
+import {CreateMeetingDTO} from '../../data/Dtos'
 
 
 
@@ -19,18 +20,7 @@ function CreateForm({onChangePanel}) {
 
     
     const [urlData, setUrlData] = useState(
-        {
-          autoStartRecording:false,
-          allowStartStopRecording:true,
-          record:false,
-          username:'',
-          attendeePW:'',
-          moderatorPW:'',
-          // meetingID === name
-          meetingID:'',
-          name:'',
-          technologyName:Technologies.JITSI              
-        }
+      CreateMeetingDTO
       );
 
       function onToggleBtnHandle(event){
@@ -56,19 +46,7 @@ function CreateForm({onChangePanel}) {
         
         navigate(`./${urlData.technologyName}`,{ state : {url : result, username: urlData.username,attendeePW: urlData.attendeePW, moderatorPW: urlData.moderatorPW  } });
         onChangePanel(false)
-        setUrlData(
-          {
-            autoStartRecording:false,
-            allowStartStopRecording:true,
-            record:false,
-            username:'',
-            attendeePW:'',
-            moderatorPW:'',
-            meetingID:'',
-            name:'',
-            technologyName:Technologies.JITSI         
-          }
-        );
+        setUrlData(CreateMeetingDTO);
     };
 
     useEffect(()=>{

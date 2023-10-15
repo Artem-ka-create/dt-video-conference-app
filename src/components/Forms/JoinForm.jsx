@@ -5,13 +5,14 @@ import SubmitButton from '../UI/Button/SubmitButton'
 import Input from '../UI/Input/Input'
 import styles from './JoinForm.module.css'
 import { handleSimpleField, handleUrl } from '../../libs/handleLib';
+import {JoinMeetingDTO} from '../../data/Dtos';
 
 function JoinForm({onChangePanel}) {
     const navigate = useNavigate();
     const [btnStatus,SetButtonStatus] = useState(true);
 
 
-    const [data,setData] = useState({url:'',username:''});
+    const [data,setData] = useState(JoinMeetingDTO);
     const onSubmitHandler =(event)=>{
         event.preventDefault();
         // check by domains technology
@@ -28,7 +29,7 @@ function JoinForm({onChangePanel}) {
         }
         onChangePanel(false)
 
-        setData({url:'',username:''});
+        setData(JoinMeetingDTO);
     };
 
     useEffect(()=>{

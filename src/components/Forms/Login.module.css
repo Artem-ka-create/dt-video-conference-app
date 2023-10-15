@@ -9,3 +9,20 @@
     flex-direction: column;
     align-items: center;
 }
+.noStyleBtn{
+    width: 70px;
+    color: rgb(58, 91, 255);
+    cursor: pointer;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+
+
+.registerContainer{
+    margin: 3% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

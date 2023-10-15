@@ -4,6 +4,10 @@ function specialSymbolsCheck(text){
     const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;    // eslint-disable-line
     return format.test(text)
 }
+function emailValidation(text){
+    var format = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return format.test(text) 
+}
 
 function isUrl(url) {
     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
@@ -30,13 +34,6 @@ export function handleSimpleField(text,labelText){
     return exceptionText;
 }
 
-export function handleLogin(text){
-    console.log(text);
-}
-
-export function handleBBBPassword(text){
-    console.log(text);
-}
 
 export function handlePassword(text,labelText){
     let exceptionText=labelText + " has to include more than 8 symbols";
@@ -47,9 +44,12 @@ export function handlePassword(text,labelText){
     return exceptionText;
 }
 
-export function handleEmail(text){
-    console.log(text);
+export function handleEmail(text,labelText){
+    let exceptionText="Field has to be an email";
+    console.log(emailValidation(text));
+    return emailValidation(text) && text.length>3 ? '' : exceptionText;
 }
+
 export function handleUrl(text){
     console.log(text);
 
