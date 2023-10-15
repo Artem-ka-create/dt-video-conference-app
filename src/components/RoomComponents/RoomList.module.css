@@ -1,0 +1,17 @@
+.roomSearchContainer{
+    margin: auto;
+    width: 80%;
+}
+.roomListContainer{
+
+    margin: auto;
+    width: 80%;
+    
+
+    padding:10px 0 ;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}

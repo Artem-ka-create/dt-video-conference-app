@@ -1,0 +1,10 @@
+
+.itemBlock{
+    background: red;
+    /* min-width: 20vw; */
+    /* min-height: 20.8vh; */
+    width: 300px;
+    height: 150px;
+    margin: 10px 10px;
+    border-radius: 5px;
+}
