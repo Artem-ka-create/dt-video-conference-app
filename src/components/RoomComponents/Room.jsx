@@ -14,6 +14,8 @@ import { Button } from 'primereact/button';
 function Room() {
 
   const [showConfirmation,setShowConfirmation] = useState(false);
+  const [showRoomDetails,setShowRoomDetails] = useState(false);
+
 
   const footer = (
     <div>
@@ -37,7 +39,7 @@ function Room() {
         <div>
           < FontAwesomeIcon icon={faVideo} /> 12
         </div>
-        < FontAwesomeIcon className={styles.operationBtn} icon={faGear} />
+        < FontAwesomeIcon className={styles.operationBtn} icon={faGear} onClick={()=> setShowRoomDetails(true)} />
       </div>
 
       <Dialog header="Room123" visible={showConfirmation} draggable={false} modal style={{ width: '40vw' }} footer={footer} onHide={() => setShowConfirmation(false)}>
@@ -45,6 +47,10 @@ function Room() {
           <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
           <span className={styles.alertbtn}>Are you sure you want to delete this room</span>
         </div>
+      </Dialog>
+
+      <Dialog header="Header" draggable={false} visible={showRoomDetails} style={{ width: '80vw' , height:' 125.6vh'}}  onHide={() => setShowRoomDetails(false)}>
+            <h1>ABOUT ROOM INFO</h1>
       </Dialog>
     </div>
   )
