@@ -1,10 +1,86 @@
 
 .itemBlock{
-    background: red;
+    
     /* min-width: 20vw; */
     /* min-height: 20.8vh; */
-    width: 300px;
-    height: 150px;
+    width: 320px;
+    height: 170px;
     margin: 10px 10px;
     border-radius: 5px;
+}
+.roomBlock{
+    background: white;
+    border: 2px solid #E10075 ;
+    display: flex;
+    padding: 12px;
+    /* align-items: center; */
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.rowInfo{
+
+    height: 30px;
+    color: black;
+/*     
+    padding: 12px; */
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    background: white;
+    border-radius: 5px 5px 0 0;
+}
+.rowInfo div {
+    font-size: 20px;
+}
+
+.operationBtn{
+    color: #E10075;
+    font-size: 20px;
+}
+.infoBox{
+    color: black;
+}
+.titleName{
+    font-size: 28px;
+    /* width: 100%; */
+    /* height: 85px; */
+}
+
+
+.addItemBlock{
+    transition: 0.4s;
+
+    background: #E2E2E2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #909090;
+}
+.itemBlock:nth-last-child(1):hover, .addItemBlock:hover{
+    transition: 0.4s;
+    background: #bbbbbb;
+    font-size: 45px;
+    color: #808080;
+}
+.dialogCloseBtnPrm{
+    background:#ffffff;
+    color: black;
+    border: 1px solid #E10075;
+}
+.dialogSaveBtnPrm{
+    background:#E10075;
+    border:1px solid #E10075;
+}
+.disabledStatusbtn{
+    background:#E2E2E2;
+    color: #909090;
+    border:1px solid #909090;
+}
+.alertBtn1{
+
+    color: red;
 }

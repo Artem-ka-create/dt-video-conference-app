@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import AddRoom from './AddRoom';
 import Room from './Room';
 import styles from './RoomList.module.css';
 function RoomListComponent() {
@@ -23,6 +24,7 @@ function RoomListComponent() {
       <Room/>
       <Room/>
       <Room/>
+      <AddRoom/>
     </div>
 
 

@@ -27,3 +27,7 @@ export const CreateMeetingDTO={
     name:'',
     technologyName:Technologies.JITSI              
   };
+
+export const NewRoomDataDTO = {
+    meetingName:''
+}
