@@ -13,7 +13,6 @@ function RoomListComponent() {
     <>
     <h2>Your Rooms</h2>
     <div className={styles.roomSearchContainer}>
-        <label htmlFor='RoomSearch'>Search</label>
         <input placeholder='Find your room...' id='RoomSearch' value={search} onChange={(event)=>setSearch(event.target.value)} />
     </div>
     <div className={styles.roomListContainer}>

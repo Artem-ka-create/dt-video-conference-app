@@ -49,7 +49,7 @@ function Room() {
         </div>
       </Dialog>
 
-      <Dialog header="Header" draggable={false} visible={showRoomDetails} style={{ width: '80vw' , height:' 125.6vh'}}  onHide={() => setShowRoomDetails(false)}>
+      <Dialog header="Header" draggable={false} visible={showRoomDetails} style={{ width: '90vw' , height:' 125.6vh'}}  onHide={() => setShowRoomDetails(false)}>
             <h1>ABOUT ROOM INFO</h1>
       </Dialog>
     </div>
