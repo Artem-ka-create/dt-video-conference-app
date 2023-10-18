@@ -1,0 +1,46 @@
+export const UsersARR=[
+    { username: "john_doe", name: "John", surname: "Doe", position: "Developer" },
+    { username: "jane_smith", name: "Jane", surname: "Smith", position: "HR" },
+    { username: "bob_jones", name: "Bob", surname: "Jones", position: "Manager" },
+    { username: "alice_carter", name: "Alice", surname: "Carter", position: "Developer" },
+    { username: "samuel_green", name: "Samuel", surname: "Green", position: "Designer" },
+    { username: "emily_wilson", name: "Emily", surname: "Wilson", position: "HR" },
+    { username: "david_hall", name: "David", surname: "Hall", position: "Manager" },
+    { username: "olivia_brown", name: "Olivia", surname: "Brown", position: "Developer" },
+    { username: "michael_smith", name: "Michael", surname: "Smith", position: "Designer" },
+    { username: "susan_jones", name: "Susan", surname: "Jones", position: "HR" },
+    { username: "tom_white", name: "Tom", surname: "White", position: "Developer" },
+    { username: "linda_clark", name: "Linda", surname: "Clark", position: "Manager" },
+    { username: "kevin_davis", name: "Kevin", surname: "Davis", position: "Designer" },
+    { username: "grace_miller", name: "Grace", surname: "Miller", position: "HR" },
+    { username: "peter_martin", name: "Peter", surname: "Martin", position: "Manager" },
+    { username: "natalie_wilson", name: "Natalie", surname: "Wilson", position: "Developer" },
+    { username: "ryan_smith", name: "Ryan", surname: "Smith", position: "HR" },
+    { username: "carol_jones", name: "Carol", surname: "Jones", position: "Designer" },
+    { username: "mark_anderson", name: "Mark", surname: "Anderson", position: "Developer" },
+    { username: "laura_taylor", name: "Laura", surname: "Taylor", position: "Manager" }
+]
+
+export const MeetingsArray =[
+    { name: "Project Kickoff", startedAt: "01.10.2023 - 09:00", finishedAt: "01.10.2023 - 10:30", attendeesCount: 15 },
+    { name: "Budget Review", startedAt: "02.10.2023 - 14:00", finishedAt: "02.10.2023 - 15:30", attendeesCount: 12 },
+    { name: "Team Building", startedAt: "03.10.2023 - 10:30", finishedAt: "03.10.2023 - 12:00", attendeesCount: 20 },
+    { name: "Client Meeting", startedAt: "04.10.2023 - 11:00", finishedAt: "04.10.2023 - 12:30", attendeesCount: 8 },
+    { name: "Sprint Planning", startedAt: "05.10.2023 - 09:30", finishedAt: "05.10.2023 - 11:00", attendeesCount: 18 },
+    { name: "Status Update", startedAt: "06.10.2023 - 15:00", finishedAt: "06.10.2023 - 16:30", attendeesCount: 16 },
+    { name: "Training Session", startedAt: "07.10.2023 - 13:30", finishedAt: "07.10.2023 - 15:00", attendeesCount: 10 },
+    { name: "Product Demo", startedAt: "08.10.2023 - 10:00", finishedAt: "08.10.2023 - 11:30", attendeesCount: 14 },
+    { name: "Release Review", startedAt: "09.10.2023 - 14:30", finishedAt: "09.10.2023 - 16:00", attendeesCount: 22 },
+    { name: "Brainstorming", startedAt: "10.10.2023 - 11:30", finishedAt: "10.10.2023 - 13:00", attendeesCount: 19 },
+    { name: "Task Force Meeting", startedAt: "11.10.2023 - 09:30", finishedAt: "11.10.2023 - 11:00", attendeesCount: 15 },
+    { name: "Design Review", startedAt: "12.10.2023 - 14:00", finishedAt: "12.10.2023 - 15:30", attendeesCount: 13 },
+    { name: "Feedback Session", startedAt: "13.10.2023 - 10:00", finishedAt: "13.10.2023 - 11:30", attendeesCount: 17 },
+    { name: "Planning Workshop", startedAt: "14.10.2023 - 15:30", finishedAt: "14.10.2023 - 17:00", attendeesCount: 21 },
+    { name: "Daily Standup", startedAt: "15.10.2023 - 09:00", finishedAt: "15.10.2023 - 09:30", attendeesCount: 12 },
+    { name: "Project Review", startedAt: "16.10.2023 - 11:00", finishedAt: "16.10.2023 - 12:30", attendeesCount: 14 },
+    { name: "Task Assignment", startedAt: "17.10.2023 - 14:30", finishedAt: "17.10.2023 - 16:00", attendeesCount: 16 },
+    { name: "Retrospective", startedAt: "18.10.2023 - 10:30", finishedAt: "18.10.2023 - 12:00", attendeesCount: 18 },
+    { name: "Customer Interview", startedAt: "19.10.2023 - 13:00", finishedAt: "19.10.2023 - 14:30", attendeesCount: 20 },
+    { name: "Final Presentation", startedAt: "20.10.2023 - 15:00", finishedAt: "20.10.2023 - 16:30", attendeesCount: 25 }
+
+]

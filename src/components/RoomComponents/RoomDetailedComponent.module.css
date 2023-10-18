@@ -1,0 +1,104 @@
+.headerContainer{
+    margin: auto;
+    width: 100%;
+    height: 150px;
+    /* background: gray; */
+}
+.naviContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* justify-content: flex-e; */
+}
+.roomLine{
+    border: 1.5px solid #E10075;
+    border-radius: 10px;
+}
+.roomName{
+    font-size: 40px;
+}
+.btnContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 190px;
+}
+.startJoinBtn{
+    width: 120px;
+}
+.copyLinkBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+}
+.optionContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 100%;
+    /* background: grey; */
+}
+.navigationComponent{
+
+    display: flex;
+    /* justify-content: ; */
+}
+
+.naviItem {
+    font-size: 18px;
+    position: relative;
+    color: #000;
+    margin: 0 10px;
+    text-decoration: none;
+}
+  
+.naviItem:hover {
+    color: #E10075;
+}
+  
+.naviItem::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #E10075;
+    /* border-bottom: 2px solid #E10075; */
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+  
+.naviItem:hover::before {
+    transform: scaleX(1);
+}
+
+  .selectedCategory{
+    color: #E10075;
+    /* transform: scaleX(1) */
+  }
+  .selectedCategory::before {
+    content: "";
+    position: absolute;
+    
+    display: block;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #E10075;
+    /* border-bottom: 2px solid #E10075; */
+    transform: scaleX(1);
+    transition: transform 0.3s ease;
+  }
+
+.bottomContainer{
+    width: 100%;
+    height: 400px;
+}
+.liveBox{
+    color: red;
+}

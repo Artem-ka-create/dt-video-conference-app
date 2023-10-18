@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faGear, faUser, faVideo } from '@fortawesome/free-solid-svg-icons'
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import RoomDetailedComponent from './RoomDetailedComponent';
 
 function Room() {
 
@@ -49,8 +50,8 @@ function Room() {
         </div>
       </Dialog>
 
-      <Dialog header="Header" draggable={false} visible={showRoomDetails} style={{ width: '90vw' , height:' 125.6vh'}}  onHide={() => setShowRoomDetails(false)}>
-            <h1>ABOUT ROOM INFO</h1>
+      <Dialog  draggable={false} visible={showRoomDetails} style={{ width: '90vw' , height:' 125.6vh'}}  onHide={() => setShowRoomDetails(false)}>
+            <RoomDetailedComponent/>
       </Dialog>
     </div>
   )

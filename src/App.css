@@ -39,3 +39,64 @@ h2{
     transform: rotate(360deg);
   }
 }
+.p-dialog .p-dialog-header {
+  border-bottom: 0 none;
+  background: #ffffff;
+  color: #495057;
+  padding: 0.8rem;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.p-dialog .p-dialog-content {
+    background: #ffffff;
+    color: #495057;
+    /* padding: 0 1.5rem 2rem 1.5rem; */
+}
+.p-button.p-button-outlined {
+  background-color: transparent;
+  color: #E10075;
+  border: 1px solid;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  text-align: left;
+  border: 1px solid #e10075;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+}
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: rgba(225, 0, 117, 20%);
+  border-color: rgba(225, 0, 117, 20%);
+  color: #495057;
+}
+.p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+  color: #e10075;
+}
+.p-datatable .p-sortable-column.p-highlight {
+  background: rgba(225, 0, 117, 20%);
+  color: #e10075;
+}
+.p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #e10075;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: black;
+  background: rgba(225, 0, 117, 20%);
+  transition: box-shadow 0.2s;
+}
+.p-datatable .p-sortable-column .p-sortable-column-icon {
+  color: black;
+  margin-left: 0.5rem;
+}
