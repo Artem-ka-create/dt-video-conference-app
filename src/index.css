@@ -14,6 +14,11 @@ code {
 .confirmation-content{
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 0 80px;
+  justify-content: center;
+  padding: auto;
+  margin: auto;
+  /* padding: 0 120px; */
+}
+.confirmation-content * {
+  margin:  0 5px;
 }

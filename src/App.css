@@ -100,3 +100,7 @@ h2{
   color: black;
   margin-left: 0.5rem;
 }
+.p-datatable > .p-datatable-wrapper {
+  overflow: auto;
+  min-height: 370px;
+}

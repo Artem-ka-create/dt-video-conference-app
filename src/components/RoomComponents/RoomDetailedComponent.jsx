@@ -95,7 +95,8 @@ function RoomDetailedComponent() {
 
         <div>
           <div className="card">
-            <DataTable
+            <DataTable 
+              // style={{minHeight: '95vh'}}
               paginator
               rows={6}
               value={entities}
