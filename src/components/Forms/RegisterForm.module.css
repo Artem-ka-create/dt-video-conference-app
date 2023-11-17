@@ -9,3 +9,22 @@
     flex-direction: column;
     align-items: center;
 }
+
+.checkCircle{
+    
+    margin: 100px;
+    height: 230px;
+    font-size: 9.375rem;
+    opacity: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.success{
+    color: green;
+}
+
+.failure{
+    color: red;
+}
