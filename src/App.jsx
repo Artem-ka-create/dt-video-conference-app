@@ -45,7 +45,7 @@ function App() {
           <div className="App">
             <Routes>
               <Route path='/' element={<MainLayout showToast={handleShowToastEvent} panelStatus={panelStatus} onChangePanel={handlePanelStatusChange} />}>
-                <Route index={true}  path='/' element={<Main/>}/>
+                <Route index={true}  path='/' element={<Main showToastEvent = {handleShowToastEvent}/>}/>
                 <Route path='*' element={<NotFound/>}/>
 
                 <Route element={ <RequireAuth allowedRoles={ [ ROLES.User ]}/>}>

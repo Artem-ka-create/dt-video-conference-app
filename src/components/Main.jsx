@@ -6,7 +6,7 @@ import useAuth from '../hooks/useAuth';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
-function Main() {
+function Main({showToastEvent}) {
 
   const localToken = localStorage.getItem('DTMeetToken');
   console.log('LOCAl_TOKEN ---> ', localToken);
@@ -53,7 +53,7 @@ function Main() {
     <>
 
       {auth.id || localToken != null ?
-        <RoomListComponent />
+        <RoomListComponent showToastEvent={showToastEvent}/>
         :
         <>
           <h1>Main</h1>

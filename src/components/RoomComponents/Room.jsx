@@ -12,7 +12,7 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import RoomDetailedComponent from './RoomDetailedComponent';
 
-function Room() {
+function Room({roomDetail}) {
 
   const [showConfirmation,setShowConfirmation] = useState(false);
   const [showRoomDetails,setShowRoomDetails] = useState(false);
@@ -29,21 +29,21 @@ function Room() {
     <div className={`${styles.itemBlock} ${styles.roomBlock}`}>
       <div className={`${styles.rowInfo}`}>
         <div>
-          < FontAwesomeIcon icon={faUser} /> 5
+          < FontAwesomeIcon icon={faUser} /> {roomDetail.users.length}
         </div>
         < FontAwesomeIcon onClick={ () => setShowConfirmation(true) } className={styles.operationBtn} icon={faCircleXmark} />
       </div>
       <div className={styles.titleName}>
-        Room123
+          {roomDetail.name}
       </div>
       <div className={`${styles.rowInfo}`}>
         <div>
-          < FontAwesomeIcon icon={faVideo} /> 12
+          < FontAwesomeIcon icon={faVideo} /> {roomDetail.conferences.length}
         </div>
         < FontAwesomeIcon className={styles.operationBtn} icon={faGear} onClick={()=> setShowRoomDetails(true)} />
       </div>
 
-      <Dialog header="Room123" visible={showConfirmation} draggable={false} modal style={{ width: '40vw' }} footer={footer} onHide={() => setShowConfirmation(false)}>
+      <Dialog header={roomDetail.name} visible={showConfirmation} draggable={false} modal style={{ width: '40vw' }} footer={footer} onHide={() => setShowConfirmation(false)}>
         <div className="confirmation-content">
           <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem' }} />
           <span className={styles.alertbtn}>Are you sure you want to delete this room</span>

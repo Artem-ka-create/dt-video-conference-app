@@ -9,7 +9,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 // import useRefreshToken from '../../hooks/useRefreshToken';
 
-function RoomListComponent() {
+function RoomListComponent({showToastEvent}) {
 
   const [search,setSearch] = useState('');
   const [rooms,setRooms] = useState([]);
@@ -52,14 +52,9 @@ function RoomListComponent() {
     </div>
     {/* <button onClick={useRefreshToken()}>REFREDSH</button> */}
     <div className={styles.roomListContainer}>
-      <Room/>
-      <Room/>
-      <Room/>
-      <Room/>
-      <Room/>
-      <Room/>
-      <Room/>
-      <AddRoom/>
+
+        {rooms.map((item,i) => <Room key={i} roomDetail={item}/>) }
+      <AddRoom showToastEvent={showToastEvent} roomsArr={rooms} roomInitialize={setRooms}/>
     </div>
 
 

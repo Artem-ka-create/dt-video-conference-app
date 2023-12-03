@@ -10,12 +10,25 @@ import {handleSimpleField} from '../../libs/handleLib';
 
 
 import {NewRoomDataDTO} from '../../data/Dtos';
-function AddRoom() {
+import {axiosPrivate} from "../../api/axios";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+
+
+function AddRoom({showToastEvent , roomsArr, roomInitialize}) {
     const [visible, setVisible] = useState(false);
     const [newRoomData,SetNewRoomData] = useState(NewRoomDataDTO);
     const [disablebtnStatus, SetDisableBtnStatus] = useState(false);
 
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+    const location = useLocation();
 
+    const addNewRoom = (newRoom) => {
+        console.log('New room to rooms ')
+        showToastEvent('success', 'Great', 'New room was created !', 2000);
+        roomInitialize([...roomsArr,newRoom])
+    }
     const footerContent = (
         <div>
             <Button label="Close" className={styles.dialogCloseBtnPrm}  onClick={() => closeDialog()}  />
@@ -31,8 +44,37 @@ function AddRoom() {
     const handleSaveNewRoom = () => {
         if (disablebtnStatus){
 
-            console.log('CREATED NEW ROOM : ');
+            let isMounted = true;
+            const controller = new AbortController();
+
+            const saveRoom = async () => {
+                try {
+
+                    const response = await axiosPrivate.post(`/api/v1/rooms/owners/${localStorage.getItem('DTMeetUserId')}`, {
+                        signal: controller.signal,
+                        name : newRoomData.meetingName,
+                        colorTag: '#000000'
+
+                    });
+                    console.log('RESPONSEEE-> ',response.data);
+                    isMounted && addNewRoom(response.data);
+                } catch (err) {
+                    showToastEvent('error', 'Error', 'It is a problem', 2000);
+                    console.error(err);
+                    navigate('/signin', { state: { from: location }, replace: true });
+                }
+            }
+
+            saveRoom();
             closeDialog();
+
+
+            return () => {
+                isMounted = false;
+                controller.abort();
+            }
+
+
         }
     }
 
