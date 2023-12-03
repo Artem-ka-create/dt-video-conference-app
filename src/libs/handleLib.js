@@ -46,12 +46,12 @@ export function handlePassword(text,labelText){
 
 export function handleEmail(text,labelText){
     let exceptionText="Field has to be an email";
-    console.log(emailValidation(text));
+    // console.log(emailValidation(text));
     return emailValidation(text) && text.length>3 ? '' : exceptionText;
 }
 
 export function handleUrl(text){
-    console.log(text);
+    // console.log(text);
 
     const notValidUrlMessage = 'This url is not valid, check yours url';
     const notSupportsUrlMessage = 'This url doesn\'t supports by this application';

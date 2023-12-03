@@ -1,0 +1,53 @@
+.avatarbtn{
+    /* height: 30px;
+    width: 30px; */
+    border: 2px solid #E10075;
+    border-radius: 30px;
+    font-size: 20px;
+    padding: 12px 15px;
+    background: white;
+    transition: 0.3s;
+
+}
+.avatarbtn:hover{
+    transition: 0.3s;
+    background: #E10075;
+    color: white;
+}
+.avatarContainer{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding:10px;
+}
+.emailText{
+    margin-bottom:10px;
+    font-size: 18px;
+}
+.emojiIcon{
+    border: 2px solid #E10075;
+    border-radius: 50px;
+    font-size: 50px;
+    padding: 10px 15px;
+    background: white;
+}
+.btnContainer{
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    width:100%;
+}
+.textContainer{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: column;
+    margin: 20px 0;
+}
+.textContainer >:first-child{
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 5px
+}
