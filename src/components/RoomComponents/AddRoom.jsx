@@ -15,7 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
-function AddRoom({showToastEvent , roomsArr, roomInitialize}) {
+function AddRoom({showToast , roomsArr, roomInitialize}) {
     const [visible, setVisible] = useState(false);
     const [newRoomData,SetNewRoomData] = useState(NewRoomDataDTO);
     const [disablebtnStatus, SetDisableBtnStatus] = useState(false);
@@ -26,7 +26,7 @@ function AddRoom({showToastEvent , roomsArr, roomInitialize}) {
 
     const addNewRoom = (newRoom) => {
         console.log('New room to rooms ')
-        showToastEvent('success', 'Great', 'New room was created !', 2000);
+        showToast('success', 'Great', 'New room was created !', 2000);
         roomInitialize([...roomsArr,newRoom])
     }
     const footerContent = (
@@ -59,7 +59,7 @@ function AddRoom({showToastEvent , roomsArr, roomInitialize}) {
                     console.log('RESPONSEEE-> ',response.data);
                     isMounted && addNewRoom(response.data);
                 } catch (err) {
-                    showToastEvent('error', 'Error', 'It is a problem', 2000);
+                    showToast('error', 'Error', 'It is a problem', 2000);
                     console.error(err);
                     navigate('/signin', { state: { from: location }, replace: true });
                 }

@@ -8,20 +8,39 @@ import '../../index.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faGear, faUser, faVideo } from '@fortawesome/free-solid-svg-icons'
+
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import RoomDetailedComponent from './RoomDetailedComponent';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-function Room({roomDetail}) {
+function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
 
   const [showConfirmation,setShowConfirmation] = useState(false);
   const [showRoomDetails,setShowRoomDetails] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
+
+  const handleDeleteOfRoom = () => {
+      axiosPrivate.put(`/api/v1/rooms/${roomDetail.id}/users/${localStorage.getItem('DTMeetUserId')}`).then((resp)=>{
+          console.log(resp);
+          showToast("success", "Great", "You removed from room successfully");
+          setShowConfirmation(false)
+          roomInitialize(roomsArr.filter((item)=> item.id !== roomDetail.id));
+      }).catch((err)=>{
+          if (err){
+              showToast("error", "Error", "No server connection");
+          }
+          showToast("error", "Error", "No server connection");
+
+      });
+
+  };
 
   const footer = (
     <div>
       <Button label="No" icon="pi pi-times" onClick={() => setShowConfirmation(false)} className="p-button-danger p-button-text" />
-      <Button label="Yes" icon="pi pi-check"  className="p-button-danger" onClick={() => setShowConfirmation(false)} autoFocus />
+      <Button label="Yes" icon="pi pi-check"  className="p-button-danger" onClick={() => handleDeleteOfRoom()} autoFocus />
     </div>
   )
 

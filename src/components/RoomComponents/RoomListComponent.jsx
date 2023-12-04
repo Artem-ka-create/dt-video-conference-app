@@ -53,8 +53,8 @@ function RoomListComponent({showToastEvent}) {
     {/* <button onClick={useRefreshToken()}>REFREDSH</button> */}
     <div className={styles.roomListContainer}>
 
-        {rooms.map((item,i) => <Room key={i} roomDetail={item}/>) }
-      <AddRoom showToastEvent={showToastEvent} roomsArr={rooms} roomInitialize={setRooms}/>
+        {rooms.map((item,i) => <Room key={i} roomDetail={item} showToast={showToastEvent} roomsArr={rooms} roomInitialize={setRooms}/>) }
+      <AddRoom showToast={showToastEvent} roomsArr={rooms} roomInitialize={setRooms}/>
     </div>
 
 
