@@ -70,7 +70,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
       </Dialog>
 
       <Dialog  draggable={false} visible={showRoomDetails} style={{ width: '90vw' , height:' 125.6vh'}}  onHide={() => setShowRoomDetails(false)}>
-            <RoomDetailedComponent/>
+            <RoomDetailedComponent showToast={showToast} roomInfo={roomDetail}/>
       </Dialog>
     </div>
   )

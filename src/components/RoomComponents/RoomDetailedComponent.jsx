@@ -16,40 +16,89 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/saga-purple/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
+import Input from "../UI/Input/Input";
+import SubmitButton from "../UI/Button/SubmitButton";
+import {handleEmail, handlePassword} from "../../libs/handleLib";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
-function RoomDetailedComponent() {
+
+function RoomDetailedComponent({showToast, roomInfo}) {
   const copyLinkIcon = <FontAwesomeIcon icon={faLink} />
   const backArrowIcon = <FontAwesomeIcon icon={faArrowLeft} />
   const addUserIcon = <FontAwesomeIcon icon={faPlus} />
   const startMeetingIcon = <FontAwesomeIcon icon={faVideo} />
   const joinMeetingIcon = <FontAwesomeIcon icon={faRightToBracket} />
-  const [category, SetCategory] = useState(RoomCategories.UsersCategory);
-  const [addUserStatus,setAddUserStatus] = useState(false);
 
-  const [entities,SeteEtities] = useState(UsersARR);
+  const [category, setCategory] = useState(RoomCategories.UsersCategory);
+  const [addUserStatus,setAddUserStatus] = useState(false);
+  const [addUserBtnStatus,setAddUserBtnStatus] = useState(true);
+  const axiosPrivate = useAxiosPrivate();
+
+
+  const [newUserData, setNewUserData] = useState({email:""});
+
+  const [entities,setEtities
+  ] = useState(UsersARR);
   const running = false;
 
   useEffect(()=>{
     // productService.getProductsSmall().then((data) => SetProducts({ products: data }));
   },[])
   const handleUsersCategory = () => {
-    SetCategory(RoomCategories.UsersCategory)
-    SeteEtities(UsersARR);
+    setCategory(RoomCategories.UsersCategory)
+    setEtities(UsersARR);
     
   }
   const handleMeetingsCategory = () => {
-    SetCategory(RoomCategories.MeetingsCategory)
+    setCategory(RoomCategories.MeetingsCategory)
     // SeteEtities(MeetingsArray);
   }
   const handleSettingsCategory = () => {
-    SetCategory(RoomCategories.SettingsCategory)
+    setCategory(RoomCategories.SettingsCategory)
 
   }
   function onToggleBtnHandle(event) {
     console.log(event);
+  }
+
+  const addNewUserEvent =(event) => {
+    event.preventDefault();
+
+    //TODO : update user in Roo and roomlist
+
+    axiosPrivate.put(`/api/v1/rooms/add-user`,
+        {
+          newUserEmail: newUserData.email,
+          roomId: roomInfo.id,
+          initiatorUserId: localStorage.getItem("DTMeetUser")
+        }).then((response)=> {
+          console.log(response);
+        setNewUserData({email:""})
+        showToast('success', 'Super!',`User has been successfully added to ${roomInfo.name}`, 2000)
+        }).catch((err) => {
+          console.log(err)
+        showToast('error', 'Oh',`User ${newUserData.email} cannot be added to room ${roomInfo.name}`, 2000)
+
+        });
+
 
   }
+
+  const handleBackButton =() => {
+    setNewUserData({email:""})
+  }
+
+  useEffect(()=>{
+
+    if (newUserData.email.length>0 && handleEmail(newUserData.email).length===0){
+
+      setAddUserBtnStatus(false);
+    }
+    else{
+      setAddUserBtnStatus(true);
+    }
+  },[newUserData]);
 
 
   return (
@@ -60,7 +109,7 @@ function RoomDetailedComponent() {
 
         <div className={styles.roomInfo}>
           <div className={styles.naviContainer}>
-            <div className={styles.roomName}>Room123</div>
+            <div className={styles.roomName}>{roomInfo.name}</div>
             <div className={styles.btnContainer}>
 
               <Button label={running ? joinMeetingIcon : startMeetingIcon} className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`} />
@@ -77,48 +126,62 @@ function RoomDetailedComponent() {
 
       <div className={styles.bottomContainer}>
 
-        {addUserStatus? <h1>ADD USER COMPONENT</h1> :
-        <>
-          <div className={styles.optionContainer}>
-            <div className={`${styles.navigationComponent} noselect`}>
-              <div className={`${styles.naviItem}  ${category === RoomCategories.UsersCategory ? styles.selectedCategory : ''}`}
-                   onClick={handleUsersCategory}>
-                Users
-              </div>
-              <div className={`${styles.naviItem}  ${category === RoomCategories.MeetingsCategory ? styles.selectedCategory : ''}`}
-                   onClick={handleMeetingsCategory}>
-                Meetings
-              </div>
-              <div className={`${styles.naviItem}  ${category === RoomCategories.SettingsCategory ? styles.selectedCategory : ''}`}
-                   onClick={handleSettingsCategory}>
-                Settings
-              </div>
-            </div>
-            <div className={styleCreateForm.toggleContainer}>
-              <h3>Jitsi</h3>
-              <div className={styleCreateForm.btnsContainer} >
-                <ToggleBtn toggleBtnChange={onToggleBtnHandle} /> </div>
-              <h3>BigBlueButton</h3>
-            </div>
-          </div>
+        {addUserStatus?
 
-          <div>
-            <div className="card">
-              <DataTable
-                // style={{minHeight: '95vh'}}
-                paginator
-                rows={6}
-                value={entities}
-                removableSort
-              >
-                <Column field="username" header="Username" sortable></Column>
-                <Column field="name" header="Name" sortable></Column>
-                <Column field="surname" header="Surname" sortable></Column>
-                <Column field="position" header="Position" sortable></Column>
-              </DataTable>
-            </div>
-          </div>
-        </>
+            <form  onSubmit={addNewUserEvent} className={styles.addUserContainer}>
+
+                <Input
+                    labelText={"New user email"} entity='email'
+                    value={newUserData.email} setInput={setNewUserData}
+                    Data={newUserData} handleFunction={handleEmail}/>
+
+                <SubmitButton btnDisabled={addUserBtnStatus} btnText={"Add new user"}/>
+
+              </form>
+
+          :
+
+            <>
+              <div className={styles.optionContainer}>
+                <div className={`${styles.navigationComponent} noselect`}>
+                  <div className={`${styles.naviItem}  ${category === RoomCategories.UsersCategory ? styles.selectedCategory : ''}`}
+                       onClick={handleUsersCategory}>
+                    Users
+                  </div>
+                  <div className={`${styles.naviItem}  ${category === RoomCategories.MeetingsCategory ? styles.selectedCategory : ''}`}
+                       onClick={handleMeetingsCategory}>
+                    Meetings
+                  </div>
+                  <div className={`${styles.naviItem}  ${category === RoomCategories.SettingsCategory ? styles.selectedCategory : ''}`}
+                       onClick={handleSettingsCategory}>
+                    Settings
+                  </div>
+                </div>
+                <div className={styleCreateForm.toggleContainer}>
+                  <h3>Jitsi</h3>
+                  <div className={styleCreateForm.btnsContainer} >
+                    <ToggleBtn toggleBtnChange={onToggleBtnHandle} /> </div>
+                  <h3>BigBlueButton</h3>
+                </div>
+              </div>
+
+              <div>
+                <div className="card">
+                  <DataTable
+                    // style={{minHeight: '95vh'}}
+                    paginator
+                    rows={6}
+                    value={entities}
+                    removableSort
+                  >
+                    <Column field="username" header="Username" sortable></Column>
+                    <Column field="name" header="Name" sortable></Column>
+                    <Column field="surname" header="Surname" sortable></Column>
+                    <Column field="position" header="Position" sortable></Column>
+                  </DataTable>
+                </div>
+              </div>
+            </>
         }
 
 
