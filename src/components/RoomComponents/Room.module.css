@@ -79,3 +79,10 @@
 
     color: red;
 }
+.liveStatus{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    color: red;
+    width: 60px;
+}

@@ -11,19 +11,19 @@ import ToggleBtn from '../UI/Toggle/ToggleBtn';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
-import {UsersARR,MeetingsArray} from '../../data/testArrData'
+import {MeetingsArray} from '../../data/testArrData'
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/saga-purple/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import Input from "../UI/Input/Input";
 import SubmitButton from "../UI/Button/SubmitButton";
-import {handleEmail, handlePassword} from "../../libs/handleLib";
+import {handleEmail} from "../../libs/handleLib";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 
-function RoomDetailedComponent({showToast, roomInfo}) {
+function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
   const copyLinkIcon = <FontAwesomeIcon icon={faLink} />
   const backArrowIcon = <FontAwesomeIcon icon={faArrowLeft} />
   const addUserIcon = <FontAwesomeIcon icon={faPlus} />
@@ -38,8 +38,30 @@ function RoomDetailedComponent({showToast, roomInfo}) {
 
   const [newUserData, setNewUserData] = useState({email:""});
 
+
+
+  // TODO: finish generate Meeting Table
+  // function generateMeetingTable(){
+  //   let meetingArr=[];
+  //
+  //   roomInfo.conferences.forEach((item) => {
+  //     // meetingArr.push({ name:item.name, startedAt: item.surname, finishedAt: item.participant.username, attendeesCount: 'IT'});
+  //   });
+  //
+  //   return meetingArr;
+  // }
+  function generateUserTable(){
+    let userArr=[];
+
+    roomInfo.users.forEach((item) => {
+      userArr.push({ name:item.name, surname: item.surname, username: item.participant.username, position: 'IT'});
+    });
+
+    return userArr;
+  }
+
   const [entities,setEtities
-  ] = useState(UsersARR);
+  ] = useState(generateUserTable());
   const running = false;
 
   useEffect(()=>{
@@ -47,12 +69,12 @@ function RoomDetailedComponent({showToast, roomInfo}) {
   },[])
   const handleUsersCategory = () => {
     setCategory(RoomCategories.UsersCategory)
-    setEtities(UsersARR);
+    setEtities(generateUserTable());
     
   }
   const handleMeetingsCategory = () => {
     setCategory(RoomCategories.MeetingsCategory)
-    // SeteEtities(MeetingsArray);
+    setEtities(MeetingsArray);
   }
   const handleSettingsCategory = () => {
     setCategory(RoomCategories.SettingsCategory)
@@ -73,12 +95,14 @@ function RoomDetailedComponent({showToast, roomInfo}) {
           roomId: roomInfo.id,
           initiatorUserId: localStorage.getItem("DTMeetUser")
         }).then((response)=> {
-          console.log(response);
-        setNewUserData({email:""})
-        showToast('success', 'Super!',`User has been successfully added to ${roomInfo.name}`, 2000)
+
+          setNewUserData({email:""});
+          showToast('success', 'Super!',`User has been successfully added to ${roomInfo.name}`, 2000);
+          updateRoom(response.data);
+
         }).catch((err) => {
           console.log(err)
-        showToast('error', 'Oh',`User ${newUserData.email} cannot be added to room ${roomInfo.name}`, 2000)
+          showToast('error', 'Oh',`User ${newUserData.email} cannot be added to room ${roomInfo.name}`, 2000)
 
         });
 
@@ -86,7 +110,22 @@ function RoomDetailedComponent({showToast, roomInfo}) {
   }
 
   const handleBackButton =() => {
-    setNewUserData({email:""})
+
+    if (addUserStatus===true){
+      setNewUserData({email:""})
+      console.log("Current category --> ",category);
+      if (category===RoomCategories.UsersCategory){
+        setCategory(RoomCategories.UsersCategory)
+        setEtities(generateUserTable());
+      }else if (category===RoomCategories.MeetingsCategory){
+        //TODO:  generate meeting arr add function
+        setCategory(RoomCategories.MeetingsCategory)
+        console.log("GENERATE NEW MEETINGS TABLE-->>>")
+      }
+    }
+
+    setAddUserStatus(!addUserStatus);
+
   }
 
   useEffect(()=>{
@@ -113,7 +152,7 @@ function RoomDetailedComponent({showToast, roomInfo}) {
             <div className={styles.btnContainer}>
 
               <Button label={running ? joinMeetingIcon : startMeetingIcon} className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`} />
-              <Button label={running ? copyLinkIcon : addUserStatus? backArrowIcon : addUserIcon} className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`} onClick={()=> setAddUserStatus(!addUserStatus)} outlined />
+              <Button label={running ? copyLinkIcon : addUserStatus? backArrowIcon : addUserIcon} className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`} onClick={()=>handleBackButton() } outlined />
             </div>
           </div>
           { running ? <div className={styles.liveBox}>Live</div> : <div style={{ color: '#909090' }}>Last session, May 2023 at 10:31 AM</div>}
@@ -136,7 +175,6 @@ function RoomDetailedComponent({showToast, roomInfo}) {
                     Data={newUserData} handleFunction={handleEmail}/>
 
                 <SubmitButton btnDisabled={addUserBtnStatus} btnText={"Add new user"}/>
-
               </form>
 
           :
@@ -166,25 +204,32 @@ function RoomDetailedComponent({showToast, roomInfo}) {
               </div>
 
               <div>
+
+                {category === RoomCategories.SettingsCategory?
+                <h1>SETTINGS</h1>
+                    :
                 <div className="card">
-                  <DataTable
-                    // style={{minHeight: '95vh'}}
-                    paginator
-                    rows={6}
-                    value={entities}
-                    removableSort
-                  >
-                    <Column field="username" header="Username" sortable></Column>
-                    <Column field="name" header="Name" sortable></Column>
-                    <Column field="surname" header="Surname" sortable></Column>
-                    <Column field="position" header="Position" sortable></Column>
-                  </DataTable>
+
+                    {category===RoomCategories.MeetingsCategory ?
+                        <DataTable paginator rows={6} value={entities} removableSort>
+                          <Column field="name" header="Name" sortable></Column>
+                          <Column field="startedAt" header="Started at" sortable></Column>
+                          <Column field="finishedAt" header="Finished at" sortable></Column>
+                          <Column field="attendeesCount" header="Count" sortable></Column>
+                        </DataTable>
+                        :
+                        <DataTable paginator rows={6} value={entities} removableSort>
+                          <Column field="username" header="Username" sortable></Column>
+                          <Column field="name" header="Name" sortable></Column>
+                          <Column field="surname" header="Surname" sortable></Column>
+                          <Column field="position" header="Position" sortable></Column>
+                        </DataTable>
+                    }
                 </div>
+                }
               </div>
             </>
         }
-
-
       </div>
     </>
   )
