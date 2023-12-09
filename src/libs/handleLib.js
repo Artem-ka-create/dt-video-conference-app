@@ -14,7 +14,7 @@ function isUrl(url) {
     return urlRegex.test(url);
 }
 function urlSupport(url){
-    if(url.replace('https://','').split('/')[0]==='8x8.vc'|| 
+    if(url.replace('https://','').split('/')[0]==='jitsi.hamburg.ccc.de'||
         url.replace('https://','').split('/')[1]==='bigbluebutton'){
         return true;
       }

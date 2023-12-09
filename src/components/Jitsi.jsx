@@ -10,8 +10,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Jitsi() {
-  
-  const [state, setState] = useState({
+    //
+    // const DOMAIN = "meet.jit.si"
+    // const DOMAIN = "8x8.vc"
+    const DOMAIN = "jitsi.hamburg.ccc.de";
+
+    const [state, setState] = useState({
       isAudioMuted: false,
       isVideoMuted: false,
       isRaiseHand: false,
@@ -26,61 +30,65 @@ function Jitsi() {
 
   const startMeeting = ()=> {
 
-      const handleClose = () => {
-        console.log("handleClose");
-      }
-      
-      const handleParticipantLeft = async (participant) => {
-        console.log("handleParticipantLeft", participant); // { id: "2baa184e" }
-        // const data = await this.getParticipants();
-      }
-      
-      const handleParticipantJoined = async (participant) => {
-        console.log("handleParticipantJoined", participant); // { id: "2baa184e", displayName: "Shanu Verma", formattedDisplayName: "Shanu Verma" }
-        // const data = await this.getParticipants();
-      }
-      
-      const handleVideoConferenceJoined = async (participant) => {
-        console.log("handleVideoConferenceJoined", participant); // { roomName: "bwb-bfqi-vmh", id: "8c35a951", displayName: "Akash Verma", formattedDisplayName: "Akash Verma (me)"}
-        // const data = await this.getParticipants();
-      }
-      
-      const handleVideoConferenceLeft = () => {
-        console.log("handleVideoConferenceLeft");
-        
-        navigate('/');
 
-      }
-      
-      const handleMuteStatus = (audio) => {
-        console.log("handleMuteStatus", audio); // { muted: true }
-      }
-      
-      const handleVideoStatus = (video) => {
-        console.log("handleVideoStatus", video); // { muted: true }
-      }
-      
-      
-      var api = new window.JitsiMeetExternalAPI("8x8.vc", {
-        roomName: formData.url.replace('https://8x8.vc/',''),
-        parentNode: document.querySelector('#jaas-container'),
-        configOverwrite: {
-          prejoinConfig: { enabled: false }, toolbarButtons: ['closedcaptions', 'fullscreen',
-          'fodeviceselection', 'profile', 'recording',
-          'livestreaming', 'etherpad', 'settings',
-          'videoquality', 'filmstrip', 'feedback', 'stats', 'shortcuts',
-          'tileview']
-        },
-        
-        width: '100%',
-        height: 500,
-        userInfo: {
-          displayName: formData.username
-        }
+
+
+      var api = new window.JitsiMeetExternalAPI(`${DOMAIN}`, {
+          roomName: formData.url.replace(`https://${DOMAIN}/`,''),
+
+          parentNode: document.querySelector('#meet'),
+          prejoinConfig: { enabled: false },
+          configOverwrite: {toolbarButtons: ['closedcaptions', 'fullscreen',
+                  'fodeviceselection', 'profile', 'recording',
+                  'livestreaming', 'etherpad', 'settings',
+                  'videoquality', 'filmstrip', 'feedback', 'stats', 'shortcuts', 'tileview']
+          },
+          lang: 'en',
+          width: '100%',
+          height: 500,
+          userInfo: {
+            displayName: formData.username
+          }
+
         // Make sure to include a JWT if you intend to record,
         // make outbound calls or use any other premium features!
         // jwt: "eyJraWQiOiJ2cGFhcy1tYWdpYy1jb29raWUtZTI4NjRiZTI0NDRkNDY5YjkwZTI5Zjg5MWEwZjRhNjIvODE2MDg3LVNBTVBMRV9BUFAiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJqaXRzaSIsImlzcyI6ImNoYXQiLCJpYXQiOjE2OTM0Mjc0MzIsImV4cCI6MTY5MzQzNDYzMiwibmJmIjoxNjkzNDI3NDI3LCJzdWIiOiJ2cGFhcy1tYWdpYy1jb29raWUtZTI4NjRiZTI0NDRkNDY5YjkwZTI5Zjg5MWEwZjRhNjIiLCJjb250ZXh0Ijp7ImZlYXR1cmVzIjp7ImxpdmVzdHJlYW1pbmciOmZhbHNlLCJvdXRib3VuZC1jYWxsIjpmYWxzZSwic2lwLW91dGJvdW5kLWNhbGwiOmZhbHNlLCJ0cmFuc2NyaXB0aW9uIjpmYWxzZSwicmVjb3JkaW5nIjpmYWxzZX0sInVzZXIiOnsiaGlkZGVuLWZyb20tcmVjb3JkZXIiOmZhbHNlLCJtb2RlcmF0b3IiOnRydWUsIm5hbWUiOiJUZXN0IFVzZXIiLCJpZCI6Imdvb2dsZS1vYXV0aDJ8MTAwNzIzNDUyMTc1NjQzMjM4MjA2IiwiYXZhdGFyIjoiIiwiZW1haWwiOiJ0ZXN0LnVzZXJAY29tcGFueS5jb20ifX0sInJvb20iOiIqIn0.dgxNyg9eTpsbPoCH4TaXSRoEUs9ObS-L8YKtY3yLJK1iKPSz7OYIJ1f3Hoo7_gPC9_gkAela7Wy_vizCC7NnTzVbKzU7je5LK4Mrznzv7mgYAHwCImHzCdg17PXInm8RTDqq1LC4Mq9J7W0dQNNzg9s9fUFqqAq-Sd3AY3g1DzxXLRFXuigz092sdh67komWCk55jf9Rvdi0UlOMydCApHQcTf0rZ9OAwTlfwFGWyTAvKUj3KSj2Xabuf5bpd948HCuXhVBgza4ypyMejL5LUzF0sCalGov08Epyp7r0-xJzKzFFrM5awrn0iPxLLNSaGqzJC1zkh8prp5trXER5kQ"
       });
+
+      const handleClose = () => {
+          console.log("handleClose");
+      }
+
+      const handleParticipantLeft = async (participant) => {
+          console.log("handleParticipantLeft---=>>>>>", participant); // { id: "2baa184e" }
+          console.log(api.getParticipantsInfo());
+
+      }
+
+      const handleParticipantJoined = async (participant) => {
+          console.log("handleParticipantJoined--->>>>>>>", participant); // { id: "2baa184e", displayName: "Shanu Verma", formattedDisplayName: "Shanu Verma" }
+          // const data = await this.getParticipants();
+      }
+
+      const handleVideoConferenceJoined = async (participant) => {
+          console.log("handleVideoConferenceJoined=====>", participant); // { roomName: "bwb-bfqi-vmh", id: "8c35a951", displayName: "Akash Verma", formattedDisplayName: "Akash Verma (me)"}
+          // const data = await this.getParticipants();
+      }
+
+      const handleVideoConferenceLeft = () => {
+          console.log("handleVideoConferenceLeft");
+
+          // navigate('/');
+
+      }
+
+      const handleMuteStatus = (audio) => {
+          console.log("handleMuteStatus", audio); // { muted: true }
+      }
+
+      const handleVideoStatus = (video) => {
+          console.log("handleVideoStatus", video); // { muted: true }
+      }
 
       console.log('API---OBLECT--->>>', api);
       api.addEventListeners({
@@ -99,6 +107,7 @@ function Jitsi() {
   function executeCommand(command) {
     API.executeCommand(command);
     if (command === 'hangup') {
+        console.log(API.getParticipantsInfo());
       navigate('/');
     }
 
@@ -135,11 +144,11 @@ function Jitsi() {
 
   return (
     <div className="App">
-      <div style={{marginTop:'30px'}} id="jaas-container" />
+      <div style={{marginTop:'30px'}} id="meet" />
       
       <span>&nbsp;&nbsp;</span>
       <button className={styles.btn} onClick={() => executeCommand('toggleAudio')} title="Mute / Unmute">
-        {state.isAudioMuted ? <FontAwesomeIcon icon={faMicrophone} /> : <FontAwesomeIcon icon={faMicrophoneSlash} />}
+        {state.isAudioMuted ?  <FontAwesomeIcon icon={faMicrophoneSlash} /> :  <FontAwesomeIcon icon={faMicrophone} />}
       </button>
 
       <button className={styles.btn} onClick={() => executeCommand('toggleVideo')} title="Start / Stop camera">

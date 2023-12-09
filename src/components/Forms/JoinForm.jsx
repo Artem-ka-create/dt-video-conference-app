@@ -18,7 +18,7 @@ function JoinForm({onChangePanel}) {
         // check by domains technology
         let result = {state :{url : data.url, username: data.username}};
 
-        if(data.url.replace('https://','').split('/')[0]==='8x8.vc'){
+        if(data.url.replace('https://','').split('/')[0]==='jitsi.hamburg.ccc.de'){
           navigate('./jitsi',result);
         }
         else if(data.url.replace('https://','').split('/')[1]==='bigbluebutton'){

@@ -37,7 +37,7 @@ function CreateForm({onChangePanel}) {
         console.log(urlData.technologyName);
         if (urlData.technologyName===Technologies.JITSI){
           
-          result = 'https://8x8.vc/' + urlData.name;
+          result = 'https://jitsi.hamburg.ccc.de/' + urlData.name;
           console.log(result);
         }
         else if(urlData.technologyName===Technologies.BBB){
