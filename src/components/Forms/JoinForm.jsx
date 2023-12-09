@@ -7,6 +7,8 @@ import styles from './JoinForm.module.css'
 import { handleSimpleField, handleUrl } from '../../libs/handleLib';
 import {JoinMeetingDTO} from '../../data/Dtos';
 
+// TODO: disable usernameimput if authorized
+
 function JoinForm({onChangePanel}) {
     const navigate = useNavigate();
     const [btnStatus,SetButtonStatus] = useState(true);
