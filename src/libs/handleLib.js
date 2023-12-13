@@ -101,4 +101,21 @@ export function handleCreateFormDataAuth (data){
     }
 }
 
+export function handleJoinFormDataNotAuth (data){
+    if (data.username.length > 0 && handleSimpleField(data.username).length === 0 &&
+        data.url.length > 0 && handleUrl(data.url).length === 0) {
+
+        return false;
+    } else {
+        return true;
+    }
+}
+export function handleJoinFormDataAuth (data){
+    if (data.url.length > 0 && handleUrl(data.url).length === 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
     

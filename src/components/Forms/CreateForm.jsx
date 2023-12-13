@@ -89,10 +89,9 @@ function CreateForm({onChangePanel, showToast}) {
     };
 
     useEffect(() => {
-
-
+        console.log("UELDADAA->",urlData);
         SetButtonStatus(auth.id ? handleCreateFormDataAuth(urlData) : handleCreateFormDataNotAuth(urlData));
-    }, [urlData])
+    }, [urlData,auth.id])
 
     return (
 

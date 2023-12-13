@@ -11,16 +11,21 @@ export const LoginDTO = {
     email: '',
     password: ''
 };
-export const JoinMeetingDTO = {
-    url: '',
-    username: ''
+export const JoinMeetingDTO = (username) => {
+    let userName = username=== undefined? '':username;
+    return {
+        url: '',
+        username: userName
+    }
 };
 export const CreateMeetingDTO = (username) => {
+    let userName = username=== undefined? '':username;
+
     return {
         autoStartRecording: false,
         allowStartStopRecording: true,
         record: false,
-        username: username,
+        username: userName,
         attendeePW: '',
         moderatorPW: '',
         // meetingID === name
