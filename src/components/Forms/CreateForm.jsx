@@ -5,117 +5,147 @@ import styles from './CreateForm.module.css';
 import Input from '../UI/Input/Input';
 import SubmitButton from '../UI/Button/SubmitButton';
 import ToggleBtn from '../UI/Toggle/ToggleBtn';
-// import FormAlert from '../UI/FormAlert/FormAlert'
 import {generateMeetingUrl} from '../../libs/bbbFunctions';
 import {Technologies} from '../../data/TechData';
-import { handleSimpleField } from '../../libs/handleLib';
+import {handleCreateFormDataAuth, handleCreateFormDataNotAuth, handleSimpleField} from '../../libs/handleLib';
 import {CreateMeetingDTO} from '../../data/Dtos'
+import {JitsiConfigData} from "../../data/JitsiConfig";
+import {axiosPrivate} from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 
 // TODO: disable usernameimput if authorized
 
-function CreateForm({onChangePanel}) {
+function CreateForm({onChangePanel, showToast}) {
 
     const navigate = useNavigate();
-    const [btnStatus,SetButtonStatus] = useState(true);
+    const [btnStatus, SetButtonStatus] = useState(true);
+    const {auth} = useAuth();
 
-    
+
     const [urlData, setUrlData] = useState(
-      CreateMeetingDTO
-      );
+        CreateMeetingDTO(auth.username)
+    );
 
-      function onToggleBtnHandle(event){
+    function onToggleBtnHandle(event) {
         console.log(event);
-        let result = event ? Technologies.BBB :Technologies.JITSI
+        let result = event ? Technologies.BBB : Technologies.JITSI
         // eslint-disable-next-line
-        setUrlData({...urlData, ['technologyName'] : result })
+        setUrlData({...urlData, ['technologyName']: result})
         console.log(urlData);
-      }
+    }
 
-    const onSubmitHandler =(event)=>{
+    const onSubmitHandler = (event) => {
         event.preventDefault();
         let result = '';
-        console.log(urlData.technologyName);
-        if (urlData.technologyName===Technologies.JITSI){
-          
-          result = 'https://jitsi.hamburg.ccc.de/' + urlData.name;
-          console.log(result);
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const createRoom = async () => {
+            try {
+
+                const response = await axiosPrivate.post(`/api/v1/conferences/add-conference`, {
+                    signal: controller.signal,
+                    conferenceName : urlData.name,
+                    participantName: urlData.username,
+                    technology: urlData.technologyName,
+                    attendeePassword: urlData.attendeePW,
+                    moderatorPassword: urlData.moderatorPW
+                });
+                console.log('RESPONSEEE-> ', response.data);
+                if (isMounted) {
+                    if (urlData.technologyName === Technologies.JITSI) {
+                        result = `https://${JitsiConfigData.DOMAIN}/` + urlData.name;
+                        console.log(result);
+                    } else if (urlData.technologyName === Technologies.BBB) {
+                        result = generateMeetingUrl(urlData)
+                    }
+
+                    showToast("success", "Great", `Room ${urlData.name} was successfully created`, 2000);
+                    onChangePanel(false)
+                    setUrlData(CreateMeetingDTO(auth.username));
+
+                    navigate(`./${urlData.technologyName}`, {
+                        state: {
+                            url: result,
+                            username: urlData.username,
+                            attendeePW: urlData.attendeePW,
+                            moderatorPW: urlData.moderatorPW
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("error", "Oh", "Something went wrong", 2000);
+
+            }
         }
-        else if(urlData.technologyName===Technologies.BBB){
-          result = generateMeetingUrl(urlData)
+
+        createRoom();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
         }
-        
-        navigate(`./${urlData.technologyName}`,{ state : {url : result, username: urlData.username,attendeePW: urlData.attendeePW, moderatorPW: urlData.moderatorPW  } });
-        onChangePanel(false)
-        setUrlData(CreateMeetingDTO);
     };
 
-    useEffect(()=>{
-
-    if (urlData.technologyName===Technologies.JITSI &&
-        urlData.name.length>0 && handleSimpleField(urlData.name).length===0 && 
-        urlData.username.length>0 && handleSimpleField(urlData.username).length===0){
-          
-      SetButtonStatus(false);
-    }
-    else if (urlData.technologyName===Technologies.BBB && 
-      urlData.name.length>0 && handleSimpleField(urlData.name).length===0 && 
-      urlData.username.length>0 && handleSimpleField(urlData.username).length===0 && 
-      urlData.attendeePW.length>0 && handleSimpleField(urlData.attendeePW).length===0 && 
-      urlData.moderatorPW.length>0 && handleSimpleField(urlData.moderatorPW).length===0){
-
-        SetButtonStatus(false);
-    }
-    else{
-      SetButtonStatus(true);
-    }
-    },[urlData])
-    
-  return (
-    
-    <form  onSubmit={onSubmitHandler} className={styles.form_container}>
-      <h2>Create Meeting</h2>
-      <div className={styles.toggleContainer} style={{position:'relative'}}>
-        <h3>Jitsi</h3>
-        <div className={styles.btnsContainer} style={{position:'absolute'}}> <ToggleBtn toggleBtnChange={onToggleBtnHandle}/> </div>
-        <h3>BigBlueButton</h3>
-      </div>
-
-      {/* username */}
-      <Input 
-        labelText={"User Name"} 
-        entity='username' value={urlData.username} 
-        setInput={setUrlData} Data={urlData} handleFunction={handleSimpleField} />
-    
-       { urlData.technologyName===Technologies.BBB && 
-        <div> 
-          {/* attendeePW */}
-          <Input 
-            labelText={"Attendee Password"} 
-            entity='attendeePW' value={urlData.attendeePW} 
-            setInput={setUrlData} Data={urlData} handleFunction={handleSimpleField} />
-
-          {/* moderatorPW */}
-          <Input 
-            labelText={"Moderator Password"} 
-            entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData} 
-            Data={urlData} handleFunction={handleSimpleField} />
-        </div>
-      } 
-
-      {/* name */}
-      <Input labelText={"Meeting Name"} 
-        entity='name' value={urlData.name} 
-        setInput={setUrlData} Data={urlData}
-        handleFunction={handleSimpleField} />
+    useEffect(() => {
 
 
-      <div className={styles.btnsContainer}>
-        <SubmitButton btnDisabled={btnStatus} btnText={'Create meeting'}/>
-      </div>
-      
-      
-    </form>
-  )
+        SetButtonStatus(auth.id ? handleCreateFormDataAuth(urlData) : handleCreateFormDataNotAuth(urlData));
+    }, [urlData])
+
+    return (
+
+        <form onSubmit={onSubmitHandler} className={styles.form_container}>
+            <h2>Create Meeting</h2>
+            <div className={styles.toggleContainer} style={{position: 'relative'}}>
+                <h3>Jitsi</h3>
+                <div className={styles.btnsContainer} style={{position: 'absolute'}}><ToggleBtn
+                    toggleBtnChange={onToggleBtnHandle}/></div>
+                <h3>BigBlueButton</h3>
+            </div>
+
+            {auth.id ?
+                <></>
+                :
+                // {/* username */}
+                <Input
+                    labelText={"User Name"}
+                    entity='username' value={urlData.username}
+                    setInput={setUrlData} Data={urlData} handleFunction={handleSimpleField}/>
+            }
+
+            {/* name */}
+            <Input labelText={"Meeting Name"}
+                   entity='name' value={urlData.name}
+                   setInput={setUrlData} Data={urlData}
+                   handleFunction={handleSimpleField}/>
+
+
+            {urlData.technologyName === Technologies.BBB &&
+                <div>
+                    {/* attendeePW */}
+                    <Input
+                        labelText={"Attendee Password"}
+                        entity='attendeePW' value={urlData.attendeePW}
+                        setInput={setUrlData} Data={urlData} handleFunction={handleSimpleField}/>
+
+                    {/* moderatorPW */}
+                    <Input
+                        labelText={"Moderator Password"}
+                        entity='moderatorPW' value={urlData.moderatorPW} setInput={setUrlData}
+                        Data={urlData} handleFunction={handleSimpleField}/>
+                </div>
+            }
+
+
+            <div className={styles.btnsContainer}>
+                <SubmitButton btnDisabled={btnStatus} btnText={'Create meeting'}/>
+            </div>
+
+
+        </form>
+    )
 }
 
 export default CreateForm

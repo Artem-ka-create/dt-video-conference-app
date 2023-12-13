@@ -54,7 +54,7 @@ function App() {
 
                 <Route path='/register' element={<RegisterForm showToast={handleShowToastEvent} />}/>
                 <Route path='/signin' element={<Login showToast={handleShowToastEvent} />}/>
-                <Route path='/create' element={<CreateForm onChangePanel = {setPanelStatus} />}/>
+                <Route path='/create' element={<CreateForm onChangePanel = {setPanelStatus} showToast={handleShowToastEvent}/>}/>
                 <Route path='/join' element={<JoinForm onChangePanel = {setPanelStatus} />}/>
                 <Route path='/create/bbb' element={<BBB />}/>
                 <Route path='/join/bbb' element={<BBB />}/>

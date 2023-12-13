@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMicrophone,faMicrophoneSlash, faVideo, faVideoSlash, faPhoneSlash , faHand, faComment,faCommentSlash, faShareFromSquare } from '@fortawesome/free-solid-svg-icons'
 import {faHand as faHandreg  } from '@fortawesome/free-regular-svg-icons'
 import { useLocation, useNavigate } from 'react-router-dom';
+import {JitsiConfigData} from "../data/JitsiConfig";
 // import { useHistory } from "react-router-dom";
 
 
@@ -13,7 +14,7 @@ function Jitsi() {
     //
     // const DOMAIN = "meet.jit.si"
     // const DOMAIN = "8x8.vc"
-    const DOMAIN = "jitsi.hamburg.ccc.de";
+
 
     const [state, setState] = useState({
       isAudioMuted: false,
@@ -33,8 +34,8 @@ function Jitsi() {
 
 
 
-      var api = new window.JitsiMeetExternalAPI(`${DOMAIN}`, {
-          roomName: formData.url.replace(`https://${DOMAIN}/`,''),
+      var api = new window.JitsiMeetExternalAPI(`${JitsiConfigData.DOMAIN}`, {
+          roomName: formData.url.replace(`https://${JitsiConfigData.DOMAIN}/`,''),
 
           parentNode: document.querySelector('#meet'),
           prejoinConfig: { enabled: false },

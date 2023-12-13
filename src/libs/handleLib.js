@@ -1,3 +1,4 @@
+import {Technologies} from "../data/TechData";
 
 
 function specialSymbolsCheck(text){
@@ -67,6 +68,37 @@ export function handleUrl(text){
         return notValidUrlMessage;
     }
 
+}
+
+export function handleCreateFormDataNotAuth (data){
+    if (data.technologyName === Technologies.JITSI &&
+        data.name.length > 0 && handleSimpleField(data.name).length === 0 &&
+        data.username.length > 0 && handleSimpleField(data.username).length === 0) {
+
+        return false;
+    } else if (data.technologyName === Technologies.BBB &&
+        data.name.length > 0 && handleSimpleField(data.name).length === 0 &&
+        data.username.length > 0 && handleSimpleField(data.username).length === 0 &&
+        data.attendeePW.length > 0 && handleSimpleField(data.attendeePW).length === 0 &&
+        data.moderatorPW.length > 0 && handleSimpleField(data.moderatorPW).length === 0) {
+
+        return false;
+    } else {
+        return true;
+    }
+}
+export function handleCreateFormDataAuth (data){
+    if (data.technologyName === Technologies.JITSI &&
+        data.name.length > 0 && handleSimpleField(data.name).length === 0) {
+        return false;
+    } else if (data.technologyName === Technologies.BBB &&
+        data.name.length > 0 && handleSimpleField(data.name).length === 0 &&
+        data.attendeePW.length > 0 && handleSimpleField(data.attendeePW).length === 0 &&
+        data.moderatorPW.length > 0 && handleSimpleField(data.moderatorPW).length === 0) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
     

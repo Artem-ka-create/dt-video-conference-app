@@ -6,6 +6,7 @@ import Input from '../UI/Input/Input'
 import styles from './JoinForm.module.css'
 import { handleSimpleField, handleUrl } from '../../libs/handleLib';
 import {JoinMeetingDTO} from '../../data/Dtos';
+import {JitsiConfigData} from "../../data/JitsiConfig";
 
 // TODO: disable usernameimput if authorized
 
@@ -20,7 +21,7 @@ function JoinForm({onChangePanel}) {
         // check by domains technology
         let result = {state :{url : data.url, username: data.username}};
 
-        if(data.url.replace('https://','').split('/')[0]==='jitsi.hamburg.ccc.de'){
+        if(data.url.replace('https://','').split('/')[0]===`${JitsiConfigData.DOMAIN}`){
           navigate('./jitsi',result);
         }
         else if(data.url.replace('https://','').split('/')[1]==='bigbluebutton'){
