@@ -89,7 +89,7 @@ function JoinForm({onChangePanel, showToast}) {
 
     return (
         <>
-            <h2>JoinForm</h2>
+            <h2>Join To Meeting</h2>
 
             <form onSubmit={onSubmitHandler} className={styles.form_container}>
                 {auth.id ?

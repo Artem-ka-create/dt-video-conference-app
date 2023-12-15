@@ -6,14 +6,12 @@ import {faMicrophone,faMicrophoneSlash, faVideo, faVideoSlash, faPhoneSlash , fa
 import {faHand as faHandreg  } from '@fortawesome/free-regular-svg-icons'
 import { useLocation, useNavigate } from 'react-router-dom';
 import {JitsiConfigData} from "../data/JitsiConfig";
+import {axiosPrivate} from "../api/axios";
 // import { useHistory } from "react-router-dom";
 
 
 
 function Jitsi() {
-    //
-    // const DOMAIN = "meet.jit.si"
-    // const DOMAIN = "8x8.vc"
 
 
     const [state, setState] = useState({
@@ -26,6 +24,7 @@ function Jitsi() {
   // const history = useHistory();
   const formData = useLocation().state;
   const navigate = useNavigate();
+  const jitsiMeetingName = formData.url.replace(`https://${JitsiConfigData.DOMAIN}/`,'');
 
   const [API, setAPI] = useState();
 
@@ -35,7 +34,7 @@ function Jitsi() {
 
 
       var api = new window.JitsiMeetExternalAPI(`${JitsiConfigData.DOMAIN}`, {
-          roomName: formData.url.replace(`https://${JitsiConfigData.DOMAIN}/`,''),
+          roomName: jitsiMeetingName,
 
           parentNode: document.querySelector('#meet'),
           prejoinConfig: { enabled: false },
@@ -63,6 +62,15 @@ function Jitsi() {
       const handleParticipantLeft = async (participant) => {
           console.log("handleParticipantLeft---=>>>>>", participant); // { id: "2baa184e" }
           console.log(api.getParticipantsInfo());
+          if (api.getParticipantsInfo().length===1){
+              axiosPrivate.put(`api/v1/conferences/close-conference/${jitsiMeetingName}`).then((response)=>{
+                  console.log('Finish meeting response --> ', response.data);
+                  }
+              ).catch((err)=> {
+                  console.warn('Somethig is wrong', err);
+              })
+          }
+
 
       }
 

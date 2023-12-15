@@ -69,13 +69,13 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
           < FontAwesomeIcon icon={faUser} /> {localRoom.users.length}
         </div>
           {/*TODO: */}
-          <div className={styles.liveStatus}>
-              < FontAwesomeIcon style={{fontSize:'15px'}} icon={faCirclePlay} />
-              <div>
-                  Live
-              </div>
+          {/*<div className={styles.liveStatus}>*/}
+          {/*    < FontAwesomeIcon style={{fontSize:'15px'}} icon={faCirclePlay} />*/}
+          {/*    <div>*/}
+          {/*        Live*/}
+          {/*    </div>*/}
 
-          </div>
+          {/*</div>*/}
         < FontAwesomeIcon onClick={ () => setShowConfirmation(true) } className={styles.operationBtn} icon={faCircleXmark} />
       </div>
       <div className={styles.titleName}>
