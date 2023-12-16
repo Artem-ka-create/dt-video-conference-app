@@ -62,14 +62,9 @@ function Jitsi() {
       const handleParticipantLeft = async (participant) => {
           console.log("handleParticipantLeft---=>>>>>", participant); // { id: "2baa184e" }
           console.log(api.getParticipantsInfo());
-          if (api.getParticipantsInfo().length===1){
-              axiosPrivate.put(`api/v1/conferences/close-conference/${jitsiMeetingName}`).then((response)=>{
-                  console.log('Finish meeting response --> ', response.data);
-                  }
-              ).catch((err)=> {
-                  console.warn('Somethig is wrong', err);
-              })
-          }
+          // if (api.getParticipantsInfo().length===1){
+          //
+          // }
 
 
       }
@@ -116,7 +111,14 @@ function Jitsi() {
   function executeCommand(command) {
     API.executeCommand(command);
     if (command === 'hangup') {
-        console.log(API.getParticipantsInfo());
+        if(API.getParticipantsInfo().length===1){
+            axiosPrivate.put(`api/v1/conferences/close-conference/${jitsiMeetingName}`).then((response)=>{
+                    console.log('Finish meeting response --> ', response.data);
+                }
+            ).catch((err)=> {
+                console.warn('Somethig is wrong', err);
+            })
+        }
       navigate('/');
     }
 

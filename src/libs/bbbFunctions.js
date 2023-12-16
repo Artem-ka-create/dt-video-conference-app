@@ -6,7 +6,8 @@ export function generateMeetingUrl(data){
     let createHash ='create';
     let createHttp = createHash + '?';
     let roomSettings = '&allowRequestsWithoutSession=true&meetingExpireIfNoUserJoinedInMinutes=2000&meetingExpireWhenLastUserLeftInMinutes=360';
-    let urlBase = `allowStartStopRecording=${data.allowStartStopRecording}&attendeePW=${data.attendeePW}&autoStartRecording=${data.autoStartRecording}&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=${data.record}`+roomSettings;
+    // let urlBase = `allowStartStopRecording=${data.allowStartStopRecording}&attendeePW=${data.attendeePW}&autoStartRecording=${data.autoStartRecording}&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=${data.record}`+roomSettings;
+  let urlBase = `allowStartStopRecording=true&attendeePW=${data.attendeePW}&autoStartRecording=false&meetingID=${data.name}&moderatorPW=${data.moderatorPW}&name=${data.name}&record=false`+roomSettings;
 
     let hashedUrl = createHttp  + urlBase + '&checksum=' + hex_sha1(createHash+urlBase + serverConfig.secret);
     return serverConfig.url + 'api/' + hashedUrl;

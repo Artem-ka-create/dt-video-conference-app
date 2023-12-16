@@ -5,7 +5,7 @@ import styleCreateForm from '../Forms/CreateForm.module.css'
 import styles from './RoomDetailedComponent.module.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faLink, faVideo, faRightToBracket, faPlus, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import {RoomCategories} from '../../data/TechData';
+import {RoomCategories, Technologies} from '../../data/TechData';
 import ToggleBtn from '../UI/Toggle/ToggleBtn';
 
 import {DataTable} from "primereact/datatable";
@@ -20,6 +20,10 @@ import Input from "../UI/Input/Input";
 import SubmitButton from "../UI/Button/SubmitButton";
 import {handleEmail} from "../../libs/handleLib";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
+import {JitsiConfigData} from "../../data/JitsiConfig";
+import {generateMeetingUrl} from "../../libs/bbbFunctions";
+import {useNavigate} from "react-router-dom";
 
 
 function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
@@ -32,7 +36,11 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
     const [category, setCategory] = useState(RoomCategories.UsersCategory);
     const [addUserStatus, setAddUserStatus] = useState(false);
     const [addUserBtnStatus, setAddUserBtnStatus] = useState(true);
+    const [technologyName,setTechnologyName] = useState(Technologies.JITSI);
     const axiosPrivate = useAxiosPrivate();
+    const { auth } = useAuth();
+    const navigate = useNavigate();
+
 
 
     const [newUserData, setNewUserData] = useState({email: ""});
@@ -79,8 +87,8 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
 
     }
 
-    function onToggleBtnHandle(event) {
-        console.log(event);
+    function onToggleBtnHandle() {
+        setTechnologyName(technologyName===Technologies.JITSI?Technologies.BBB : Technologies.JITSI);
     }
 
     const addNewUserEvent = (event) => {
@@ -92,7 +100,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
             {
                 newUserEmail: newUserData.email,
                 roomId: roomInfo.id,
-                initiatorUserId: localStorage.getItem("DTMeetUser")
+                initiatorUserId: auth.id
             }).then((response) => {
 
             setNewUserData({email: ""});
@@ -144,8 +152,45 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
     }, [newUserData]);
 
     const handleRoomMeetingStart = () => {
-        setRunniingStatus(true);
-        setAddUserStatus(false);
+
+
+
+        axiosPrivate.put(`/api/v1/rooms/${roomInfo.id}/users/${auth.id}/technologies/${technologyName}/add-conference`)
+            .then((response) => {
+
+                let createdConference = response.data.conferences.find(conf => conf.completedDate===null)
+                console.log('CREATED Meeting _---->>>', createdConference);
+                setRunniingStatus(true);
+                setAddUserStatus(false);
+                setCategory(RoomCategories.UsersCategory);
+
+                let resultUrl = '';
+                if (technologyName === Technologies.JITSI) {
+                    resultUrl = `https://${JitsiConfigData.DOMAIN}/` + response.data.name;
+                } else if (technologyName === Technologies.BBB) {
+                    resultUrl = generateMeetingUrl({name:createdConference.name,
+                        attendeePW:createdConference.attendeePassword,
+                        moderatorPW:createdConference.moderatorPassword})
+                }
+                navigate(`./create/${technologyName}`, {
+                    state: {
+                        url: resultUrl,
+                        username: auth.username,
+                        attendeePW: createdConference.attendeePassword,
+                        moderatorPW: createdConference.moderatorPassword
+                    }
+                });
+
+
+                showToast('success', 'Super!', `Meeting has been started in room ${roomInfo.name}`, 2000);
+
+        }).catch((err) => {
+            console.log(err)
+            showToast('error', 'Oh', `You cannot start meeting in room ${roomInfo.name}`, 2000);
+
+        });
+
+
 
 
     }
@@ -172,9 +217,6 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
                                         className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
                                         onClick={() => handleBackButton()} outlined/>
                             }
-                            {/*<Button label={runningStatus ? copyLinkIcon : addUserStatus ? backArrowIcon : addUserIcon}*/}
-                            {/*        className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}*/}
-                            {/*        onClick={() => handleBackButton()} outlined/>*/}
                         </div>
                     </div>
                     {runningStatus ? <div className={styles.liveBox}>Live</div> :
