@@ -23,6 +23,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
 
 
   const handleDeleteOfRoom = () => {
+      // TODO:  MAKE room removing correctly
       axiosPrivate.put(`/api/v1/rooms/${localRoom.id}/users/${localStorage.getItem('DTMeetUserId')}`).then((resp)=>{
           console.log(resp);
           showToast("success", "Great", "You removed from room successfully");
