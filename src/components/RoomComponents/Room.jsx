@@ -20,7 +20,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
   const [showRoomDetails,setShowRoomDetails] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const [localRoom, setLocalRoom] = useState(roomDetail);
-  const [isRunning,setIsRunningStatus] =useState([]);
+  const [isRunning,setIsRunningStatus] =useState();
 
     useEffect(() => {
         setIsRunningStatus(roomDetail.conferences.find(conf => conf.completedDate==null));
