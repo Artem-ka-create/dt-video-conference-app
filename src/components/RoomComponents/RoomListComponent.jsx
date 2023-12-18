@@ -53,7 +53,7 @@ function RoomListComponent({showToastEvent}) {
             <div className={styles.roomListContainer}>
 
                 {rooms.map((item, i) => <Room key={i} roomDetail={item} showToast={showToastEvent} roomsArr={rooms}
-                                              roomInitialize={setRooms}/>)}
+                                              roomInitialize={setRooms} />)}
                 <AddRoom showToast={showToastEvent} roomsArr={rooms} roomInitialize={setRooms}/>
             </div>
 

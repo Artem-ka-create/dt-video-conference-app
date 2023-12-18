@@ -6,13 +6,10 @@ import SubmitButton from '../UI/Button/SubmitButton'
 import Input from '../UI/Input/Input'
 import styles from './JoinForm.module.css'
 import {handleJoinFormDataAuth, handleJoinFormDataNotAuth, handleSimpleField, handleUrl} from '../../libs/handleLib';
-import {CreateMeetingDTO, JoinMeetingDTO} from '../../data/Dtos';
+import { JoinMeetingDTO} from '../../data/Dtos';
 import {JitsiConfigData} from "../../data/JitsiConfig";
 import {axiosPrivate} from "../../api/axios";
-import {Technologies} from "../../data/TechData";
-import {generateMeetingUrl} from "../../libs/bbbFunctions";
 
-// TODO: disable usernameimput if authorized
 
 function JoinForm({onChangePanel, showToast}) {
     const navigate = useNavigate();
@@ -35,7 +32,7 @@ function JoinForm({onChangePanel, showToast}) {
     const onSubmitHandler = (event) => {
         event.preventDefault();
 
-        const regex = /\/([^\/]+)$/;
+        const regex = /\/([^/]+)$/;
         // https://jitsi.hamburg.ccc.de/tyujtyy
         // JUST FOR JITSI
         let reqestBody = {
@@ -48,9 +45,10 @@ function JoinForm({onChangePanel, showToast}) {
         let isMounted = true;
         const controller = new AbortController();
 
-        const createRoom = async () => {
+        const joinRoom = async () => {
             try {
 
+                // eslint-disable-next-line
                 const response = await axiosPrivate.put(`/api/v1/conferences/join-conference`, {
                     signal: controller.signal,
                     conferenceName : reqestBody.conferenceName,
@@ -73,7 +71,7 @@ function JoinForm({onChangePanel, showToast}) {
             }
         }
 
-        createRoom();
+        joinRoom();
 
         return () => {
             isMounted = false;

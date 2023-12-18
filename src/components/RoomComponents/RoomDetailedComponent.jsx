@@ -26,7 +26,7 @@ import {generateMeetingUrl} from "../../libs/bbbFunctions";
 import {useNavigate} from "react-router-dom";
 
 
-function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
+function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus}) {
     const copyLinkIcon = <FontAwesomeIcon icon={faLink}/>
     const backArrowIcon = <FontAwesomeIcon icon={faArrowLeft}/>
     const addUserIcon = <FontAwesomeIcon icon={faPlus}/>
@@ -36,11 +36,10 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
     const [category, setCategory] = useState(RoomCategories.UsersCategory);
     const [addUserStatus, setAddUserStatus] = useState(false);
     const [addUserBtnStatus, setAddUserBtnStatus] = useState(true);
-    const [technologyName,setTechnologyName] = useState(Technologies.JITSI);
+    const [technologyName, setTechnologyName] = useState(Technologies.JITSI);
     const axiosPrivate = useAxiosPrivate();
-    const { auth } = useAuth();
+    const {auth} = useAuth();
     const navigate = useNavigate();
-
 
 
     const [newUserData, setNewUserData] = useState({email: ""});
@@ -66,9 +65,19 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
         return userArr;
     }
 
+
+    // function handleDomain(joinData){
+    //     if (data.url.replace('https://', '').split('/')[0] === `${JitsiConfigData.DOMAIN}`) {
+    //         navigate('./jitsi', joinData);
+    //     } else if (data.url.replace('https://', '').split('/')[1] === 'bigbluebutton') {
+    //         navigate('./bbb', joinData);
+    //     } else {
+    //         alert(' This url not supports')
+    //     }
+    // }
+
     const [entities, setEtities
     ] = useState(generateUserTable());
-    const [runningStatus, setRunniingStatus] = useState(false);
 
     useEffect(() => {
         // productService.getProductsSmall().then((data) => SetProducts({ products: data }));
@@ -88,7 +97,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
     }
 
     function onToggleBtnHandle() {
-        setTechnologyName(technologyName===Technologies.JITSI?Technologies.BBB : Technologies.JITSI);
+        setTechnologyName(technologyName === Technologies.JITSI ? Technologies.BBB : Technologies.JITSI);
     }
 
     const addNewUserEvent = (event) => {
@@ -118,7 +127,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
 
     const handleBackButton = () => {
 
-        if (runningStatus === false) {
+        if (!isRunningStatus) {
 
             if (addUserStatus === true) {
                 setNewUserData({email: ""})
@@ -151,16 +160,40 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
         }
     }, [newUserData]);
 
-    const handleRoomMeetingStart = () => {
+    const handleJoinToMeeting = () => {
 
+
+        console.log('JOIN TO MEETING')
+
+        axiosPrivate.put(`/api/v1/conferences/join-conference`, {
+            conferenceName : roomInfo.name,
+            username: auth.username,
+            userId: auth.userId
+        }).then((response) => {
+
+            let url = technologyName === Technologies.JITSI ?
+                `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name :
+                generateMeetingUrl({attendeePW:'attPass',moderatorPW:'modePass',name:roomInfo.name});
+
+            let joinData = {state: {url: url, username: auth.username}};
+            technologyName === Technologies.JITSI ? navigate('./join/jitsi', joinData) :  navigate('./join/bbb', joinData);
+            showToast('success', "Great", "User successfuly joined to room");
+
+        }).catch((err) => {
+
+            showToast('error', "Oh", "You cannot join to meeting");
+            console.warn(err);
+        });
+    }
+    const handleRoomMeetingStart = () => {
 
 
         axiosPrivate.put(`/api/v1/rooms/${roomInfo.id}/users/${auth.id}/technologies/${technologyName}/add-conference`)
             .then((response) => {
 
-                let createdConference = response.data.conferences.find(conf => conf.completedDate===null)
+                let createdConference = response.data.conferences.find(conf => conf.completedDate === null)
                 console.log('CREATED Meeting _---->>>', createdConference);
-                setRunniingStatus(true);
+                // setRunniingStatus(true);
                 setAddUserStatus(false);
                 setCategory(RoomCategories.UsersCategory);
 
@@ -168,9 +201,11 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
                 if (technologyName === Technologies.JITSI) {
                     resultUrl = `https://${JitsiConfigData.DOMAIN}/` + response.data.name;
                 } else if (technologyName === Technologies.BBB) {
-                    resultUrl = generateMeetingUrl({name:createdConference.name,
-                        attendeePW:createdConference.attendeePassword,
-                        moderatorPW:createdConference.moderatorPassword})
+                    resultUrl = generateMeetingUrl({
+                        name: createdConference.name,
+                        attendeePW: createdConference.attendeePassword,
+                        moderatorPW: createdConference.moderatorPassword
+                    })
                 }
                 navigate(`./create/${technologyName}`, {
                     state: {
@@ -184,13 +219,11 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
 
                 showToast('success', 'Super!', `Meeting has been started in room ${roomInfo.name}`, 2000);
 
-        }).catch((err) => {
+            }).catch((err) => {
             console.log(err)
             showToast('error', 'Oh', `You cannot start meeting in room ${roomInfo.name}`, 2000);
 
         });
-
-
 
 
     }
@@ -205,22 +238,36 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom}) {
                         <div className={styles.roomName}>{roomInfo.name}</div>
                         <div className={styles.btnContainer}>
 
-                            <Button label={runningStatus ? joinMeetingIcon : startMeetingIcon}
-                                    className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`}
-                                    onClick={handleRoomMeetingStart}/>
-                            {runningStatus ?
-                                <Button label={copyLinkIcon}
-                                        className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
-                                        onClick={() => handleCopyJoinLinkButton()} outlined/>
-                            :
-                                <Button label={addUserStatus ? backArrowIcon : addUserIcon}
-                                        className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
-                                        onClick={() => handleBackButton()} outlined/>
+                            {isRunningStatus ?
+                                <>
+                                    <Button label={joinMeetingIcon}
+                                            className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`}
+                                            onClick={handleJoinToMeeting}/>
+                                    <Button label={copyLinkIcon}
+                                            className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
+                                            onClick={() => handleCopyJoinLinkButton()} outlined/>
+                                </>
+                                :
+                                <>
+                                    <Button label={startMeetingIcon}
+                                            className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`}
+                                            onClick={handleRoomMeetingStart}/>
+                                    <Button label={addUserStatus ? backArrowIcon : addUserIcon}
+                                            className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
+                                            onClick={() => handleBackButton()} outlined/>
+                                </>
+
                             }
                         </div>
                     </div>
-                    {runningStatus ? <div className={styles.liveBox}>Live</div> :
-                        <div style={{color: '#909090'}}>Last session, May 2023 at 10:31 AM</div>}
+                    {isRunningStatus ? <div className={styles.liveBox}>Live</div> :
+                        <div style={{color: '#909090'}}>
+                            {isRunningStatus !== undefined ?
+                                <></>
+                            :
+                                <>Last session finished , </>}
+                        </div>
+                    }
                 </div>
                 <hr className={styles.roomLine}/>
 

@@ -7,7 +7,7 @@ import 'primeflex/primeflex.css';
 import '../../index.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faGear, faUser, faVideo, faCirclePlay } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faUsersViewfinder, faUser, faVideo, faCirclePlay } from '@fortawesome/free-solid-svg-icons'
 
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
@@ -20,6 +20,8 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
   const [showRoomDetails,setShowRoomDetails] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const [localRoom, setLocalRoom] = useState(roomDetail);
+  const isRunning = roomDetail.conferences.find(conf => conf.completedDate==null);
+    console.log("RUNNING?>",isRunning);
 
 
   const handleDeleteOfRoom = () => {
@@ -70,16 +72,24 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
           < FontAwesomeIcon icon={faUser} /> {localRoom.users.length}
         </div>
           {/*TODO: */}
-          {/*<div className={styles.liveStatus}>*/}
-          {/*    < FontAwesomeIcon style={{fontSize:'15px'}} icon={faCirclePlay} />*/}
-          {/*    <div>*/}
-          {/*        Live*/}
-          {/*    </div>*/}
+          {isRunning!==undefined && isRunning!=null?
+              <>
+                  <div className={styles.liveStatus}>
+                      < FontAwesomeIcon style={{fontSize: '15px'}} icon={faCirclePlay}/>
+                      <div>
+                          Live
+                      </div>
 
-          {/*</div>*/}
-        < FontAwesomeIcon onClick={ () => setShowConfirmation(true) } className={styles.operationBtn} icon={faCircleXmark} />
+                  </div>
+              </>
+              :
+              <></>
+          }
+
+          < FontAwesomeIcon onClick={() => setShowConfirmation(true)} className={styles.operationBtn}
+                            icon={faCircleXmark}/>
       </div>
-      <div className={styles.titleName}>
+        <div className={styles.titleName}>
           {localRoom.name}
       </div>
       <div className={`${styles.rowInfo}`}>
@@ -87,7 +97,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
           < FontAwesomeIcon icon={faVideo} /> {localRoom.conferences.length}
         </div>
 
-        < FontAwesomeIcon className={styles.operationBtn} icon={faGear} onClick={()=> setShowRoomDetails(true)} />
+        < FontAwesomeIcon className={styles.operationBtn} icon={faUsersViewfinder} onClick={()=> setShowRoomDetails(true)} />
       </div>
 
       <Dialog header={localRoom.name} visible={showConfirmation} draggable={false} modal style={{ width: '40vw' }} footer={footer} onHide={() => setShowConfirmation(false)}>
@@ -99,7 +109,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
 
       <Dialog  draggable={false} visible={showRoomDetails} style={{ width: '90vw' , height:' 125.6vh'}}  onHide={() => handleDialogClose()}>
 
-            <RoomDetailedComponent showToast={showToast} roomInfo={localRoom} updateRoom={setLocalRoom} />
+            <RoomDetailedComponent showToast={showToast} roomInfo={localRoom} isRunningStatus={isRunning} updateRoom={setLocalRoom} />
       </Dialog>
     </div>
   )
