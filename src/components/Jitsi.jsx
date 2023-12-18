@@ -17,8 +17,11 @@ import {faHand as faHandreg} from '@fortawesome/free-regular-svg-icons'
 import {useLocation, useNavigate} from 'react-router-dom';
 import {JitsiConfigData} from "../data/JitsiConfig";
 import {axiosPrivate} from "../api/axios";
+import { ProgressBar } from 'primereact/progressbar';
+
 
 // import { useHistory } from "react-router-dom";
+
 
 
 function Jitsi() {
@@ -156,7 +159,10 @@ function Jitsi() {
     useEffect(() => {
         if (window.JitsiMeetExternalAPI) {
             startMeeting();
-            setMeetUpStatus(true);
+            setTimeout(() => {
+                setMeetUpStatus(true);
+            }, "6000");
+
         } else {
             alert('JitsiMeetExternalAPI not loaded');
         }
@@ -171,7 +177,7 @@ function Jitsi() {
             <span>&nbsp;&nbsp;</span>
 
             {meetUpStatus ?
-                <>
+                <div>
                     <button className={styles.btn} onClick={() => executeCommand('toggleAudio')} title="Mute / Unmute">
                         {state.isAudioMuted ? <FontAwesomeIcon icon={faMicrophoneSlash}/> :
                             <FontAwesomeIcon icon={faMicrophone}/>}
@@ -203,9 +209,12 @@ function Jitsi() {
                                 onClick={() => navigator.clipboard.writeText(formData.url)}>Copy join URL
                         </button>
                     </div>
-                </>
+                </div>
                 :
-                <></>
+                <>
+                    <h2>Meeting is loading</h2>
+                    <ProgressBar mode="indeterminate" color={"#E10075"} style={{ height: '6px' }}></ProgressBar>
+                </>
             }
 
         </div>

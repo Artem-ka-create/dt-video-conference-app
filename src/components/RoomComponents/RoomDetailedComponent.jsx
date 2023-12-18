@@ -11,7 +11,6 @@ import ToggleBtn from '../UI/Toggle/ToggleBtn';
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 
-import {MeetingsArray} from '../../data/testArrData'
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/saga-purple/theme.css";
 import "primereact/resources/primereact.css";
@@ -44,17 +43,54 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
 
     const [newUserData, setNewUserData] = useState({email: ""});
 
+    function formatDateToUser(inputDateString){
+        const inputDate = new Date(inputDateString);
+
+        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const monthsOfYear = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        const dayOfWeek = daysOfWeek[inputDate.getUTCDay()];
+        const month = monthsOfYear[inputDate.getUTCMonth()];
+        const year = inputDate.getUTCFullYear();
+        const hours = inputDate.getUTCHours();
+        const minutes = inputDate.getUTCMinutes();
+        const seconds = inputDate.getUTCSeconds();
+
+        return`${dayOfWeek} (${inputDate.getUTCDate()}) ${month} (${year}) - ${hours}:${minutes}:${seconds}`;
+    }
+
+    function calculateDuration(startTimeStr, endTimeStr) {
+        const startTime = new Date(startTimeStr);
+        const endTime = new Date(endTimeStr);
+
+        // Calculate the difference in milliseconds
+        const durationInMilliseconds = endTime - startTime;
+
+        // Convert milliseconds to seconds
+        const durationInSeconds = durationInMilliseconds / 1000;
+
+        // Calculate hours, minutes, and seconds
+        const hours = Math.floor(durationInSeconds / 3600);
+        const minutes = Math.floor((durationInSeconds % 3600) / 60);
+        const seconds = Math.floor(durationInSeconds % 60);
+
+        const formattedResult = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        return formattedResult;
+    }
 
     // TODO: finish generate Meeting Table
-    // function generateMeetingTable(){
-    //   let meetingArr=[];
-    //
-    //   roomInfo.conferences.forEach((item) => {
-    //     // meetingArr.push({ name:item.name, startedAt: item.surname, finishedAt: item.participant.username, attendeesCount: 'IT'});
-    //   });
-    //
-    //   return meetingArr;
-    // }
+    function generateMeetingTable(){
+      let meetingArr=[];
+
+      roomInfo.conferences.forEach((item) => {
+        meetingArr.push({ duration:calculateDuration(item.createdDate,item.completedDate), startedAt: formatDateToUser(item.createdDate), finishedAt: formatDateToUser(item.completedDate), attendeesCount: item.participants.length});
+      });
+
+      return meetingArr;
+    }
     function generateUserTable() {
         let userArr = [];
 
@@ -65,19 +101,10 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         return userArr;
     }
 
-
-    // function handleDomain(joinData){
-    //     if (data.url.replace('https://', '').split('/')[0] === `${JitsiConfigData.DOMAIN}`) {
-    //         navigate('./jitsi', joinData);
-    //     } else if (data.url.replace('https://', '').split('/')[1] === 'bigbluebutton') {
-    //         navigate('./bbb', joinData);
-    //     } else {
-    //         alert(' This url not supports')
-    //     }
-    // }
-
     const [entities, setEtities
     ] = useState(generateUserTable());
+    // const [meets, setMeets
+    // ] = useState(generateMeetingTable());
 
     useEffect(() => {
         // productService.getProductsSmall().then((data) => SetProducts({ products: data }));
@@ -89,7 +116,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
     }
     const handleMeetingsCategory = () => {
         setCategory(RoomCategories.MeetingsCategory)
-        setEtities(MeetingsArray);
+        setEtities(generateMeetingTable());
     }
     const handleSettingsCategory = () => {
         setCategory(RoomCategories.SettingsCategory)
@@ -166,17 +193,17 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         console.log('JOIN TO MEETING')
 
         axiosPrivate.put(`/api/v1/conferences/join-conference`, {
-            conferenceName : roomInfo.name,
+            conferenceName: roomInfo.name,
             username: auth.username,
             userId: auth.userId
         }).then((response) => {
 
             let url = technologyName === Technologies.JITSI ?
                 `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name :
-                generateMeetingUrl({attendeePW:'attPass',moderatorPW:'modePass',name:roomInfo.name});
+                generateMeetingUrl({attendeePW: 'attPass', moderatorPW: 'modePass', name: roomInfo.name});
 
             let joinData = {state: {url: url, username: auth.username}};
-            technologyName === Technologies.JITSI ? navigate('./join/jitsi', joinData) :  navigate('./join/bbb', joinData);
+            technologyName === Technologies.JITSI ? navigate('./join/jitsi', joinData) : navigate('./join/bbb', joinData);
             showToast('success', "Great", "User successfuly joined to room");
 
         }).catch((err) => {
@@ -262,10 +289,8 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                     </div>
                     {isRunningStatus ? <div className={styles.liveBox}>Live</div> :
                         <div style={{color: '#909090'}}>
-                            {isRunningStatus !== undefined ?
                                 <></>
-                            :
-                                <>Last session finished , </>}
+                                <>Last session finished ,vf </>
                         </div>
                     }
                 </div>
@@ -309,12 +334,18 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                                     Settings
                                 </div>
                             </div>
-                            <div className={styleCreateForm.toggleContainer}>
-                                <h3>Jitsi</h3>
-                                <div className={styleCreateForm.btnsContainer}>
-                                    <ToggleBtn toggleBtnChange={onToggleBtnHandle}/></div>
-                                <h3>BigBlueButton</h3>
-                            </div>
+                            {isRunningStatus ?
+                                <h3>{technologyName} is running</h3>
+                                :
+                                <div className={styleCreateForm.toggleContainer}>
+                                    <h3>Jitsi</h3>
+                                    <div className={styleCreateForm.btnsContainer}>
+                                        <ToggleBtn toggleBtnChange={onToggleBtnHandle}/></div>
+                                    <h3>BigBlueButton</h3>
+                                </div>
+
+                            }
+
                         </div>
 
                         <div>
@@ -326,7 +357,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
 
                                     {category === RoomCategories.MeetingsCategory ?
                                         <DataTable paginator rows={6} value={entities} removableSort>
-                                            <Column field="name" header="Name" sortable></Column>
+                                            <Column field="duration" header="Duration" sortable></Column>
                                             <Column field="startedAt" header="Started at" sortable></Column>
                                             <Column field="finishedAt" header="Finished at" sortable></Column>
                                             <Column field="attendeesCount" header="Count" sortable></Column>

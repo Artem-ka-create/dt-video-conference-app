@@ -73,7 +73,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
         <div>
           < FontAwesomeIcon icon={faUser} /> {localRoom.users.length}
         </div>
-          {/*TODO: */}
+
           {isRunning!==undefined && isRunning!=null?
               <>
                   <div className={styles.liveStatus}>

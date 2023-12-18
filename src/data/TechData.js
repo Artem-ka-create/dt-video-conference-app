@@ -1,6 +1,6 @@
 export const Technologies = {
-    JITSI: 'jitsi',
-    BBB:'bbb',
+    JITSI: 'Jitsi',
+    BBB:'BigBlueButton',
 }
 export const RoomCategories = {
     UsersCategory:'users',

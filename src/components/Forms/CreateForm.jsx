@@ -49,7 +49,8 @@ function CreateForm({onChangePanel, showToast}) {
                     participantName: urlData.username,
                     technology: urlData.technologyName,
                     attendeePassword: urlData.attendeePW,
-                    moderatorPassword: urlData.moderatorPW
+                    moderatorPassword: urlData.moderatorPW,
+                    userId : auth.id ? auth.id : null
                 });
                 console.log('RESPONSEEE-> ', response.data);
                 if (isMounted) {
