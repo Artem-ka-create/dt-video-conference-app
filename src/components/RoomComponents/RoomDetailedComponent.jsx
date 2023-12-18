@@ -58,7 +58,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         const minutes = inputDate.getUTCMinutes();
         const seconds = inputDate.getUTCSeconds();
 
-        return`${dayOfWeek} (${inputDate.getUTCDate()}) ${month} (${year}) - ${hours}:${minutes}:${seconds}`;
+        return`${dayOfWeek} (${inputDate.getUTCDate()}) ${month} (${year}) - ${hours+1}:${minutes}:${seconds}`;
     }
 
     function calculateDuration(startTimeStr, endTimeStr) {
@@ -89,7 +89,8 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         meetingArr.push({ duration:calculateDuration(item.createdDate,item.completedDate), startedAt: formatDateToUser(item.createdDate), finishedAt: formatDateToUser(item.completedDate), attendeesCount: item.participants.length});
       });
 
-      return meetingArr;
+
+      return meetingArr.reverse();
     }
     function generateUserTable() {
         let userArr = [];
