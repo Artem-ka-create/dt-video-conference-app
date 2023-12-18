@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from './Room.module.css'
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
@@ -20,9 +20,11 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
   const [showRoomDetails,setShowRoomDetails] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const [localRoom, setLocalRoom] = useState(roomDetail);
-  const isRunning = roomDetail.conferences.find(conf => conf.completedDate==null);
-    console.log("RUNNING?>",isRunning);
+  const [isRunning,setIsRunningStatus] =useState([]);
 
+    useEffect(() => {
+        setIsRunningStatus(roomDetail.conferences.find(conf => conf.completedDate==null));
+    }, [roomDetail.conferences]);
 
   const handleDeleteOfRoom = () => {
       // TODO:  MAKE room removing correctly
