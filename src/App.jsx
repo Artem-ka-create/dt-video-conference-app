@@ -14,6 +14,7 @@ import Login from './components/Forms/Login'
 import React, {useRef, useState} from 'react';
 import RequireAuth from './components/RequireAuth';
 import { Toast } from 'primereact/toast';
+import Invite from "./components/Invite";
 
 
 const ROLES = {
@@ -44,6 +45,7 @@ function App() {
         <BrowserRouter>
           <div className="App">
             <Routes>
+
               <Route path='/' element={<MainLayout showToast={handleShowToastEvent} panelStatus={panelStatus} onChangePanel={handlePanelStatusChange} />}>
                 <Route index={true}  path='/' element={<Main showToastEvent = {handleShowToastEvent}/>}/>
                 <Route path='*' element={<NotFound/>}/>
@@ -60,8 +62,10 @@ function App() {
                 <Route path='/join/bbb' element={<BBB />}/>
                 <Route path='/create/jitsi' element={< Jitsi/>}/>
                 <Route path='/join/jitsi' element={<Jitsi />}/>
-
               </Route>
+
+              <Route path='/invite' element={<Invite />}/>
+
             </Routes>
           </div>
         </BrowserRouter>
