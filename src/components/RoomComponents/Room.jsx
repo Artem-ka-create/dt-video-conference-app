@@ -23,8 +23,8 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
   const [isRunning,setIsRunningStatus] =useState();
 
     useEffect(() => {
-        setIsRunningStatus(roomDetail.conferences.find(conf => conf.completedDate==null));
-    }, [roomDetail.conferences]);
+        setIsRunningStatus(localRoom.conferences.find(conf => conf.completedDate==null));
+    }, [roomDetail.conferences,localRoom]);
 
   const handleDeleteOfRoom = () => {
       // TODO:  MAKE room removing correctly

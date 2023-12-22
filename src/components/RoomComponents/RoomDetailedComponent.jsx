@@ -41,6 +41,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
     const navigate = useNavigate();
 
 
+
     const [newUserData, setNewUserData] = useState({email: ""});
 
     function formatDateToUser(inputDateString){
@@ -59,6 +60,14 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         const seconds = inputDate.getUTCSeconds();
 
         return`${dayOfWeek} (${inputDate.getUTCDate()}) ${month} (${year}) - ${hours+1}:${minutes}:${seconds}`;
+    }
+
+    function generateLastMeetingDate(conferencesList){
+        if (conferencesList.length===0){
+            return '';
+        }else{
+            return 'Last session finished, ' + formatDateToUser(conferencesList.reverse()[0].completedDate);
+        }
     }
 
     function calculateDuration(startTimeStr, endTimeStr) {
@@ -108,7 +117,20 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
     // ] = useState(generateMeetingTable());
 
     useEffect(() => {
-        // productService.getProductsSmall().then((data) => SetProducts({ products: data }));
+
+
+        axiosPrivate.get(`/api/v1/rooms/${roomInfo.id}`).then((response) => {
+
+            console.log('GET DETAILED ROOM --> ', response);
+            updateRoom(response.data);
+
+        }).catch((err) => {
+            console.log(err)
+            showToast('error', 'Oh', `User ${auth.email} cannot access to this room `, 2000)
+        });
+
+
+
     }, [])
     const handleUsersCategory = () => {
         setCategory(RoomCategories.UsersCategory)
@@ -288,10 +310,10 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                             }
                         </div>
                     </div>
-                    {isRunningStatus ? <div className={styles.liveBox}>Live</div> :
+                    {isRunningStatus  ? <div className={styles.liveBox}>Live</div> :
                         <div style={{color: '#909090'}}>
                                 <></>
-                                <>Last session finished ,vf </>
+                                <>{generateLastMeetingDate(roomInfo.conferences)}</>
                         </div>
                     }
                 </div>
