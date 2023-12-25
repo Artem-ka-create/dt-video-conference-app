@@ -38,3 +38,8 @@ export const CreateMeetingDTO = (username) => {
 export const NewRoomDataDTO = {
     meetingName: ''
 }
+export const InviteDTO = {
+    email:'',
+    password:'',
+    username:''
+}

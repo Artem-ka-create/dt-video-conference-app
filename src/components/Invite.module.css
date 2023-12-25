@@ -1,0 +1,52 @@
+
+
+.invite_container{
+    margin:auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    height: 100vh;
+    width:45vw;
+}
+
+.separator_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+.back_btn_container{
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    width:45vw;
+    margin-bottom:15px;
+}
+.back_btn{
+
+    background:#E10075;
+    border: 1px solid #E10075
+}
+.separator {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    margin: 20px 0;
+
+}
+
+.separator_line {
+    height:2px;
+    width:25vw;
+    background:black;
+}
+
+.separator_text {
+    font-size:18px;
+    margin: 0 10px;
+}
