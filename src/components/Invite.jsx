@@ -21,19 +21,21 @@ function Invite() {
 
     const arrowBackIcon = <FontAwesomeIcon icon={faArrowLeft}/>;
 
-    const onLoginHandler = ((event) => {
+    const onLoginHandler = (event) => {
         event.preventDefault();
 
         console.log(inputData);
         setInputData(InviteDTO);
-
-    });
+        SetButtonStatus(true);
+    };
 
     const onNoAuthHandler =(event) => {
         event.preventDefault();
 
         console.log(inputData);
         setInputData(InviteDTO);
+        SetButtonStatus(true);
+
     }
 
     function onNoAuthMode() {
@@ -49,18 +51,13 @@ function Invite() {
 
     useEffect(() => {
 
+        const isEmailValid = inputData.email.length > 0 && handleEmail(inputData.email).length === 0;
+        const isPasswordValid = inputData.password.length > 0 && handlePassword(inputData.password).length === 0;
+        const isUsernameValid = inputData.username.length > 0 && handleSimpleField(inputData.username).length === 0;
 
-        if (!noAuthStatus ) {
+        const isValid = (!noAuthStatus && isEmailValid && isPasswordValid) || (noAuthStatus && isUsernameValid);
 
-            if (inputData.email.length > 0 && handleEmail(inputData.email).length === 0 &&
-                // TODO: change to handlePassword words limit
-                inputData.password.length > 0 && handlePassword(inputData.password).length === 0) {
-
-                SetButtonStatus(false);
-            } else {
-                SetButtonStatus(true);
-            }
-        }
+        SetButtonStatus(!isValid);
 
     }, [inputData, noAuthStatus]);
 
@@ -84,7 +81,7 @@ function Invite() {
                             entity='username' value={inputData.username}
                             setInput={setInputData} Data={inputData} handleFunction={handleSimpleField}/>
 
-                        <SubmitButton btnDisabled={false} btnText={"Connect"}/>
+                        <SubmitButton btnDisabled={btnStatus} btnText={"Connect"}/>
                     </form>
                 </div>
 
