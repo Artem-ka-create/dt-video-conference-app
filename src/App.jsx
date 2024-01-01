@@ -63,7 +63,7 @@ function App() {
                 <Route path='/join/jitsi' element={<Jitsi />}/>
               </Route>
 
-              <Route path='/invite' element={<Invite />}/>
+              <Route path='/invite' element={<Invite showToast={handleShowToastEvent} />}/>
 
             </Routes>
           </div>

@@ -10,32 +10,171 @@ import {InviteDTO} from "../data/Dtos";
 import {Button} from "primereact/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import hex_sha1 from "../libs/paj";
+import {useNavigate} from "react-router-dom";
+import {Technologies} from "../data/TechData";
+import {axiosPrivate} from "../api/axios";
+import axios from "../api/axios"
+import useAuth from "../hooks/useAuth";
 
 
-function Invite() {
+function Invite({showToast}) {
 
 
     const [securityField, SetSecurityField] = useState(true);
     const [btnStatus, SetButtonStatus] = useState(true);
     const [noAuthStatus, setNoAuthStatus] = useState(false);
 
+    const {setAuth} = useAuth();
+
+
+    // const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+
+
     const arrowBackIcon = <FontAwesomeIcon icon={faArrowLeft}/>;
+
+
+    const joinRoom = async (params,isMounted,controller,reqestBody) => {
+        try {
+
+            // eslint-disable-next-line
+            const response = await axiosPrivate.put(`/api/v1/conferences/join-conference`, {
+                signal: controller.signal,
+                conferenceName : reqestBody.conferenceName,
+                username: reqestBody.username,
+                userId: reqestBody.userId
+            });
+
+            if (isMounted) {
+                console.log("JOIN INvIGTE Response --> ", response)
+
+                if (params.get('technology') === Technologies.JITSI){
+                    console.log("LOLO->" , "https://jitsi.hamburg.ccc.de/"+ reqestBody.conferenceName);
+                    let joinData = {state: {url: "https://jitsi.hamburg.ccc.de/"+ reqestBody.conferenceName, username: inputData.username}};
+                    navigate('/join/jitsi', joinData);
+                }else{
+                    let joinData = {state: {url: "https://jitsi.hamburg.ccc.de/"+ response.data.conferenceName, username: inputData.username}};
+                    navigate('/join/bbb', joinData);
+                }
+
+                setInputData(InviteDTO);
+                SetButtonStatus(true);
+                showToast('success', "Great", "User has been successfully joined");
+
+            }
+        } catch (err) {
+            console.error(err);
+            showToast("error", "Oh", "Something went wrong", 2000);
+
+        }
+    }
+
 
     const onLoginHandler = (event) => {
         event.preventDefault();
 
+
         console.log(inputData);
         setInputData(InviteDTO);
         SetButtonStatus(true);
+        console.log(window.location.href);
+
+        axios.post("/api/auth/login",{usernameOrEmail:inputData.email,password:inputData.password},
+            {
+                headers:{"Content-Type":'application/json'},
+                withCredentials:true
+            }).then((response)=>{
+
+            console.log(response);
+
+            const accessToken = response?.data?.jwtAuthResponse;
+            const id = response?.data?.id;
+            const roles = response?.data?.roles;
+            const name = response?.data?.name;
+            const surname = response?.data?.surname;
+            const username = response?.data?.username;
+            const email = response?.data?.email;
+            const password = response?.data?.password;
+
+
+            // setAuth from response
+            setAuth( {username, id ,password, email, name, surname, roles , accessToken} )
+            localStorage.setItem('DTMeetToken', accessToken.accessToken);
+            localStorage.setItem('DTMeetUserId', id);
+
+            let currentUrl = new URL(window.location.href);
+            const params = new URLSearchParams(new URL(currentUrl).search);
+
+            let reqestBody = {
+                conferenceName:params.get('conferenceName'),
+                username:username,
+                userId: id
+            }
+
+            let isMounted = true;
+            const controller = new AbortController();
+
+            showToast('success','Great','You are in DT Meet',2000);
+
+            joinRoom(params,isMounted,controller, reqestBody);
+
+            //GOOD
+        }).catch((err)=>{
+
+            if(err?.response){
+                showToast('error','Something went wrong', 'No server response',2500);
+            }
+            else if (err.response?.status === 400 ){
+                showToast('error','Something went wrong', 'Missing Username or Password',2500);
+            }
+            else if (err.response?.status === 401 ){
+                showToast('error','Something went wrong', 'Unauthorized',2500);
+            }
+            else{
+                showToast('error','Something went wrong', 'Login failed',2500);
+            }
+        });
+
     };
 
-    const onNoAuthHandler =(event) => {
+
+
+    const onSubmitHandler = (event) => {
         event.preventDefault();
 
-        console.log(inputData);
-        setInputData(InviteDTO);
-        SetButtonStatus(true);
+        let currentUrl = new URL(window.location.href);
+        const params = new URLSearchParams(new URL(currentUrl).search);
 
+        // https://jitsi.hamburg.ccc.de/tyujtyy
+        // JUST FOR JITSI
+        let reqestBody = {
+            conferenceName:params.get('conferenceName'),
+            username:inputData.username,
+            userId: ''
+        }
+
+        let isMounted = true;
+        const controller = new AbortController();
+
+
+        joinRoom(params,isMounted,controller, reqestBody);
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+
+    };
+    function validateInvitationUrl(currentUrl){
+
+        const params = new URLSearchParams(new URL(currentUrl).search);
+        let checksum = params.get('checksum');
+        currentUrl.searchParams.delete('checksum');
+
+        let generatedHex = hex_sha1(currentUrl.toString() + checksum)
+
+        return generatedHex === checksum;
     }
 
     function onNoAuthMode() {
@@ -48,6 +187,9 @@ function Invite() {
 
     const [inputData, setInputData] = useState(InviteDTO)
 
+    useEffect(() => {
+        console.log("URL-> validate",validateInvitationUrl(new URL(window.location.href)));
+    }, []);
 
     useEffect(() => {
 
@@ -75,7 +217,7 @@ function Invite() {
                     </div>
 
 
-                    <form onSubmit={onNoAuthHandler} style={{width: '45vw'}}>
+                    <form onSubmit={onSubmitHandler} style={{width: '45vw'}}>
                         <Input
                             labelText={"Username"}
                             entity='username' value={inputData.username}

@@ -31,7 +31,6 @@ function Login({showToast}) {
 
     event.preventDefault();
 
-
     axios.post("/api/auth/login",{usernameOrEmail:loginData.email,password:loginData.password},
       {
         headers:{"Content-Type":'application/json'},
@@ -63,11 +62,6 @@ function Login({showToast}) {
           //GOOD
         showToast('success','Great','You are in DT Meet',2000);
         navigate(from, {replace: true });
-        
-        
-        
-
-
       }).catch((err)=>{
         
         if(err?.response){
@@ -82,8 +76,6 @@ function Login({showToast}) {
         else{
           showToast('error','Something went wrong', 'Login failed',2500); 
         }
-        // BADDD
-
       });
   });
   const handleSignUp = () =>{navigate('/register');};
