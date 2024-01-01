@@ -12,7 +12,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import hex_sha1 from "../libs/paj";
 import {useNavigate} from "react-router-dom";
-import {Technologies} from "../data/TechData";
+import {SECRET_TOKEN, Technologies} from "../data/TechData";
 import {axiosPrivate} from "../api/axios";
 import axios from "../api/axios"
 import useAuth from "../hooks/useAuth";
@@ -35,13 +35,13 @@ function Invite({showToast}) {
     const arrowBackIcon = <FontAwesomeIcon icon={faArrowLeft}/>;
 
 
-    const joinRoom = async (params,isMounted,controller,reqestBody) => {
+    const joinRoom = async (params, isMounted, controller, reqestBody) => {
         try {
 
             // eslint-disable-next-line
             const response = await axiosPrivate.put(`/api/v1/conferences/join-conference`, {
                 signal: controller.signal,
-                conferenceName : reqestBody.conferenceName,
+                conferenceName: reqestBody.conferenceName,
                 username: reqestBody.username,
                 userId: reqestBody.userId
             });
@@ -49,12 +49,22 @@ function Invite({showToast}) {
             if (isMounted) {
                 console.log("JOIN INvIGTE Response --> ", response)
 
-                if (params.get('technology') === Technologies.JITSI){
-                    console.log("LOLO->" , "https://jitsi.hamburg.ccc.de/"+ reqestBody.conferenceName);
-                    let joinData = {state: {url: "https://jitsi.hamburg.ccc.de/"+ reqestBody.conferenceName, username: inputData.username}};
+                if (params.get('technology') === Technologies.JITSI) {
+                    console.log("LOLO->", "https://jitsi.hamburg.ccc.de/" + reqestBody.conferenceName);
+                    let joinData = {
+                        state: {
+                            url: "https://jitsi.hamburg.ccc.de/" + reqestBody.conferenceName,
+                            username: inputData.username
+                        }
+                    };
                     navigate('/join/jitsi', joinData);
-                }else{
-                    let joinData = {state: {url: "https://jitsi.hamburg.ccc.de/"+ response.data.conferenceName, username: inputData.username}};
+                } else {
+                    let joinData = {
+                        state: {
+                            url: "https://jitsi.hamburg.ccc.de/" + response.data.conferenceName,
+                            username: inputData.username
+                        }
+                    };
                     navigate('/join/bbb', joinData);
                 }
 
@@ -80,11 +90,11 @@ function Invite({showToast}) {
         SetButtonStatus(true);
         console.log(window.location.href);
 
-        axios.post("/api/auth/login",{usernameOrEmail:inputData.email,password:inputData.password},
+        axios.post("/api/auth/login", {usernameOrEmail: inputData.email, password: inputData.password},
             {
-                headers:{"Content-Type":'application/json'},
-                withCredentials:true
-            }).then((response)=>{
+                headers: {"Content-Type": 'application/json'},
+                withCredentials: true
+            }).then((response) => {
 
             console.log(response);
 
@@ -99,7 +109,7 @@ function Invite({showToast}) {
 
 
             // setAuth from response
-            setAuth( {username, id ,password, email, name, surname, roles , accessToken} )
+            setAuth({username, id, password, email, name, surname, roles, accessToken})
             localStorage.setItem('DTMeetToken', accessToken.accessToken);
             localStorage.setItem('DTMeetUserId', id);
 
@@ -107,37 +117,33 @@ function Invite({showToast}) {
             const params = new URLSearchParams(new URL(currentUrl).search);
 
             let reqestBody = {
-                conferenceName:params.get('conferenceName'),
-                username:username,
+                conferenceName: params.get('conferenceName'),
+                username: username,
                 userId: id
             }
 
             let isMounted = true;
             const controller = new AbortController();
 
-            showToast('success','Great','You are in DT Meet',2000);
+            showToast('success', 'Great', 'You are in DT Meet', 2000);
 
-            joinRoom(params,isMounted,controller, reqestBody);
+            joinRoom(params, isMounted, controller, reqestBody);
 
             //GOOD
-        }).catch((err)=>{
+        }).catch((err) => {
 
-            if(err?.response){
-                showToast('error','Something went wrong', 'No server response',2500);
-            }
-            else if (err.response?.status === 400 ){
-                showToast('error','Something went wrong', 'Missing Username or Password',2500);
-            }
-            else if (err.response?.status === 401 ){
-                showToast('error','Something went wrong', 'Unauthorized',2500);
-            }
-            else{
-                showToast('error','Something went wrong', 'Login failed',2500);
+            if (err?.response) {
+                showToast('error', 'Something went wrong', 'No server response', 2500);
+            } else if (err.response?.status === 400) {
+                showToast('error', 'Something went wrong', 'Missing Username or Password', 2500);
+            } else if (err.response?.status === 401) {
+                showToast('error', 'Something went wrong', 'Unauthorized', 2500);
+            } else {
+                showToast('error', 'Something went wrong', 'Login failed', 2500);
             }
         });
 
     };
-
 
 
     const onSubmitHandler = (event) => {
@@ -149,8 +155,8 @@ function Invite({showToast}) {
         // https://jitsi.hamburg.ccc.de/tyujtyy
         // JUST FOR JITSI
         let reqestBody = {
-            conferenceName:params.get('conferenceName'),
-            username:inputData.username,
+            conferenceName: params.get('conferenceName'),
+            username: inputData.username,
             userId: ''
         }
 
@@ -158,7 +164,7 @@ function Invite({showToast}) {
         const controller = new AbortController();
 
 
-        joinRoom(params,isMounted,controller, reqestBody);
+        joinRoom(params, isMounted, controller, reqestBody);
 
         return () => {
             isMounted = false;
@@ -166,13 +172,14 @@ function Invite({showToast}) {
         }
 
     };
-    function validateInvitationUrl(currentUrl){
+
+    function validateInvitationUrl(currentUrl) {
 
         const params = new URLSearchParams(new URL(currentUrl).search);
         let checksum = params.get('checksum');
         currentUrl.searchParams.delete('checksum');
 
-        let generatedHex = hex_sha1(currentUrl.toString() + checksum)
+        let generatedHex = hex_sha1(currentUrl.toString() + SECRET_TOKEN);
 
         return generatedHex === checksum;
     }
@@ -186,10 +193,6 @@ function Invite({showToast}) {
     }
 
     const [inputData, setInputData] = useState(InviteDTO)
-
-    useEffect(() => {
-        console.log("URL-> validate",validateInvitationUrl(new URL(window.location.href)));
-    }, []);
 
     useEffect(() => {
 
@@ -206,56 +209,63 @@ function Invite({showToast}) {
     return (
         <div className={styles.invite_container}>
 
-
-            {noAuthStatus === true ?
-                <div style={{width: '45vw'}}>
-
-                    <div className={styles.back_btn_container}>
-
-                        <Button label={arrowBackIcon} className={styles.back_btn}
-                                onClick={() => setNoAuthStatus(false)}/>
-                    </div>
-
-
-                    <form onSubmit={onSubmitHandler} style={{width: '45vw'}}>
-                        <Input
-                            labelText={"Username"}
-                            entity='username' value={inputData.username}
-                            setInput={setInputData} Data={inputData} handleFunction={handleSimpleField}/>
-
-                        <SubmitButton btnDisabled={btnStatus} btnText={"Connect"}/>
-                    </form>
-                </div>
-
-                :
+            {validateInvitationUrl(new URL(window.location.href)) ?
 
                 <>
-                    <form onSubmit={onLoginHandler} style={{width: '45vw'}}>
-                        <h2>Login</h2>
+                    {noAuthStatus === true ?
+                        <div style={{width: '45vw'}}>
 
-                        <Input
-                            labelText={"Login"}
-                            entity='email' value={inputData.email}
-                            setInput={setInputData} Data={inputData} handleFunction={handleEmail}/>
+                            <div className={styles.back_btn_container}>
 
-                        <SecretInput
-                            labelText={"Password"}
-                            entity='password' value={inputData.password}
-                            setInput={setInputData} Data={inputData} handleFunction={handlePassword} type={'password'}
-                            privacyStatus={securityField} setPrivacyStatus={SetSecurityField}/>
+                                <Button label={arrowBackIcon} className={styles.back_btn}
+                                        onClick={() => setNoAuthStatus(false)}/>
+                            </div>
 
-                        <SubmitButton btnDisabled={btnStatus} btnText={"Connect"}/>
-                    </form>
 
-                    <div className={styles.separator}>
-                        <div className={styles.separator_line}></div>
-                        <div className={styles.separator_text}>or</div>
-                        <div className={styles.separator_line}></div>
-                    </div>
-                    <SimpleButton btnText={'Connect without auth'} hadleButtonFunction={onNoAuthMode}/>
+                            <form onSubmit={onSubmitHandler} style={{width: '45vw'}}>
+                                <Input
+                                    labelText={"Username"}
+                                    entity='username' value={inputData.username}
+                                    setInput={setInputData} Data={inputData} handleFunction={handleSimpleField}/>
 
+                                <SubmitButton btnDisabled={btnStatus} btnText={"Connect"}/>
+                            </form>
+                        </div>
+
+                        :
+
+                        <>
+                            <form onSubmit={onLoginHandler} style={{width: '45vw'}}>
+                                <h2>Login</h2>
+
+                                <Input
+                                    labelText={"Login"}
+                                    entity='email' value={inputData.email}
+                                    setInput={setInputData} Data={inputData} handleFunction={handleEmail}/>
+
+                                <SecretInput
+                                    labelText={"Password"}
+                                    entity='password' value={inputData.password}
+                                    setInput={setInputData} Data={inputData} handleFunction={handlePassword}
+                                    type={'password'}
+                                    privacyStatus={securityField} setPrivacyStatus={SetSecurityField}/>
+
+                                <SubmitButton btnDisabled={btnStatus} btnText={"Connect"}/>
+                            </form>
+
+                            <div className={styles.separator}>
+                                <div className={styles.separator_line}></div>
+                                <div className={styles.separator_text}>or</div>
+                                <div className={styles.separator_line}></div>
+                            </div>
+                            <SimpleButton btnText={'Connect without auth'} hadleButtonFunction={onNoAuthMode}/>
+
+                        </>
+
+                    }
                 </>
-
+                :
+                <h1>Wrong invite link, contact to administrator</h1>
             }
 
 

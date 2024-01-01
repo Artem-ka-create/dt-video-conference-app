@@ -18,6 +18,8 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {JitsiConfigData} from "../data/JitsiConfig";
 import {axiosPrivate} from "../api/axios";
 import { ProgressBar } from 'primereact/progressbar';
+import { CLIENT_BASE_URL, SECRET_TOKEN} from "../data/TechData";
+import hex_sha1 from "../libs/paj";
 
 
 // import { useHistory } from "react-router-dom";
@@ -169,6 +171,13 @@ function Jitsi() {
         // eslint-disable-next-line
     }, []);
 
+    function generateJitsiInviteLink(jitsiMeetingName){
+
+        let prepareLink = `${CLIENT_BASE_URL}/invite?conferenceName=${jitsiMeetingName}&technology=Jitsi`+SECRET_TOKEN;
+        let summ = hex_sha1(prepareLink);
+
+        return `${CLIENT_BASE_URL}/invite?conferenceName=${jitsiMeetingName}&technology=Jitsi&checksum=${summ}`;
+    }
 
     return (
         <div className="App">
@@ -207,6 +216,9 @@ function Jitsi() {
                     <div className={urlStyles.urlContainer}>
                         <button className={urlStyles.urlButton}
                                 onClick={() => navigator.clipboard.writeText(formData.url)}>Copy join URL
+                        </button>
+                        <button className={urlStyles.urlButton}
+                                onClick={() => navigator.clipboard.writeText(generateJitsiInviteLink(jitsiMeetingName))}>Copy invite link to meeting
                         </button>
                     </div>
                 </div>
