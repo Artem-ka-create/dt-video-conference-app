@@ -181,6 +181,7 @@ function Jitsi() {
 
     return (
         <div className="App">
+            <h3>{jitsiMeetingName}</h3>
             <div style={{marginTop: '30px'}} id="meet"/>
 
             <span>&nbsp;&nbsp;</span>

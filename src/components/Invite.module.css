@@ -41,9 +41,9 @@
 }
 
 .separator_line {
-    height:2px;
+    height:1px;
     width:25vw;
-    background:black;
+    background: #e52e8ab0;
 }
 
 .separator_text {

@@ -110,7 +110,8 @@ function Login({showToast}) {
         labelText={"Password"} 
         entity='password' value={loginData.password} 
         setInput={SetLoginData} Data={loginData} handleFunction={handlePassword} type={'password'} privacyStatus={securityField} setPrivacyStatus={SetSecurityField} />
-    
+
+
     <SubmitButton btnDisabled={btnStatus} btnText={"Sign In"}/>
 
     <div className={styles.registerContainer}>

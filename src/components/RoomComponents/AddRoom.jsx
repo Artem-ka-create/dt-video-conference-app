@@ -10,7 +10,6 @@ import {handleSimpleField} from '../../libs/handleLib';
 
 
 import {NewRoomDataDTO} from '../../data/Dtos';
-import {axiosPrivate} from "../../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
@@ -31,7 +30,7 @@ function AddRoom({showToast , roomsArr, roomInitialize}) {
     }
     const footerContent = (
         <div>
-            <Button label="Close" className={styles.dialogCloseBtnPrm}  onClick={() => closeDialog()}  />
+            <Button label="Close"  className={styles.dialogCloseBtnPrm}  onClick={() => closeDialog()}  />
             <Button label="Save" className={` ${disablebtnStatus ? styles.dialogSaveBtnPrm : styles.disabledStatusbtn  }`}  onClick={() => handleSaveNewRoom()}  />
 
         </div>

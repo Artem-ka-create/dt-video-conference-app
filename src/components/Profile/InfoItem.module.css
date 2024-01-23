@@ -1,0 +1,48 @@
+
+.itemInfo{
+
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    /*transition:0.4s;*/
+    padding : 0 25px;
+
+
+}
+
+.itemInfo:hover{
+
+    /*transition:0.4s;*/
+    background: rgba(225, 0, 117, 20%);
+}
+
+.borderLine{
+    height: 1px;
+    width: 100%;
+
+    background: #E10075;
+}
+.valuesContentContainer{
+
+    width: 100%;
+    display: flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin: 10px 0;
+}
+
+.valueContainer{
+    display: flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.editButton{
+    border:none;
+    background:none;
+    margin-left: 30px;
+    font-size: 17px;
+    padding: 0;
+
+}

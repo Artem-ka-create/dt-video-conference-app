@@ -9,6 +9,7 @@ import {handleJoinFormDataAuth, handleJoinFormDataNotAuth, handleSimpleField, ha
 import { JoinMeetingDTO} from '../../data/Dtos';
 import {JitsiConfigData} from "../../data/JitsiConfig";
 import {axiosPrivate} from "../../api/axios";
+import {Technologies} from "../../data/TechData";
 
 
 function JoinForm({onChangePanel, showToast}) {
@@ -20,9 +21,9 @@ function JoinForm({onChangePanel, showToast}) {
 
     function handleDomain(joinData){
         if (data.url.replace('https://', '').split('/')[0] === `${JitsiConfigData.DOMAIN}`) {
-            navigate('./jitsi', joinData);
+            navigate(`./${Technologies.JITSI}`, joinData);
         } else if (data.url.replace('https://', '').split('/')[1] === 'bigbluebutton') {
-            navigate('./bbb', joinData);
+            navigate(`./${Technologies.BBB}`, joinData);
         } else {
             alert(' This url not supports')
         }

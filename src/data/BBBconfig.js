@@ -1,6 +1,6 @@
 const serverConfig = {
-    url: 'https://artempetrenko.net/bigbluebutton/',
-    secret: 'RpwGE9VlQnQbnBEvKRE8LOA2iejPepAoYxWL8'
+    url: 'https://bbb-dt.de/bigbluebutton/',
+    secret: '4CkyJygfm5alstLcn2YR4DBaiKpJSdKaWz4QTu8C8'
   }
 
   export default serverConfig;

@@ -226,7 +226,7 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                 generateMeetingUrl({attendeePW: 'attPass', moderatorPW: 'modePass', name: roomInfo.name});
 
             let joinData = {state: {url: url, username: auth.username}};
-            technologyName === Technologies.JITSI ? navigate('./join/jitsi', joinData) : navigate('./join/bbb', joinData);
+            technologyName === Technologies.JITSI ? navigate(`./join/${Technologies.JITSI}`, joinData) : navigate(`./join/${Technologies.JITSI}`, joinData);
             showToast('success', "Great", "User successfuly joined to room");
 
         }).catch((err) => {

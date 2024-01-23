@@ -48,8 +48,9 @@ function Avatar({showToast}) {
 
     }
     const handleManageProfileClick = () => {
-        setshowDetail(false)
-        console.log('MANAGE PROFILE')
+        setshowDetail(false);
+        navigate('/profile');
+        console.log('MANAGE PROFILE');
     }
 
   return (

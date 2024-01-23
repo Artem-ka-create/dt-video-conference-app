@@ -1,0 +1,13 @@
+
+.editContainer{
+    margin:auto;
+    width: 50%;
+}
+.btnContainer{
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 4px;
+}

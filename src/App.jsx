@@ -15,6 +15,8 @@ import React, {useRef, useState} from 'react';
 import RequireAuth from './components/RequireAuth';
 import { Toast } from 'primereact/toast';
 import Invite from "./components/Invite";
+import Profile from "./components/Profile/Profile";
+import EditItem from "./components/Profile/EditItem";
 
 
 const ROLES = {
@@ -55,12 +57,18 @@ function App() {
 
                 <Route path='/register' element={<RegisterForm showToast={handleShowToastEvent} />}/>
                 <Route path='/signin' element={<Login showToast={handleShowToastEvent} />}/>
+
+                <Route path='/profile' element={<Profile />}/>
+                <Route path='/profile/edit' element={<EditItem showToast={handleShowToastEvent}/>}/>
+
                 <Route path='/create' element={<CreateForm onChangePanel = {setPanelStatus} showToast={handleShowToastEvent}/>}/>
+                <Route path='/create/BigBlueButton' element={<BBB />}/>
+                <Route path='/create/Jitsi' element={< Jitsi/>}/>
+
                 <Route path='/join' element={<JoinForm onChangePanel = {setPanelStatus} showToast={handleShowToastEvent} />}/>
-                <Route path='/create/bbb' element={<BBB />}/>
-                <Route path='/join/bbb' element={<BBB />}/>
-                <Route path='/create/jitsi' element={< Jitsi/>}/>
-                <Route path='/join/jitsi' element={<Jitsi />}/>
+                <Route path='/join/BigBlueButton' element={<BBB />}/>
+                <Route path='/join/Jitsi' element={<Jitsi />}/>
+
               </Route>
 
               <Route path='/invite' element={<Invite showToast={handleShowToastEvent} />}/>
