@@ -8,8 +8,9 @@ import styles from './JoinForm.module.css'
 import {handleJoinFormDataAuth, handleJoinFormDataNotAuth, handleSimpleField, handleUrl} from '../../libs/handleLib';
 import { JoinMeetingDTO} from '../../data/Dtos';
 import {JitsiConfigData} from "../../data/JitsiConfig";
-import {axiosPrivate} from "../../api/axios";
+
 import {Technologies} from "../../data/TechData";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 function JoinForm({onChangePanel, showToast}) {
@@ -33,6 +34,8 @@ function JoinForm({onChangePanel, showToast}) {
     const onSubmitHandler = (event) => {
         event.preventDefault();
 
+
+
         const regex = /\/([^/]+)$/;
         // https://jitsi.hamburg.ccc.de/tyujtyy
         // JUST FOR JITSI
@@ -49,7 +52,7 @@ function JoinForm({onChangePanel, showToast}) {
         const joinRoom = async () => {
             try {
 
-                // eslint-disable-next-line
+                 // eslint-disable-next-line
                 const response = await axiosPrivate.put(`/api/v1/conferences/join-conference`, {
                     signal: controller.signal,
                     conferenceName : reqestBody.conferenceName,

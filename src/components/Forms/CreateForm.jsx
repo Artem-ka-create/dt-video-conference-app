@@ -12,6 +12,7 @@ import {CreateMeetingDTO} from '../../data/Dtos'
 import {JitsiConfigData} from "../../data/JitsiConfig";
 import {axiosPrivate} from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 // TODO: disable usernameimput if authorized
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SimpleButton from './UI/Button/SimpleButton';
 import { useNavigate } from 'react-router-dom';
 import RoomListComponent from './RoomComponents/RoomListComponent';

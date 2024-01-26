@@ -8,8 +8,8 @@ export const RoomCategories = {
     SettingsCategory:'settings'
 }
 
-export const BASE_URL = 'https://b624-147-232-176-71.ngrok-free.app';
-export const CLIENT_BASE_URL = 'https://4ded-147-232-176-71.ngrok-free.app';
+export const BASE_URL = 'http://localhost:8080';
+export const CLIENT_BASE_URL = 'http://localhost:3000';
 
 
 //encrypted secret word = "telekom"

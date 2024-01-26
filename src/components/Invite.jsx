@@ -16,6 +16,7 @@ import {SECRET_TOKEN, Technologies} from "../data/TechData";
 import {axiosPrivate} from "../api/axios";
 import axios from "../api/axios"
 import useAuth from "../hooks/useAuth";
+import {createJoinUrl} from "../libs/bbbFunctions";
 
 
 function Invite({showToast}) {
@@ -57,7 +58,7 @@ function Invite({showToast}) {
                             username: inputData.username
                         }
                     };
-                    navigate('/join/jitsi', joinData);
+                    navigate('/join/'+Technologies.JITSI, joinData);
                 } else {
                     let joinData = {
                         state: {
@@ -65,7 +66,7 @@ function Invite({showToast}) {
                             username: inputData.username
                         }
                     };
-                    navigate('/join/bbb', joinData);
+                    navigate('/join/'+Technologies.BBB, joinData);
                 }
 
                 setInputData(InviteDTO);
@@ -146,25 +147,40 @@ function Invite({showToast}) {
     };
 
 
-    const onSubmitHandler = (event) => {
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
 
         let currentUrl = new URL(window.location.href);
         const params = new URLSearchParams(new URL(currentUrl).search);
-
-        // https://jitsi.hamburg.ccc.de/tyujtyy
-        // JUST FOR JITSI
-        let reqestBody = {
-            conferenceName: params.get('conferenceName'),
-            username: inputData.username,
-            userId: ''
-        }
+        let technology = params.get('technology')
 
         let isMounted = true;
         const controller = new AbortController();
 
 
-        joinRoom(params, isMounted, controller, reqestBody);
+        if (technology === Technologies.JITSI) {
+            // https://jitsi.hamburg.ccc.de/tyujtyy
+            let reqestBody = {
+                conferenceName: params.get('conferenceName'),
+                username: inputData.username,
+                userId: ''
+            }
+            joinRoom(params, isMounted, controller, reqestBody);
+
+        } else if (technology === Technologies.BBB) {
+
+
+            console.log("BBB:JOINURL-->",)
+            let joinData = {
+                state: {
+                    url: await createJoinUrl({meetingID: params.get('conferenceName')}, inputData.username, params.get('password')),
+                    username: inputData.username
+                }
+            };
+            navigate('/join/'+Technologies.BBB, joinData);
+
+        }
+
 
         return () => {
             isMounted = false;
