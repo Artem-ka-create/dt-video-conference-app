@@ -122,7 +122,7 @@ function BBB() {
                     </div>
                     <div className={styles.urlContainer}>
                         <button className={styles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(generateBBBInviteLink(getMeetingRoomName(),getModeratorPassword() ))}>Copy Invite
+                                onClick={() => navigator.clipboard.writeText(generateBBBInviteLink(getMeetingRoomName(),getAttendeePassword() ))}>Copy Invite
                             Attendee URL
                         </button>
                         <button className={styles.urlButton}

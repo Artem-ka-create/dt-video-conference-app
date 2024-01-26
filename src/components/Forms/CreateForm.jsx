@@ -13,6 +13,7 @@ import {JitsiConfigData} from "../../data/JitsiConfig";
 import {axiosPrivate} from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import axios from "../../api/axios";
 
 // TODO: disable usernameimput if authorized
 
@@ -44,7 +45,7 @@ function CreateForm({onChangePanel, showToast}) {
         const createRoom = async () => {
             try {
 
-                const response = await axiosPrivate.post(`/api/v1/conferences/add-conference`, {
+                const response = await axios.post(`/api/v1/conferences/add-conference`, {
                     signal: controller.signal,
                     conferenceName : urlData.name,
                     participantName: urlData.username,

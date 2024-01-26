@@ -11,7 +11,7 @@ import {JitsiConfigData} from "../../data/JitsiConfig";
 
 import {Technologies} from "../../data/TechData";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-
+import axios from "../../api/axios";
 
 function JoinForm({onChangePanel, showToast}) {
     const navigate = useNavigate();
@@ -53,7 +53,7 @@ function JoinForm({onChangePanel, showToast}) {
             try {
 
                  // eslint-disable-next-line
-                const response = await axiosPrivate.put(`/api/v1/conferences/join-conference`, {
+                const response = await axios.put(`/api/v1/conferences/join-conference`, {
                     signal: controller.signal,
                     conferenceName : reqestBody.conferenceName,
                     username: reqestBody.username,
