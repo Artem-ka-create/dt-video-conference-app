@@ -9,9 +9,9 @@ export const RoomCategories = {
 }
 
 // spring-boot-server-domain -> http://localhost:8080
-export const BASE_URL = 'https://1677-147-232-176-71.ngrok-free.app';
+export const BASE_URL = 'https://06f2-147-232-176-71.ngrok-free.app';
 // react-client-server-domain -> http://localhost:3000
-export const CLIENT_BASE_URL = 'https://982a-147-232-176-71.ngrok-free.app';
+export const CLIENT_BASE_URL = 'https://4cb0-147-232-176-71.ngrok-free.app';
 
 
 //encrypted secret word = "telekom"
