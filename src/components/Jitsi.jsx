@@ -58,6 +58,7 @@ function Jitsi() {
                     'livestreaming', 'etherpad', 'settings',
                     'videoquality', 'filmstrip', 'feedback', 'stats', 'shortcuts', 'tileview']
             },
+            interfaceConfigOverwrite: {SHOW_BRAND_WATERMARK: true,BRAND_WATERMARK_LINK: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Deutsche_Telekom_2022.svg/1200px-Deutsche_Telekom_2022.svg.png'},
             lang: 'en',
             width: '100%',
             height: 500,

@@ -1,3 +1,4 @@
 export const JitsiConfigData={
-    DOMAIN:'jitsi.hamburg.ccc.de'
+    DOMAIN: 'meet.isf.es'
+    // DOMAIN:'jitsi.hamburg.ccc.de'
 }
