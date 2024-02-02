@@ -17,6 +17,7 @@ import {axiosPrivate} from "../api/axios";
 import axios from "../api/axios"
 import useAuth from "../hooks/useAuth";
 import {createJoinUrl} from "../libs/bbbFunctions";
+import {JitsiConfigData} from "../data/JitsiConfig";
 
 
 function Invite({showToast}) {
@@ -51,10 +52,10 @@ function Invite({showToast}) {
                 console.log("JOIN INvIGTE Response --> ", response)
 
                 if (params.get('technology') === Technologies.JITSI) {
-                    console.log("LOLO->", "https://jitsi.hamburg.ccc.de/" + reqestBody.conferenceName);
+                    console.log("LOLO->", `https://${JitsiConfigData.DOMAIN}/` + reqestBody.conferenceName);
                     let joinData = {
                         state: {
-                            url: "https://jitsi.hamburg.ccc.de/" + reqestBody.conferenceName,
+                            url: `https://${JitsiConfigData.DOMAIN}/` + reqestBody.conferenceName,
                             username: inputData.username
                         }
                     };
@@ -62,7 +63,7 @@ function Invite({showToast}) {
                 } else {
                     let joinData = {
                         state: {
-                            url: "https://jitsi.hamburg.ccc.de/" + response.data.conferenceName,
+                            url: `https://${JitsiConfigData.DOMAIN}/` + response.data.conferenceName,
                             username: inputData.username
                         }
                     };
