@@ -103,10 +103,14 @@ function Jitsi() {
 
         const handleMuteStatus = (audio) => {
             console.log("handleMuteStatus", audio); // { muted: true }
+            setState({...state, ['isAudioMuted']: audio.muted})
+
         }
 
         const handleVideoStatus = (video) => {
-            console.log("handleVideoStatus", video); // { muted: true }
+            console.log("handleVideoStatus", ); // { muted: true }
+            setState({...state, ['isVideoMuted']: video.muted})
+
         }
 
         console.log('API---OBLECT--->>>', api);
@@ -140,11 +144,14 @@ function Jitsi() {
         if (command === 'toggleAudio') {
             console.log('AUDIOBTN');
             // eslint-disable-next-line
-            setState({...state, ['isAudioMuted']: !state.isAudioMuted})
+
+            // setState({...state, ['isAudioMuted']: !state.isAudioMuted})
+
+
         }
         if (command === 'toggleVideo') {
             // eslint-disable-next-line
-            setState({...state, ['isVideoMuted']: !state.isVideoMuted})
+            // setState({...state, ['isVideoMuted']: !state.isVideoMuted})
         }
         if (command === 'toggleRaiseHand') {
             // eslint-disable-next-line
