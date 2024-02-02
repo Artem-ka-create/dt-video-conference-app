@@ -22,3 +22,6 @@ code {
 .confirmation-content * {
   margin:  0 5px;
 }
+.watermark, .leftwatermark {
+  display: none !important;
+}
