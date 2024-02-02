@@ -8,8 +8,10 @@ export const RoomCategories = {
     SettingsCategory:'settings'
 }
 
-export const BASE_URL = 'http://localhost:8080';
-export const CLIENT_BASE_URL = 'http://localhost:3000';
+// spring-boot-server-domain
+export const BASE_URL = 'https://418d-147-232-176-71.ngrok-free.app';
+// react-client-server-domain 
+export const CLIENT_BASE_URL = 'https://b6b2-147-232-176-71.ngrok-free.app';
 
 
 //encrypted secret word = "telekom"
