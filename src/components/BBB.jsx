@@ -40,8 +40,8 @@ function BBB() {
 
         console.log('IFRAME-->',iframe);
         if (iframe!=null){
-            // var iframeDocument = iframe.contentWindow.document;
-            // console.log(iframeDocument);
+            var iframeDocument = iframe.contentWindow.document;
+            console.log(iframeDocument);
 
 // Now, you can query the DOM inside the iframeDocument
 //             console.log(iframeDocument.getElementById('app-settings-dropdown-menu'));
