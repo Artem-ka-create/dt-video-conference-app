@@ -25,3 +25,7 @@ code {
 .watermark, .leftwatermark {
   display: none !important;
 }
+
+frame #app-settings-dropdown-menu{
+  display:none;
+}

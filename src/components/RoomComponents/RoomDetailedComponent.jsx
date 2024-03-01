@@ -21,7 +21,7 @@ import {handleEmail} from "../../libs/handleLib";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import {JitsiConfigData} from "../../data/JitsiConfig";
-import {generateMeetingUrl} from "../../libs/bbbFunctions";
+import {createJoinUrl, generateMeetingUrl} from "../../libs/bbbFunctions";
 import {useNavigate} from "react-router-dom";
 
 
@@ -124,6 +124,13 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
             console.log('GET DETAILED ROOM --> ', response);
             updateRoom(response.data);
 
+            let unfinishedMeetingData = response.data.conferences?.filter((conf)=> conf.completedDate==null);
+            if (unfinishedMeetingData.length===1){
+                setTechnologyName(unfinishedMeetingData[0].technology);
+            }
+
+
+
         }).catch((err) => {
             console.log(err)
             showToast('error', 'Oh', `User ${auth.email} cannot access to this room `, 2000)
@@ -221,12 +228,26 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
             userId: auth.userId
         }).then((response) => {
 
-            let url = technologyName === Technologies.JITSI ?
-                `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name :
-                generateMeetingUrl({attendeePW: 'attPass', moderatorPW: 'modePass', name: roomInfo.name});
+            let url="";
+            if (technologyName === Technologies.JITSI){
+                url = `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name
+                navigate(`./join/${Technologies.JITSI}`, {state: {url: url, username: auth.username}})
+            }else{
+                createJoinUrl({meetingID: roomInfo.name}, auth.username,'1234').then((result)=> {
+                        navigate(`./join/${Technologies.BBB}`, {state: {url: result, username: auth.username}})
+                }
+                );
+            }
 
-            let joinData = {state: {url: url, username: auth.username}};
-            technologyName === Technologies.JITSI ? navigate(`./join/${Technologies.JITSI}`, joinData) : navigate(`./join/${Technologies.JITSI}`, joinData);
+            // let url = technologyName === Technologies.JITSI ?
+            //     `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name :
+            //     createJoinUrl({meetingID: roomInfo.name}, auth.username,'attPass').then((result)=> url = result);
+                // generateMeetingUrl({attendeePW: 'attPass', moderatorPW: 'modePass', name: roomInfo.name});
+
+            // let joinData = {state: {url: url, username: auth.username}};
+            // console.log("JOIN URL->", joinData);
+
+            // technologyName === Technologies.JITSI ? navigate(`./join/${Technologies.JITSI}`, joinData) : navigate(`./join/${Technologies.BBB}`, joinData);
             showToast('success', "Great", "User successfuly joined to room");
 
         }).catch((err) => {
@@ -252,11 +273,12 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                     resultUrl = `https://${JitsiConfigData.DOMAIN}/` + response.data.name;
                 } else if (technologyName === Technologies.BBB) {
                     resultUrl = generateMeetingUrl({
-                        name: createdConference.name,
+                        name: createdConference.conferenceName,
                         attendeePW: createdConference.attendeePassword,
                         moderatorPW: createdConference.moderatorPassword
                     })
                 }
+                console.log("RESULT URL ROOM--> ", resultUrl);
                 navigate(`./create/${technologyName}`, {
                     state: {
                         url: resultUrl,

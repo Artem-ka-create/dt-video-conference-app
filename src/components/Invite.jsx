@@ -51,20 +51,21 @@ function Invite({showToast}) {
             if (isMounted) {
                 console.log("JOIN INvIGTE Response --> ", response)
 
+                // CHECK BBB OR JITSI
                 if (params.get('technology') === Technologies.JITSI) {
-                    console.log("LOLO->", `https://${JitsiConfigData.DOMAIN}/` + reqestBody.conferenceName);
                     let joinData = {
                         state: {
                             url: `https://${JitsiConfigData.DOMAIN}/` + reqestBody.conferenceName,
-                            username: inputData.username
+                            username: reqestBody.username
                         }
                     };
                     navigate('/join/'+Technologies.JITSI, joinData);
                 } else {
+                    // create bbb
                     let joinData = {
                         state: {
-                            url: `https://${JitsiConfigData.DOMAIN}/` + response.data.conferenceName,
-                            username: inputData.username
+                            url: await createJoinUrl({meetingID: params.get('conferenceName')}, inputData.username, params.get('password')),
+                            username: reqestBody.username
                         }
                     };
                     navigate('/join/'+Technologies.BBB, joinData);
@@ -112,12 +113,16 @@ function Invite({showToast}) {
 
             // setAuth from response
             setAuth({username, id, password, email, name, surname, roles, accessToken})
+            // setInputDataUsername;
+            setInputData({...inputData, [username] : username });
+
             localStorage.setItem('DTMeetToken', accessToken.accessToken);
             localStorage.setItem('DTMeetUserId', id);
 
             let currentUrl = new URL(window.location.href);
             const params = new URLSearchParams(new URL(currentUrl).search);
 
+            // prepare BBB requestBody
             let reqestBody = {
                 conferenceName: params.get('conferenceName'),
                 username: username,
@@ -158,27 +163,27 @@ function Invite({showToast}) {
         let isMounted = true;
         const controller = new AbortController();
 
-
+        let reqestBody = {
+            conferenceName: params.get('conferenceName'),
+            username: inputData.username,
+            userId: ''
+        }
         if (technology === Technologies.JITSI) {
             // https://jitsi.hamburg.ccc.de/tyujtyy
-            let reqestBody = {
-                conferenceName: params.get('conferenceName'),
-                username: inputData.username,
-                userId: ''
-            }
+            // let reqestBody = {
+            //     conferenceName: params.get('conferenceName'),
+            //     username: inputData.username,
+            //     userId: ''
+            // }
             joinRoom(params, isMounted, controller, reqestBody);
 
         } else if (technology === Technologies.BBB) {
 
 
             console.log("BBB:JOINURL-->",)
-            let joinData = {
-                state: {
-                    url: await createJoinUrl({meetingID: params.get('conferenceName')}, inputData.username, params.get('password')),
-                    username: inputData.username
-                }
-            };
-            navigate('/join/'+Technologies.BBB, joinData);
+
+
+            joinRoom(params, isMounted, controller, reqestBody);
 
         }
 

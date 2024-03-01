@@ -140,6 +140,7 @@ function Jitsi() {
                 })
             }
             navigate('/');
+            window.location.reload();
         }
 
         if (command === 'toggleAudio') {

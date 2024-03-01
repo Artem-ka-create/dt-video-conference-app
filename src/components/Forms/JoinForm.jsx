@@ -6,16 +6,16 @@ import SubmitButton from '../UI/Button/SubmitButton'
 import Input from '../UI/Input/Input'
 import styles from './JoinForm.module.css'
 import {handleJoinFormDataAuth, handleJoinFormDataNotAuth, handleSimpleField, handleUrl} from '../../libs/handleLib';
-import { JoinMeetingDTO} from '../../data/Dtos';
+import {JoinMeetingDTO} from '../../data/Dtos';
 import {JitsiConfigData} from "../../data/JitsiConfig";
 
 import {Technologies} from "../../data/TechData";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../api/axios";
 
 function JoinForm({onChangePanel, showToast}) {
     const navigate = useNavigate();
     const [btnStatus, SetButtonStatus] = useState(true);
+
     const {auth} = useAuth();
 
     const [data, setData] = useState(JoinMeetingDTO(auth.username));
@@ -29,6 +29,21 @@ function JoinForm({onChangePanel, showToast}) {
             alert(' This url not supports')
         }
     }
+    function getMeetingIDBBB(url) {
+        const urlObject = new URL(url);
+        const searchParams = urlObject.searchParams;
+        return searchParams.get('meetingID');
+    }
+
+    function getConferenceNameByUrl(url){
+        console.log("hello")
+        let jitsiStatus = url.replace('https://', '').split('/')[0] === `${JitsiConfigData.DOMAIN}`;
+        let bbbStatus = url.replace('https://', '').split('/')[1] === 'bigbluebutton';
+
+        console.log(bbbStatus,jitsiStatus);
+
+        return jitsiStatus ?  url.match(/\/([^/]+)$/)[1] : bbbStatus? getMeetingIDBBB(url) : '';
+    }
 
 
     const onSubmitHandler = (event) => {
@@ -36,14 +51,15 @@ function JoinForm({onChangePanel, showToast}) {
 
 
 
-        const regex = /\/([^/]+)$/;
         // https://jitsi.hamburg.ccc.de/tyujtyy
         // JUST FOR JITSI
         let reqestBody = {
-            conferenceName:data.url.match(regex)[1],
+            conferenceName:getConferenceNameByUrl(data.url),
             username:data.username,
             userId: auth.id ? auth.id: ''
         }
+
+        console.log('Sending request---> ',reqestBody);
 
 
         let isMounted = true;
@@ -67,6 +83,8 @@ function JoinForm({onChangePanel, showToast}) {
                     setData(JoinMeetingDTO);
                     showToast('success', "Great", "User has been successfully joined");
 
+                }else{
+                    console.log(response)
                 }
             } catch (err) {
                 console.error(err);

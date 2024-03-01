@@ -1,6 +1,7 @@
 import serverConfig from '../data/BBBconfig'
 import hex_sha1 from './paj'
 
+
 export function generateMeetingUrl(data){
 
     let createHash ='create';
@@ -12,6 +13,15 @@ export function generateMeetingUrl(data){
     let hashedUrl = createHttp  + urlBase + '&checksum=' + hex_sha1(createHash+urlBase + serverConfig.secret);
     return serverConfig.url + 'api/' + hashedUrl;
   }
+
+export function endMeeting(bbbMeetingName,password){
+  let operation = "end";
+  let urlOperation = operation + '?';
+  let urlBase = `meetingID=${bbbMeetingName}&password=${password}`;
+  let hashedUrl = urlOperation+ urlBase +  '&checksum=' + hex_sha1(operation + urlBase + serverConfig.secret);
+  // https://test-install.blindsidenetworks.com/bigbluebutton/api/end?meetingID=random-4280604&password=ap&checksum=c58ca61dec45b3e7dbcbabe8e8c446ed719d56f1
+  return serverConfig.url + 'api/' + hashedUrl;
+}
 
   export function setNewUsernameToUrl(url, username){
     let param = url.split('bigbluebutton/api/join?')[1].split('&')[0];
