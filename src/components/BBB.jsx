@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom'
-// import axios from "axios";
 import {http} from 'bigbluebutton-js'
 import {
     createJoinUrl,
@@ -31,32 +30,8 @@ function BBB() {
     const {url, username, attendeePW, moderatorPW} = location.state;
     const [operation, setOperation] = useState('');
 
-    var iframe = document.getElementById('bbb');
 
 
-    // document.getElementById("bbb").addEventListener("click", Handler);
-
-    setTimeout(() => {
-
-        console.log('IFRAME-->',iframe);
-        if (iframe!=null){
-            var iframeDocument = iframe.contentWindow.document;
-            console.log(iframeDocument);
-
-// Now, you can query the DOM inside the iframeDocument
-//             console.log(iframeDocument.getElementById('app-settings-dropdown-menu'));
-        }
-
-
-        // iframe.contentWindow.body.addEventListener('click', Handler);
-
-    }, "3000");
-
-
-
-    function Handler() {
-        console.log("IT WORKS")
-    }
     const getMeetingRoomName = () =>{
         var ur = new URL(url);
         var params = new URLSearchParams(ur.search);
@@ -72,12 +47,6 @@ function BBB() {
         var params = new URLSearchParams(ur.search);
         return params.get("attendeePW");
     }
-
-    // const eventHandler = (event) => {
-    //     console.log('Event Name:', event.type);
-    //     console.log('Event:', event);
-    // };
-
 
     useEffect(() => {
 
@@ -112,8 +81,6 @@ function BBB() {
 
                 } else alert('WRONG URL');
             };
-
-
 
             getData();
 
