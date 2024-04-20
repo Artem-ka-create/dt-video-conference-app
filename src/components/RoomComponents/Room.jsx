@@ -31,8 +31,10 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
       axiosPrivate.put(`/api/v1/rooms/${localRoom.id}/users/${localStorage.getItem('DTMeetUserId')}`).then((resp)=>{
           console.log(resp);
           showToast("success", "Great", "You removed from room successfully");
+
           setShowConfirmation(false)
-          roomInitialize(roomsArr.filter((item)=> item.id !== localRoom.id));
+          window.location.reload()
+
       }).catch((err)=>{
           if (err){
               showToast("error", "Error", "No server connection");
@@ -88,7 +90,7 @@ function Room({roomDetail,showToast, roomsArr, roomInitialize}) {
               <></>
           }
 
-          < FontAwesomeIcon onClick={() => setShowConfirmation(true)} className={styles.operationBtn}
+          < FontAwesomeIcon onClick={() => setShowConfirmation(true)}  className={styles.operationBtn}
                             icon={faCircleXmark}/>
       </div>
         <div className={styles.titleName}>

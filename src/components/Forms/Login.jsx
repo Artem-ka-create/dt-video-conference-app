@@ -97,7 +97,7 @@ function Login({showToast}) {
 
   return (
     <>
-    <h2>Login :)</h2>
+    <h2>Login</h2>
     <form  onSubmit={onSubmitHandler} className={styles.form_container}>
 
 

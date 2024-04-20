@@ -13,8 +13,8 @@ import {
 import styles from './UI/Button/UrlButton.module.css';
 import {CLIENT_BASE_URL, SECRET_TOKEN, Technologies} from "../data/TechData";
 import hex_sha1 from "../libs/paj";
-import SimpleButton from "./UI/Button/SimpleButton";
 import {axiosPrivate} from "../api/axios";
+import {Button} from "primereact/button";
 
 function BBB() {
 
@@ -29,6 +29,9 @@ function BBB() {
 
     const {url, username, attendeePW, moderatorPW} = location.state;
     const [operation, setOperation] = useState('');
+
+
+
 
 
 
@@ -67,7 +70,7 @@ function BBB() {
 
                             setJoinUrl(await createJoinUrl(response, username, moderatorPW));
 
-                        } else alert('CANNOT CREATE MEETING');
+                        } else console.warn('CANNOT CREATE MEETING');
 
                     } else if (op === 'join') {
                         const response = await http(generateIsMeetingExistsURL(getMeetingIdFromUrl(url)));
@@ -75,11 +78,11 @@ function BBB() {
                             if (username.length === 0) setJoinUrl(url);
                             else setJoinUrl(setNewUsernameToUrl(url, username));
 
-                        } else alert('Meeting not started');
+                        } else console.warn('Meeting not started');
 
-                    } else alert('THIS URL OPERATION NOT SUPPORTS');
+                    } else console.warn('THIS URL OPERATION NOT SUPPORTS');
 
-                } else alert('WRONG URL');
+                } else console.warn('WRONG URL');
             };
 
             getData();
@@ -110,14 +113,18 @@ function BBB() {
 
             axiosPrivate.put(`api/v1/conferences/close-conference/${getMeetingRoomName()}`).then((response) => {
                     console.log('Finish meeting response --> ', response.data);
+                    navigate('/');
+                    window.location.reload();
                 }
             ).catch((err) => {
                 console.warn('Somethig is wrong', err);
             });
-
+        }else{
             navigate('/');
             window.location.reload();
         }
+
+
     }
 
     return (
@@ -133,7 +140,8 @@ function BBB() {
                                 sandbox="allow-same-origin allow-scripts allow-modals allow-forms "
                         ></iframe>
 
-                        <SimpleButton hadleButtonFunction={onHandleFinishBBB} btnText={"Finish BBB Meeting"} />
+                        <Button label={"Finish Meeting"} severity={"danger"} onClick={onHandleFinishBBB}/>
+                        {/*<SimpleButton hadleButtonFunction={} btnText={"Finish BBB Meeting"} />*/}
 
                     </>
             }
