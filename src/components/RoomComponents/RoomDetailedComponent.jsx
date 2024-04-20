@@ -66,7 +66,8 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         if (conferencesList.length===0){
             return '';
         }else{
-            return 'Last session finished, ' + formatDateToUser(conferencesList.reverse()[0].completedDate);
+            console.log(conferencesList)
+            return 'Last session finished, ' + formatDateToUser(JSON.parse(JSON.stringify(conferencesList)).reverse()[0].completedDate);
         }
     }
 
