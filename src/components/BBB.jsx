@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom'
 import {http} from 'bigbluebutton-js'
@@ -15,12 +15,14 @@ import {CLIENT_BASE_URL, SECRET_TOKEN, Technologies} from "../data/TechData";
 import hex_sha1 from "../libs/paj";
 import {axiosPrivate} from "../api/axios";
 import {Button} from "primereact/button";
+import {Toast} from "primereact/toast";
 
 function BBB() {
 
     const location = useLocation();
     const [joinUrl, setJoinUrl] = useState('');
     const navigate = useNavigate();
+    const toast = useRef(null);
 
     console.log(location);
 
@@ -127,9 +129,17 @@ function BBB() {
 
     }
 
+    function copyEvent(entity,urlToCopy){
+        navigator.clipboard.writeText(urlToCopy);
+        toast.current.show({severity:'info', summary: `URL Copy`, detail:`${entity} url copied`, life: 1500});
+    }
+
     return (
 
         <>
+
+            <Toast ref={toast} />
+
             {
                 joinUrl.length === 0 ?
                     <div>BBB</div> :
@@ -141,7 +151,6 @@ function BBB() {
                         ></iframe>
 
                         <Button label={"Finish Meeting"} severity={"danger"} onClick={onHandleFinishBBB}/>
-                        {/*<SimpleButton hadleButtonFunction={} btnText={"Finish BBB Meeting"} />*/}
 
                     </>
             }
@@ -149,26 +158,22 @@ function BBB() {
 
 
                 <>
-                    <div className={styles.urlContainer}>
-                        <button className={styles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(attendeeURL)}>Copy
-                            Attendee join URL
-                        </button>
-                        <button className={styles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(moderatorURL)}> Copy Moderator join URL
-                        </button>
+                    <div className={styles.urlContainer} style={{marginBottom:'1rem'}}>
+
+                        <Button label="Copy Attendee join URL" className="p-button-outlined" onClick={
+                            ()=> copyEvent('Attendee', attendeeURL)} />
+
+                        <Button label="Copy Moderator join URL" className="p-button-outlined" onClick={
+                            ()=> copyEvent('Moderator', moderatorURL)} />
+
                     </div>
                     <div className={styles.urlContainer}>
-                        <button className={styles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(generateBBBInviteLink(getMeetingRoomName(), getAttendeePassword()))}>Copy
-                            Invite
-                            Attendee URL
-                        </button>
-                        <button className={styles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(generateBBBInviteLink(getMeetingRoomName(), getModeratorPassword()))}> Copy
-                            Invite
-                            Moderator URL
-                        </button>
+                        <Button label="Copy DTMeet Attendee invite URL" className="p-button-outlined" onClick={
+                            ()=> copyEvent('DTMeet Attendee invite', generateBBBInviteLink(getMeetingRoomName(), getAttendeePassword()))} />
+
+                        <Button label="Copy DTMeet Moderator invite URL" className="p-button-outlined" onClick={
+                            ()=> copyEvent('DTMeet Moderator invite', generateBBBInviteLink(getMeetingRoomName(), getModeratorPassword()))} />
+
                     </div>
                 </>
             }
