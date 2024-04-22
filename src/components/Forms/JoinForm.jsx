@@ -36,11 +36,8 @@ function JoinForm({onChangePanel, showToast}) {
     }
 
     function getConferenceNameByUrl(url){
-        console.log("hello")
         let jitsiStatus = url.replace('https://', '').split('/')[0] === `${JitsiConfigData.DOMAIN}`;
         let bbbStatus = url.replace('https://', '').split('/')[1] === 'bigbluebutton';
-
-        console.log(bbbStatus,jitsiStatus);
 
         return jitsiStatus ?  url.match(/\/([^/]+)$/)[1] : bbbStatus? getMeetingIDBBB(url) : '';
     }
@@ -58,9 +55,6 @@ function JoinForm({onChangePanel, showToast}) {
             username:data.username,
             userId: auth.id ? auth.id: ''
         }
-
-        console.log('Sending request---> ',reqestBody);
-
 
         let isMounted = true;
         const controller = new AbortController();
@@ -103,7 +97,6 @@ function JoinForm({onChangePanel, showToast}) {
     };
 
     useEffect(() => {
-        console.log("DTTAAA-->",data)
         SetButtonStatus(auth.id? handleJoinFormDataAuth(data): handleJoinFormDataNotAuth(data));
     }, [data, auth.id])
 

@@ -29,11 +29,9 @@ function CreateForm({onChangePanel, showToast}) {
     );
 
     function onToggleBtnHandle(event) {
-        console.log(event);
         let result = event ? Technologies.BBB : Technologies.JITSI
         // eslint-disable-next-line
         setUrlData({...urlData, ['technologyName']: result})
-        console.log(urlData);
     }
 
     const onSubmitHandler = (event) => {
@@ -54,7 +52,7 @@ function CreateForm({onChangePanel, showToast}) {
                     moderatorPassword: urlData.moderatorPW,
                     userId : auth.id ? auth.id : null
                 });
-                console.log('RESPONSEEE-> ', response.data);
+                console.log('Create room response', response.data);
                 if (isMounted) {
                     if (urlData.technologyName === Technologies.JITSI) {
                         result = `https://${JitsiConfigData.DOMAIN}/` + urlData.name;
@@ -92,7 +90,6 @@ function CreateForm({onChangePanel, showToast}) {
     };
 
     useEffect(() => {
-        console.log("UELDADAA->",urlData);
         SetButtonStatus(auth.id ? handleCreateFormDataAuth(urlData) : handleCreateFormDataNotAuth(urlData));
     }, [urlData,auth.id])
 
