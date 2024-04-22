@@ -95,6 +95,12 @@
     transition: transform 0.3s ease;
   }
 
+  .magenta_btn{
+      background: #E10075;
+      border: 1px solid #E10075;
+      margin: 0.5rem 0;
+  }
+
 .bottomContainer{
     width: 100%;
     height: 400px;

@@ -17,7 +17,7 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import Input from "../UI/Input/Input";
 import SubmitButton from "../UI/Button/SubmitButton";
-import {handleEmail} from "../../libs/handleLib";
+import {handleEmail, handleSimpleField} from "../../libs/handleLib";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import {JitsiConfigData} from "../../data/JitsiConfig";
@@ -26,7 +26,6 @@ import {useNavigate} from "react-router-dom";
 
 
 function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus}) {
-    const copyLinkIcon = <FontAwesomeIcon icon={faLink}/>
     const backArrowIcon = <FontAwesomeIcon icon={faArrowLeft}/>
     const addUserIcon = <FontAwesomeIcon icon={faPlus}/>
     const startMeetingIcon = <FontAwesomeIcon icon={faVideo}/>
@@ -36,15 +35,18 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
     const [addUserStatus, setAddUserStatus] = useState(false);
     const [addUserBtnStatus, setAddUserBtnStatus] = useState(true);
     const [technologyName, setTechnologyName] = useState(Technologies.JITSI);
+
+
     const axiosPrivate = useAxiosPrivate();
     const {auth} = useAuth();
     const navigate = useNavigate();
 
 
-
     const [newUserData, setNewUserData] = useState({email: ""});
+    const [roomData, setRoomData] = useState({name: ""})
 
-    function formatDateToUser(inputDateString){
+
+    function formatDateToUser(inputDateString) {
         const inputDate = new Date(inputDateString);
 
         const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -59,13 +61,13 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         const minutes = inputDate.getUTCMinutes();
         const seconds = inputDate.getUTCSeconds();
 
-        return`${dayOfWeek} (${inputDate.getUTCDate()}) ${month} (${year}) - ${hours+1}:${minutes}:${seconds}`;
+        return `${dayOfWeek} (${inputDate.getUTCDate()}) ${month} (${year}) - ${hours + 1}:${minutes}:${seconds}`;
     }
 
-    function generateLastMeetingDate(conferencesList){
-        if (conferencesList.length===0){
+    function generateLastMeetingDate(conferencesList) {
+        if (conferencesList.length === 0) {
             return '';
-        }else{
+        } else {
             console.log(conferencesList)
             return 'Last session finished, ' + formatDateToUser(JSON.parse(JSON.stringify(conferencesList)).reverse()[0].completedDate);
         }
@@ -92,16 +94,40 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
     }
 
     // TODO: finish generate Meeting Table
-    function generateMeetingTable(){
-      let meetingArr=[];
+    function generateMeetingTable() {
+        let meetingArr = [];
 
-      roomInfo.conferences.forEach((item) => {
-        meetingArr.push({ duration:calculateDuration(item.createdDate,item.completedDate), startedAt: formatDateToUser(item.createdDate), finishedAt: formatDateToUser(item.completedDate), attendeesCount: item.participants.length});
-      });
+        roomInfo.conferences.forEach((item) => {
+            meetingArr.push({
+                duration: calculateDuration(item.createdDate, item.completedDate),
+                startedAt: formatDateToUser(item.createdDate),
+                finishedAt: formatDateToUser(item.completedDate),
+                attendeesCount: item.participants.length
+            });
+        });
 
 
-      return meetingArr.reverse();
+        return meetingArr.reverse();
     }
+
+    const onNewRoomDataSubmit = (event) => {
+        event.preventDefault();
+
+        axiosPrivate.put(`/api/v1/rooms/${roomInfo.id}`,{name:roomData.name}).then((response) => {
+
+            console.log('GET DETAILED ROOM --> ', response);
+            updateRoom(response.data);
+            showToast('success', 'Great!', 'Room data was updated successfully', 2000);
+            setRoomData(response.data);
+
+        }).catch((err) => {
+            console.log(err)
+            showToast('error', 'Oh', `Room name was not changed`, 2000)
+        });
+
+
+    }
+
     function generateUserTable() {
         let userArr = [];
 
@@ -125,11 +151,10 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
             console.log('GET DETAILED ROOM --> ', response);
             updateRoom(response.data);
 
-            let unfinishedMeetingData = response.data.conferences?.filter((conf)=> conf.completedDate==null);
-            if (unfinishedMeetingData.length===1){
+            let unfinishedMeetingData = response.data.conferences?.filter((conf) => conf.completedDate == null);
+            if (unfinishedMeetingData.length === 1) {
                 setTechnologyName(unfinishedMeetingData[0].technology);
             }
-
 
 
         }).catch((err) => {
@@ -138,20 +163,23 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
         });
 
 
-
     }, [])
     const handleUsersCategory = () => {
         setCategory(RoomCategories.UsersCategory)
+        roomData.name && setRoomData({name:""})
+
         setEtities(generateUserTable());
 
     }
     const handleMeetingsCategory = () => {
         setCategory(RoomCategories.MeetingsCategory)
+        roomData.name && setRoomData({name:""})
+
         setEtities(generateMeetingTable());
     }
     const handleSettingsCategory = () => {
+        roomData.name && setRoomData({name:""})
         setCategory(RoomCategories.SettingsCategory)
-
     }
 
     function onToggleBtnHandle() {
@@ -185,10 +213,11 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
 
     const handleBackButton = () => {
 
-        if (!isRunningStatus) {
 
             if (addUserStatus === true) {
+
                 setNewUserData({email: ""})
+                roomData.name && setRoomData({name: ""})
                 console.log("Current category --> ", category);
                 if (category === RoomCategories.UsersCategory) {
                     setCategory(RoomCategories.UsersCategory)
@@ -201,12 +230,9 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
             }
 
             setAddUserStatus(!addUserStatus);
-        }
 
     }
-    const handleCopyJoinLinkButton = () => {
-        console.log('COPY JOIN LINK ')
-    }
+
 
     useEffect(() => {
 
@@ -217,6 +243,16 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
             setAddUserBtnStatus(true);
         }
     }, [newUserData]);
+
+    useEffect(() => {
+
+        if (roomData.name.length > 0 && handleSimpleField(roomData.name).length === 0) {
+
+            setAddUserBtnStatus(false);
+        } else {
+            setAddUserBtnStatus(true);
+        }
+    }, [roomData]);
 
     const handleJoinToMeeting = () => {
 
@@ -229,26 +265,17 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
             userId: auth.userId
         }).then((response) => {
 
-            let url="";
-            if (technologyName === Technologies.JITSI){
+            let url = "";
+            if (technologyName === Technologies.JITSI) {
                 url = `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name
                 navigate(`./join/${Technologies.JITSI}`, {state: {url: url, username: auth.username}})
-            }else{
-                createJoinUrl({meetingID: roomInfo.name}, auth.username,'1234').then((result)=> {
+            } else {
+                createJoinUrl({meetingID: roomInfo.name}, auth.username, '1234').then((result) => {
                         navigate(`./join/${Technologies.BBB}`, {state: {url: result, username: auth.username}})
-                }
+                    }
                 );
             }
 
-            // let url = technologyName === Technologies.JITSI ?
-            //     `https://${JitsiConfigData.DOMAIN}/` + roomInfo.name :
-            //     createJoinUrl({meetingID: roomInfo.name}, auth.username,'attPass').then((result)=> url = result);
-                // generateMeetingUrl({attendeePW: 'attPass', moderatorPW: 'modePass', name: roomInfo.name});
-
-            // let joinData = {state: {url: url, username: auth.username}};
-            // console.log("JOIN URL->", joinData);
-
-            // technologyName === Technologies.JITSI ? navigate(`./join/${Technologies.JITSI}`, joinData) : navigate(`./join/${Technologies.BBB}`, joinData);
             showToast('success', "Great", "User successfuly joined to room");
 
         }).catch((err) => {
@@ -316,27 +343,24 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                                     <Button label={joinMeetingIcon}
                                             className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`}
                                             onClick={handleJoinToMeeting}/>
-                                    <Button label={copyLinkIcon}
-                                            className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
-                                            onClick={() => handleCopyJoinLinkButton()} outlined/>
                                 </>
                                 :
                                 <>
                                     <Button label={startMeetingIcon}
                                             className={`${styleRoom.dialogSaveBtnPrm} ${styles.startJoinBtn}`}
                                             onClick={handleRoomMeetingStart}/>
-                                    <Button label={addUserStatus ? backArrowIcon : addUserIcon}
-                                            className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
-                                            onClick={() => handleBackButton()} outlined/>
                                 </>
 
                             }
+                            <Button label={addUserStatus ? backArrowIcon : addUserIcon}
+                                    className={`${styleRoom.dialogCloseBtnPrm} ${styles.copyLinkBtn}`}
+                                    onClick={() => handleBackButton()} outlined/>
                         </div>
                     </div>
-                    {isRunningStatus  ? <div className={styles.liveBox}>Live</div> :
+                    {isRunningStatus ? <div className={styles.liveBox}>Live</div> :
                         <div style={{color: '#909090'}}>
-                                <></>
-                                <>{generateLastMeetingDate(roomInfo.conferences)}</>
+                            <></>
+                            <>{generateLastMeetingDate(roomInfo.conferences)}</>
                         </div>
                     }
                 </div>
@@ -395,9 +419,25 @@ function RoomDetailedComponent({showToast, roomInfo, updateRoom, isRunningStatus
                         </div>
 
                         <div>
-
                             {category === RoomCategories.SettingsCategory ?
-                                <h1>SETTINGS</h1>
+                                <>
+                                    <h1>Settings</h1>
+
+                                    <div className={styles.addUserContainer}>
+                                        <form onSubmit={onNewRoomDataSubmit}>
+                                            <Input
+                                                labelText={"New Room name"}
+                                                entity='name' value={roomData.name}
+                                                setInput={setRoomData} Data={roomData}
+                                                handleFunction={handleSimpleField}/>
+
+                                            <Button disabled={addUserBtnStatus} label={'Update User Data'} className={styles.magenta_btn}/>
+                                        </form>
+                                        <Button  label={'Add new User'}  onClick={() => handleBackButton()} className={`p-button-outlined ${styles.magenta_btn}`}/>
+                                    </div>
+
+                                </>
+
                                 :
                                 <div className="card">
 
