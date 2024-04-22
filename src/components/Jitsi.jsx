@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './UI/Toggle/ToolBarButtons.module.css'
 import urlStyles from './UI/Button/UrlButton.module.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -20,6 +20,8 @@ import {axiosPrivate} from "../api/axios";
 import { ProgressBar } from 'primereact/progressbar';
 import { CLIENT_BASE_URL, SECRET_TOKEN} from "../data/TechData";
 import hex_sha1 from "../libs/paj";
+import {Button} from "primereact/button";
+import {Toast} from "primereact/toast";
 
 
 // import { useHistory } from "react-router-dom";
@@ -43,6 +45,9 @@ function Jitsi() {
     const [meetUpStatus, setMeetUpStatus] = useState(false);
 
     const [API, setAPI] = useState();
+
+    const toast = useRef(null);
+
 
     const startMeeting = () => {
 
@@ -188,10 +193,18 @@ function Jitsi() {
         return `${CLIENT_BASE_URL}/invite?conferenceName=${jitsiMeetingName}&technology=Jitsi&checksum=${summ}`;
     }
 
+    function copyEvent(entity,urlToCopy){
+        navigator.clipboard.writeText(urlToCopy);
+        toast.current.show({severity:'info', summary: `URL Copy`, detail:`${entity} url copied`, life: 1500});
+    }
+
     return (
         <div className="App">
+            <Toast ref={toast} />
+
             <h3>{jitsiMeetingName}</h3>
             <div style={{marginTop: '30px'}} id="meet"/>
+
 
             <span>&nbsp;&nbsp;</span>
 
@@ -224,12 +237,19 @@ function Jitsi() {
                     </button>
 
                     <div className={urlStyles.urlContainer}>
-                        <button className={urlStyles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(formData.url)}>Copy join URL
-                        </button>
-                        <button className={urlStyles.urlButton}
-                                onClick={() => navigator.clipboard.writeText(generateJitsiInviteLink(jitsiMeetingName))}>Copy invite link to meeting
-                        </button>
+
+                        <Button label="Copy join URL" className="p-button-outlined" onClick={
+                            ()=> copyEvent('Join', formData.url)} />
+
+                        <Button label="DTMeet invite URL" className="p-button-outlined" onClick={
+                            ()=> copyEvent('DTMeet invite', generateJitsiInviteLink(jitsiMeetingName))} />
+
+                        {/*<button className={urlStyles.urlButton}*/}
+                        {/*        onClick={() => navigator.clipboard.writeText(formData.url)}>Copy join URL*/}
+                        {/*</button>*/}
+                        {/*<button className={urlStyles.urlButton}*/}
+                        {/*        onClick={() => navigator.clipboard.writeText(generateJitsiInviteLink(jitsiMeetingName))}>Copy invite link to meeting*/}
+                        {/*</button>*/}
                     </div>
                 </div>
                 :
