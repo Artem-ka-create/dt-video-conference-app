@@ -8,7 +8,7 @@ RUN apk add --no-cache git
 WORKDIR /app
 
 # Define the Git repository and branch as arguments
-ARG REPO_URL=https://github.com/Artem-ka-create/dt-video-conference-app.git
+ARG REPO_URL=${REPO_URL}
 ARG BRANCH=master
 
 # Clone or pull the latest code
