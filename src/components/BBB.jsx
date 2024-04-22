@@ -16,6 +16,8 @@ import hex_sha1 from "../libs/paj";
 import {axiosPrivate} from "../api/axios";
 import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPhoneSlash} from '@fortawesome/free-solid-svg-icons'
 
 function BBB() {
 
@@ -33,6 +35,9 @@ function BBB() {
     const [operation, setOperation] = useState('');
 
 
+    const finishMeetingButton = () =>{
+
+    }
 
 
 
@@ -144,13 +149,15 @@ function BBB() {
                 joinUrl.length === 0 ?
                     <div>BBB</div> :
                     <>
-                        <iframe id='bbb' style={{marginTop: '30px'}} title='frame' src={joinUrl} width="100%" height="500"
+                        <iframe id='bbb' style={{marginTop: '0.625rem'}} title='frame' src={joinUrl} width="100%" height="500"
                                 allow="geolocation *; microphone *; camera *; display-capture *;"
                                 webkitallowfullscreen="false"
                                 sandbox="allow-same-origin allow-scripts allow-modals allow-forms "
                         ></iframe>
 
-                        <Button label={"Finish Meeting"} severity={"danger"} onClick={onHandleFinishBBB}/>
+                        <Button label={<div style={{display:"flex", alignItems:"center", justifyContent:"space-around", width:"9.375rem"}}>
+                            <div>Finish Meeting</div><FontAwesomeIcon icon={faPhoneSlash}/>
+                        </div>} severity={"danger"} onClick={onHandleFinishBBB}/>
 
                     </>
             }
