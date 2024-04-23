@@ -16,7 +16,7 @@ import {
 import {faHand as faHandreg} from '@fortawesome/free-regular-svg-icons'
 import {useLocation, useNavigate} from 'react-router-dom';
 import {JitsiConfigData} from "../data/JitsiConfig";
-import {axiosPrivate} from "../api/axios";
+import axios from "../api/axios"
 import { ProgressBar } from 'primereact/progressbar';
 import { CLIENT_BASE_URL, SECRET_TOKEN} from "../data/TechData";
 import hex_sha1 from "../libs/paj";
@@ -137,7 +137,10 @@ function Jitsi() {
         API.executeCommand(command);
         if (command === 'hangup') {
             if (API.getParticipantsInfo().length === 1) {
-                axiosPrivate.put(`api/v1/conferences/close-conference/${jitsiMeetingName}`).then((response) => {
+                axios.put(`api/v1/conferences/close-conference/${jitsiMeetingName}`,{},{
+                    headers:{"Content-Type":'application/json'},
+                    withCredentials:true
+                }).then((response) => {
                         console.log('Finish meeting response --> ', response.data);
                     }
                 ).catch((err) => {

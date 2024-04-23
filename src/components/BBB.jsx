@@ -13,11 +13,11 @@ import {
 import styles from './UI/Button/UrlButton.module.css';
 import {CLIENT_BASE_URL, SECRET_TOKEN, Technologies} from "../data/TechData";
 import hex_sha1 from "../libs/paj";
-import {axiosPrivate} from "../api/axios";
 import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPhoneSlash} from '@fortawesome/free-solid-svg-icons'
+import {faPhoneSlash} from '@fortawesome/free-solid-svg-icons';
+import axios from '../api/axios';
 
 function BBB() {
 
@@ -33,14 +33,6 @@ function BBB() {
 
     const {url, username, attendeePW, moderatorPW} = location.state;
     const [operation, setOperation] = useState('');
-
-
-    const finishMeetingButton = () =>{
-
-    }
-
-
-
 
     const getMeetingRoomName = () =>{
         var ur = new URL(url);
@@ -118,7 +110,10 @@ function BBB() {
         if (response.returncode === 'SUCCESS') {
             console.log("MEETING ENDED")
 
-            axiosPrivate.put(`api/v1/conferences/close-conference/${getMeetingRoomName()}`).then((response) => {
+            axios.put(`api/v1/conferences/close-conference/${getMeetingRoomName()}`,{},{
+                headers:{"Content-Type":'application/json'},
+                withCredentials:true
+            }).then((response) => {
                     console.log('Finish meeting response --> ', response.data);
                     navigate('/');
                     window.location.reload();
