@@ -1,4 +1,5 @@
 import {Technologies} from "../data/TechData";
+import {JitsiConfigData} from "../data/JitsiConfig";
 
 
 function specialSymbolsCheck(text){
@@ -15,7 +16,7 @@ function isUrl(url) {
     return urlRegex.test(url);
 }
 function urlSupport(url){
-    if(url.replace('https://','').split('/')[0]==='jitsi.hamburg.ccc.de'||
+    if(url.replace('https://','').split('/')[0]===JitsiConfigData.DOMAIN||
         url.replace('https://','').split('/')[1]==='bigbluebutton'){
         return true;
       }
