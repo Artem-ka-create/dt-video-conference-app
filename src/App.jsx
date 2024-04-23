@@ -51,9 +51,9 @@ function App() {
               <Route path='/' element={<MainLayout showToast={handleShowToastEvent} panelStatus={panelStatus} onChangePanel={handlePanelStatusChange} />}>
                 <Route index={true}  path='/' element={<Main showToastEvent = {handleShowToastEvent}/>}/>
                 <Route path='*' element={<NotFound/>}/>
-                <Route element={ <RequireAuth allowedRoles={ [ ROLES.User ]}/>}>
+                {/*<Route element={ <RequireAuth allowedRoles={ [ ROLES.User ]}/>}>*/}
                   <Route path='/about' element={<About/>}/>
-                </Route>
+                {/*</Route>*/}
 
                 <Route path='/register' element={<RegisterForm showToast={handleShowToastEvent} />}/>
                 <Route path='/signin' element={<Login showToast={handleShowToastEvent} />}/>
